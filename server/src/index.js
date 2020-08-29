@@ -1,18 +1,30 @@
+// Importando
 const express = require('express');
 const bodyParser = require('body-parser');
+require('dotenv/config');
 
+// criando nossa app chamando a função express
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false}));
 
-app.get('/', (request, response) => {
-  response.send('ok');
+// req dados das requisições (parametros, tokens)
+// res objeto que vamos utilizar, pra enviar alguma resposta
+// quando o usuario acessar a rota
+
+/*
+// Testando rota
+app.get('/', (req, res) =>{
+    res.send('ok');
 });
+*/
 
-require('dotenv/config');
+// Referenciar authController repassando o app
 require('./controllers/authController')(app);
+require('./controllers/projectController')(app);
 
 app.listen(process.env.SERVER_PORT, () => {
-  console.log(`[*] Server running on port: ${process.env.SERVER_PORT}`);
-});
+    console.log(`[*] Server running on port: ${process.env.SERVER_PORT}`);
+  });
+

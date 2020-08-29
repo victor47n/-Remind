@@ -1,0 +1,3 @@
+SERVER_PORT=xxxx
+SERVER_WEB_HOST="localhost"
+SERVER_MONGODB = 'server exemple'

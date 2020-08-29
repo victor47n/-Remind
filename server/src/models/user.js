@@ -1,29 +1,40 @@
+// Importando
 const mongoose = require('../database');
-const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
+// Definindo um Schema
 const UserSchema = new mongoose.Schema({
-  name:{
-    type: String,
-    require: true,
-  },
-  email: {
-    type: String,
-    unique: true,
-    required:true,
-    lowercase:true,
-  },
-  password: {
-    type: String,
-    required: true,
-    select: false,
-    set: value => crypto.createHash('md5').update(value).digest('hex'),
-  },
-  createdAt: {
-    type:Date,
-    default: Date.now,
-  },
+    name:{
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        select: false,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
-const User = mongoose.model("User", UserSchema);
+// Antes de salvar o password, utiliza-se encriptação hash na senha
+UserSchema.pre('save', async function(next){
+    const hash = await bcrypt.hash(this.password, 10);
+    this.password = hash;
 
+    next();
+});
+
+// Definir nosso User model
+const User = mongoose.model('User', UserSchema);
+
+// Exportar módulo
 module.exports = User;
