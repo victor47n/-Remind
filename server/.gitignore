@@ -1,5 +1,4 @@
 /node_modules
 .env
-yarn-error.log
-yarn
-/src/config/mail.json
+
+/src/config/*.json
