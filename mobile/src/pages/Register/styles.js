@@ -5,7 +5,15 @@ export default StyleSheet.create({
     background: {
         flex: 1,
         alignContent: 'center',
-        backgroundColor: '#F5F5F5'
+        backgroundColor: '#FAFAFA'
+    },
+    header: {
+        backgroundColor: '#6C64FB',
+        paddingHorizontal: 16,
+        paddingTop: Constants.statusBarHeight + 16,
+        paddingBottom: 16,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     head: {
         alignSelf: 'center',
@@ -13,25 +21,30 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
+    headContainer: {
+        marginHorizontal: 16,
+        display: 'flex'
+    },
     headText: {
         color: '#636363',
         display: 'flex',
         fontSize: 16,
         fontFamily: 'Roboto',
+        letterSpacing: 0.15,
+        lineHeight: 19
     },
     headTextEntered: {
         display: 'flex',
         color: '#9B67FF',
         fontFamily: 'Roboto',
-        fontSize: 16
-    },
-    headContainer: {
-        margin: 10,
-        display: 'flex'
+        fontSize: 16,
+        letterSpacing: 0.15,
+        lineHeight: 19
     },
     formulario: {
         alignSelf: 'center',
         marginTop: 22,
+        marginBottom: 24
     },
     input: {
         shadowOffset: { width: 0, height: 3, },
@@ -52,10 +65,8 @@ export default StyleSheet.create({
         fontSize: 16
 
     },
-
     registrar: {
-        marginTop: 40,
-        
+        paddingVertical: 10,
         borderRadius: 25,
         elevation: 13,
         alignSelf: 'center',
@@ -69,8 +80,10 @@ export default StyleSheet.create({
         shadowRadius: 8,
 
     },
-    entrarTexto: {
-        marginVertical: 7,
+    registrarTexto: {
+        fontWeight: 500,
+        lineHeight: 16,
+        letterSpacing: 0.125,
         fontFamily: 'Roboto',
         color: '#F5F5F5'
     }

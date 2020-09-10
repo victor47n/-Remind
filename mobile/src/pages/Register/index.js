@@ -2,13 +2,26 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './styles';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Cadastro({ navigation}) {
+export default function Cadastro() {
+    const navigation = useNavigation();
+
+    function navigateBack() {
+        navigation.goBack();
+    };
+
+
     return <View style={styles.background}>
-
+           <LinearGradient style={styles.header}
+            colors={['#6C64FB', '#9B67FF']}
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+        >
+            
+        </LinearGradient>
         <View style={styles.head}>
 
-            <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.headContainer}>
+            <TouchableOpacity onPress={navigateBack} style={styles.headContainer}>
                 <Text style={styles.headText}>Log In</Text>
 
             </TouchableOpacity>
@@ -35,6 +48,7 @@ export default function Cadastro({ navigation}) {
             <TextInput style={styles.input} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Confirmar Senha" autoCorrect={false}>
 
             </TextInput>
+            
 
         </View>
 
@@ -44,7 +58,7 @@ export default function Cadastro({ navigation}) {
                 colors={['#6C64FB','#9B67FF']}
                 start= {{x: 0 , y: 0}} end={{x: 1 , y: 1}}
             >
-            <Text style={styles.entrarTexto} >REGISTRAR</Text>
+            <Text style={styles.registrarTexto} >REGISTRAR</Text>
             </LinearGradient>
           
             </TouchableOpacity>
