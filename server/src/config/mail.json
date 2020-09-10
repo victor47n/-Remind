@@ -1,0 +1,6 @@
+{
+    "host": "smtp.gmail.com",
+    "port": 465,
+    "user": "remind.app0101@gmail.com",
+    "pass": "unifaeinfo"
+}
