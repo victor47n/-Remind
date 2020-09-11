@@ -6,6 +6,7 @@ const AuthController = require('./controllers/AuthController');
 const RecoverPassword = require('./controllers/RecoverPassword');
 const AssignmentController = require('./controllers/AssignmentController');
 const AssignmentListController = require('./controllers/AssignmentListController');
+const profileController = require('./controllers/ProfileController');
 
 
 const routes = express.Router();
@@ -33,7 +34,7 @@ routes.post('/forgot_password', celebrate({
   })
 }), RecoverPassword.create);
 
-routes.post('/reset_password',  celebrate({
+routes.post('/reset_password', celebrate({
   [Segments.BODY]: Joi.object().keys({
     email: Joi.string().required().email(),
     token: Joi.string().required(),
@@ -41,7 +42,26 @@ routes.post('/reset_password',  celebrate({
   })
 }), RecoverPassword.store);
 
-//Catastro de Lembretes
+//Profile
+routes.get('/profile_list/:userId', celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.string(),
+  })
+}), profileController.show);
+
+routes.put('/profile_edit/:userId', celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    name: Joi.string().required(),
+    email: Joi.string().required(),
+    password: Joi.string().required().min(8),
+    birthdate: Joi.date().required(),
+  }),
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.string(),
+  })
+}), profileController.update);
+
+//Cadastro de Lembretes
 routes.get('/assignments', AssignmentListController.index);
 
 routes.get('/assignment/:assignmentId', celebrate({
@@ -50,7 +70,7 @@ routes.get('/assignment/:assignmentId', celebrate({
   })
 }), AssignmentListController.show);
 
-routes.post('/assignment',  celebrate({
+routes.post('/assignment', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required().max(400),
     dateActivity: Joi.date().required(),

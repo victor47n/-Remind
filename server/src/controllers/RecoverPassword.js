@@ -29,7 +29,7 @@ module.exports ={
       mailer.sendMail({
         to: email,
         subject: 'Recuperação de Senha',
-        from: 'remind.app@gmail.com',
+        from: 'remind.app0101@gmail.com',
         template: 'auth/forgot_password',
         context: { token },
       }, (err) => {
@@ -47,7 +47,7 @@ module.exports ={
   
   },
   
-  async store(req, res){
+  async store(req, res) {
     const { email, token, password } = req.body;
   
     try {
@@ -70,7 +70,7 @@ module.exports ={
       await user.save();
       
       res.send();
-    } catch (error) {
+    } catch (err) {
       res.status(400).send({ error: 'Cannot reset password, try again' });
     }
   }

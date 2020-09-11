@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     select: false,
+    set: value =>  bcrypt.hashSync(value, 10),
   },
   passwordResetToken: {
     type: String,
@@ -28,22 +29,16 @@ const UserSchema = new mongoose.Schema({
   },
   birthdate:{
     type: Date,
-    select: false,
+    select: true,
   },
   createdAt: {
     type:Date,
     default: Date.now,
   },
+  
 });
 
 
-UserSchema.pre('save', async function(next) {
-  const hash = await bcrypt.hash(this.password, 10);
-  this.password = hash;
-
-  next();
-});
-
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
