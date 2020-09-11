@@ -92,7 +92,7 @@ export default StyleSheet.create({
         shadowRadius: 8,
     },
     entrarTexto: {
-        fontWeight: 500,
+        fontWeight: '500',
         lineHeight: 16,
         letterSpacing: 0.125,
         fontFamily: 'Roboto',

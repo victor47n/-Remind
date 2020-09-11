@@ -1,23 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
+import api from '../../services/api';
 
-export default function Cadastro() {
+export default function Register() {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordConf, setPasswordConf] = useState('');
+
     const navigation = useNavigation();
 
+    async function handleRegister(e) {
+        if (password === passwordConf) {
+           const data = {
+            name,
+            email,
+            password,
+        };
+        console.log(data);
+        try {
+            const response = await api.post('register', data);
+        } catch (error) {
+            alert('Deu ruim');
+        } 
+        } else {
+            alert('Senhas incorretas');
+        }
+        
+    }
+
+ 
     function navigateBack() {
         navigation.goBack();
     };
 
 
     return <View style={styles.background}>
-           <LinearGradient style={styles.header}
+        <LinearGradient style={styles.header}
             colors={['#6C64FB', '#9B67FF']}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
         >
-            
+
         </LinearGradient>
         <View style={styles.head}>
 
@@ -32,36 +58,37 @@ export default function Cadastro() {
 
         </View>
         <View style={styles.formulario}>
-            <TextInput style={styles.input} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Nome" autoCorrect={false}>
+        
+         
+            <TextInput style={styles.input} value={name} onChange={e =>  setName(e.target.value)}  autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Nome" autoCorrect={false}>
 
             </TextInput>
 
-
-            <TextInput style={styles.input} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Email" autoCorrect={false}>
-
-            </TextInput>
-
-            <TextInput style={styles.input} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Senha" autoCorrect={false}>
+            <TextInput style={styles.input} value={email} onChange={e =>  setEmail(e.target.value)} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Email" autoCorrect={false}>
 
             </TextInput>
 
-            <TextInput style={styles.input} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Confirmar Senha" autoCorrect={false}>
+            <TextInput secureTextEntry={true}  style={styles.input} value={password} onChange={e =>  setPassword(e.target.value)} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Senha" autoCorrect={false}>
 
             </TextInput>
-            
+
+            <TextInput secureTextEntry={true}  style={styles.input} value={passwordConf} onChange={e =>  setPasswordConf(e.target.value)} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Confirmar Senha" autoCorrect={false}>
+
+            </TextInput>
+       
 
         </View>
 
-        <TouchableOpacity onPress={() => { }} >
+        <TouchableOpacity onPress={handleRegister} >
 
             <LinearGradient style={styles.registrar}
-                colors={['#6C64FB','#9B67FF']}
-                start= {{x: 0 , y: 0}} end={{x: 1 , y: 1}}
+                colors={['#6C64FB', '#9B67FF']}
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
             >
-            <Text style={styles.registrarTexto} >REGISTRAR</Text>
+                <Text style={styles.registrarTexto} >REGISTRAR</Text>
             </LinearGradient>
-          
-            </TouchableOpacity>
+
+        </TouchableOpacity>
 
     </View>
 }
