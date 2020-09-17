@@ -76,7 +76,7 @@ export default function Home() {
                 </View>
 
                 <View style={styles.datePick}>
-                    <TouchableOpacity style={styles.inputDate} onPress={showDatepicker} title="Show date picker!"/>
+                    <TouchableOpacity style={styles.inputDate} onPress={showDatepicker} title="Show date picker!" />
                     <TouchableOpacity styles={styles.inputHours} onPress={showTimepicker} title="Show time picker!" />
 
                     {/* <TextInput
