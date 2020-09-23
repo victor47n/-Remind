@@ -17,7 +17,7 @@ module.exports ={
       const token = crypto.randomBytes(20).toString('hex');
   
       const now = new Date();
-      now.setHours(now.getHours() + 1);
+      now.setMinutes(now.getMinutes() + 30);
   
       await User.findByIdAndUpdate(user.id, {
         '$set': {
