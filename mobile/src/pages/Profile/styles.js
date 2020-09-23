@@ -2,48 +2,48 @@ import { StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
 export default StyleSheet.create({
-    background: {
+
+    container: {
         flex: 1,
         alignContent: 'center',
         backgroundColor: '#FAFAFA'
     },
     header: {
         backgroundColor: '#6C64FB',
-        paddingHorizontal: 16,
         paddingTop: Constants.statusBarHeight + 16,
         paddingBottom: 16,
-        flexDirection: 'row',
-        alignItems: 'center',
     },
-    head: {
+
+    buttonBack: {
+        marginTop: 16,
+        marginLeft: 16,
+        width: 24,
+        height: 24
+    },
+
+    headerProfile: {
         alignSelf: 'center',
-        marginTop: 85,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+        marginBottom: 71,
     },
-    headContainer: {
-        marginHorizontal: 16,
-        display: 'flex'
-    },
-    headText: {
-        color: '#636363',
-        display: 'flex',
+    profileName: {
+        alignSelf: 'center',
+        color: '#FAFAFA',
+        fontSize: 34,
+        lineHeight: 40,
+        letterSpacing: 0.25,
         fontFamily: 'Roboto',
+    },
+    profileEmail: {
+        alignSelf: 'center',
+        color: '#E0E0E0',
+        lineHeight: 19,
         fontSize: 16,
         letterSpacing: 0.15,
-        lineHeight: 19
-    },
-    headTextEntered: {
-        display: 'flex',
-        color: '#9B67FF',
         fontFamily: 'Roboto',
-        fontSize: 16,
-        letterSpacing: 0.15,
-        lineHeight: 19
     },
-    formulario: {
+    formulary: {
         alignSelf: 'center',
-        marginTop: 22,
+        top: 40
     },
     input: {
         shadowOffset: { width: 0, height: 3, },
@@ -51,49 +51,42 @@ export default StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 8,
         elevation: 13,
+        paddingLeft: 28,
         backgroundColor: '#F9F9F9',
         borderStyle: 'solid',
         borderColor: '#E0E0E0',
+        fontFamily: 'Roboto',
         borderWidth: 1,
         borderRadius: 25,
-        marginVertical: 16,
-        paddingLeft: 28,
-        fontFamily: 'Roboto',
         height: 48,
         width: 280,
+        marginBottom: 32,
         fontSize: 16
     },
-    lostSenha: {
-        alignSelf: 'flex-end',
-        marginLeft: 216,
-        marginRight: 40,
-        marginBottom: 40
-    },
-    lostSenhaText: {
-        lineHeight: 14,
-        letterSpacing: 0.4,
-        fontSize: 12,
-        fontFamily: 'Roboto',
-        color: '#9B67FF'
-    },
-    entrar: {
-        paddingVertical: 10,
-        borderRadius: 25,
+    buttonBox: {
+        marginTop: 147,
         alignSelf: 'center',
-        alignItems: 'center',
+    },
+    botao: {
+        backgroundColor: '#9B67FF',
+        borderRadius: 25,
+        
         elevation: 13,
+        alignItems: 'center',
         width: 280,
         height: 36,
+        display: 'flex',
         shadowOffset: { width: 0, height: 3, },
         shadowColor: 'black',
         shadowOpacity: 0.25,
         shadowRadius: 8,
     },
-    entrarTexto: {
-        fontWeight: '500',
-        lineHeight: 16,
-        letterSpacing: 0.125,
+    botaoTexto: {
+        paddingVertical: 10,
         fontFamily: 'Roboto',
+        letterSpacing: 0.125,
+        lineHeight: 16,
+        fontWeight: '500',
         color: '#F5F5F5'
     }
 });

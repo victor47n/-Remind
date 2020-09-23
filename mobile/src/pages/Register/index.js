@@ -24,7 +24,7 @@ export default function Register() {
         try {
             const response = await api.post('register', data);
         } catch (error) {
-            alert('Deu ruim');
+            alert(error);
         } 
         } else {
             alert('Senhas incorretas');
@@ -72,7 +72,7 @@ export default function Register() {
 
             </TextInput>
 
-            <TextInput secureTextEntry={true}  style={styles.input} value={passwordConf} onChange={e =>  setPasswordConf(e.target.value)} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Confirmar Senha" autoCorrect={false}>
+            <TextInput secureTextEntry={true} style={styles.input} value={passwordConf} onChange={e =>  setPasswordConf(e.target.value)} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Confirmar Senha" autoCorrect={false}>
 
             </TextInput>
        

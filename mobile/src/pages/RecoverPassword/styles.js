@@ -28,8 +28,7 @@ export default StyleSheet.create({
     titulo: {
         letterSpacing: 0.25,
         lineHeight: 40,
-        width: 155,
-        height: 80,
+        
         lineHeight: 40,
         display: 'flex',
         alignItems: 'flex-end',
