@@ -24,7 +24,6 @@ routes.post('/register', celebrate({
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-    birthdate: Joi.date().required(),
   })
 }), UserController.store);
 
@@ -34,13 +33,7 @@ routes.post('/forgot_password', celebrate({
   })
 }), RecoverPassword.create);
 
-routes.post('/reset_password', celebrate({
-  [Segments.BODY]: Joi.object().keys({
-    email: Joi.string().required().email(),
-    token: Joi.string().required(),
-    password: Joi.string().required(),
-  })
-}), RecoverPassword.store);
+routes.post('/reset_password', RecoverPassword.store);
 
 //Profile
 routes.get('/profile_list/:userId', celebrate({
@@ -54,7 +47,6 @@ routes.put('/profile_edit/:userId', celebrate({
     name: Joi.string().required(),
     email: Joi.string().required(),
     password: Joi.string().required().min(8),
-    birthdate: Joi.date().required(),
   }),
   [Segments.PARAMS]: Joi.object().keys({
     userId: Joi.string(),

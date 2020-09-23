@@ -18,7 +18,7 @@ function generateToken(params = {}) {
 module.exports = {
     async update(req, res) {
         try {
-            const { name, email, password, birthdate } = req.body;
+            const { name, email, password } = req.body;
             const { userId } = req.params;
 
             if (email) {
@@ -32,15 +32,10 @@ module.exports = {
             const user = await User.findByIdAndUpdate(userId, {
                 name,
                 email,
-                password,
-                birthdate
+                password
             }, { new: true });
 
-            res.send({
-                user,
-                token: generateToken({ id: user.id }),
-            });
-
+            
             await user.save()
 
             return res.send(user);
