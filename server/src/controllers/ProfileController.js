@@ -1,10 +1,8 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 const User = require('../models/user');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authConfig = require('../config/auth');
-const e = require('express');
 const router = express.Router();
 
 router.use(authMiddleware);
@@ -40,7 +38,7 @@ module.exports = {
 
             return res.send(user);
         } catch (err) {
-            return res.status(400).send({ error: 'Error updating assignment' });
+            return res.status(400).send({ error: 'Error updating reminder' });
 
         }
     },
@@ -51,7 +49,7 @@ module.exports = {
 
             return res.send({ user });
         } catch (error) {
-            return res.status(400).send({ error: 'Erro loading assignment' });
+            return res.status(400).send({ error: 'Erro loading reminder' });
         }
     }
 };

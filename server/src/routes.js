@@ -4,8 +4,8 @@ const { celebrate, Segments, Joi } = require('celebrate');
 const UserController = require('./controllers/UserController');
 const AuthController = require('./controllers/AuthController');
 const RecoverPassword = require('./controllers/RecoverPassword');
-const AssignmentController = require('./controllers/AssignmentController');
-const AssignmentListController = require('./controllers/AssignmentListController');
+const ReminderController = require('./controllers/ReminderController');
+const RemindersListController = require('./controllers/RemindersListController');
 const profileController = require('./controllers/ProfileController');
 
 
@@ -54,23 +54,23 @@ routes.put('/profile_edit/:userId', celebrate({
 }), profileController.update);
 
 //Cadastro de Lembretes
-routes.get('/assignments', AssignmentListController.index);
+routes.get('/reminders', RemindersListController.index);
 
-routes.get('/assignment/:assignmentId', celebrate({
+routes.get('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
-    assignmentId: Joi.string(),
+    reminderId: Joi.string(),
   })
-}), AssignmentListController.show);
+}), RemindersListController.show);
 
-routes.post('/assignment', celebrate({
+routes.post('/reminder', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required().max(400),
     dateActivity: Joi.date().required(),
     dayWeek: Joi.array().required(),
   })
-}), AssignmentController.store);
+}), ReminderController.store);
 
-routes.put('/assignment/:assignmentId', celebrate({
+routes.put('/reminder/:reminderId', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required(),
     status: Joi.boolean().required(),
@@ -79,14 +79,14 @@ routes.put('/assignment/:assignmentId', celebrate({
     dayWeek: Joi.array().required(),
   }),
   [Segments.PARAMS]: Joi.object().keys({
-    assignmentId: Joi.string(),
+    reminderId: Joi.string(),
   })
-}), AssignmentController.update);
+}), ReminderController.update);
 
-routes.delete('/assignment/:assignmentId', celebrate({
+routes.delete('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
-    assignmentId: Joi.string().required(),
+    reminderId: Joi.string().required(),
   })
-}), AssignmentController.destroy);
+}), ReminderController.destroy);
 
 module.exports = routes;
