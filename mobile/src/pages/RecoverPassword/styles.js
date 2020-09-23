@@ -88,7 +88,7 @@ export default StyleSheet.create({
         fontFamily: 'Roboto',
         letterSpacing: 0.125,
         lineHeight: 16,
-        fontWeight: 500,
+        fontWeight: '500',
         color: '#F5F5F5'
     }
 });

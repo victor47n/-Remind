@@ -81,7 +81,7 @@ export default StyleSheet.create({
 
     },
     registrarTexto: {
-        fontWeight: 500,
+        fontWeight: '500',
         lineHeight: 16,
         letterSpacing: 0.125,
         fontFamily: 'Roboto',

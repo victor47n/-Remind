@@ -90,7 +90,7 @@ export default StyleSheet.create({
     botaoTexto: {
         paddingVertical: 10,
         fontFamily: 'Roboto',
-        fontWeight: 400,
+        fontWeight: '400',
         letterSpacing: 0.125,
         lineHeight: 16,
         color: '#F5F5F5'

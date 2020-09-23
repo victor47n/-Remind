@@ -24,7 +24,7 @@ routes.post('/register', celebrate({
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-    birthdate: Joi.date().required(),
+   // birthdate: Joi.date().required(),
   })
 }), UserController.store);
 
