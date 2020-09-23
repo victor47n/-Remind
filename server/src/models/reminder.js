@@ -1,6 +1,7 @@
+const { defaultConfiguration } = require('../app');
 const mongoose = require('../database');
 
-const AssignmentSchema = new mongoose.Schema({
+const RemindersSchema = new mongoose.Schema({
   description:{
     type: String,
     require: true,
@@ -32,6 +33,9 @@ const AssignmentSchema = new mongoose.Schema({
   },
 });
 
-const Assignment = mongoose.model("Assignment", AssignmentSchema);
+const Reminders = mongoose.model("Reminders", RemindersSchema);
+const TestReminder = mongoose.model("Tests", RemindersSchema);
 
-module.exports = Assignment;
+const Reminder = process.env.NODE_ENV === 'test' ? TestReminder : Reminders;
+
+module.exports = TestReminder;
