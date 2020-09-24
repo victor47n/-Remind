@@ -14,6 +14,11 @@ export default StyleSheet.create({
         paddingBottom: 16,
     },
 
+    iconsHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
     headerDate: {
         paddingTop: 8,
         flexDirection: 'row',
@@ -25,6 +30,7 @@ export default StyleSheet.create({
         fontFamily: 'Roboto',
         color: '#FAFAFA',
         fontWeight: "500",
+        letterSpacing: 0.15,
     },
 
     headerReminder: {
@@ -38,7 +44,7 @@ export default StyleSheet.create({
         fontSize: 24,
         fontFamily: 'Roboto',
         color: '#FAFAFA',
-        fontWeight: 'normal',
+        fontWeight: '400',
         letterSpacing: 0,
     },
 
@@ -46,8 +52,9 @@ export default StyleSheet.create({
         fontSize: 12,
         fontFamily: 'Roboto',
         color: '#E0E0E0',
-        fontWeight: 'normal',
+        fontWeight: '400',
         letterSpacing: 0.4,
+        // marginTop: 8
     },
 
     newReminderButton: {
@@ -68,14 +75,13 @@ export default StyleSheet.create({
 
     containerReminder: {
         flex: 1,
-        // paddingHorizontal: 40,
         paddingTop: 40,
-        backgroundColor: '#F5F5F5',
     },
 
     remind: {
-        paddingVertical: 18,
-        paddingHorizontal: 40,
+        marginTop: 8,
+        marginBottom: 32,
+        marginHorizontal: 40
     },
 
     reminderBox: {
@@ -92,6 +98,9 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#FAFAFA',
         borderRadius: 20,
+        // marginTop: 8,
+        // marginBottom: 32,
+        // marginHorizontal: 40
     },
 
     reminderBoxSelected: {
@@ -116,9 +125,8 @@ export default StyleSheet.create({
     },
 
     reminderCheck: {
-        paddingHorizontal: 24,
-        paddingVertical: 24,
-        color: '#FAFAFA'
+        marginRight: 24,
+        // paddingVertical: 24,
     },
 
     reminderTextDescription: {

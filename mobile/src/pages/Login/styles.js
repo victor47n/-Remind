@@ -5,26 +5,35 @@ export default StyleSheet.create({
     background: {
         flex: 1,
         alignContent: 'center',
-        backgroundColor: '#FAFAFA'
+        backgroundColor: '#FAFAFA',
     },
-    header: {
+
+    statusBar: {
         backgroundColor: '#6C64FB',
         paddingHorizontal: 16,
-        paddingTop: Constants.statusBarHeight + 16,
-        paddingBottom: 16,
-        flexDirection: 'row',
-        alignItems: 'center',
+        // paddingTop: Constants.statusBarHeight,
+        height: Constants.statusBarHeight
+        // paddingBottom: 16,
+        // flexDirection: 'row',
+        // alignItems: 'center',
     },
-    head: {
+
+    container: {
+        marginTop: 88,
         alignSelf: 'center',
-        marginTop: 85,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+        paddingHorizontal: 40,
     },
+
+    header: {
+        alignSelf: 'center',
+        flexDirection: 'row',
+    },
+
     headContainer: {
         marginHorizontal: 16,
         display: 'flex'
     },
+
     headText: {
         color: '#636363',
         display: 'flex',
@@ -52,9 +61,6 @@ export default StyleSheet.create({
         shadowRadius: 8,
         elevation: 13,
         backgroundColor: '#F9F9F9',
-        borderStyle: 'solid',
-        borderColor: '#E0E0E0',
-        borderWidth: 1,
         borderRadius: 25,
         marginVertical: 16,
         paddingLeft: 28,
@@ -65,12 +71,8 @@ export default StyleSheet.create({
     },
     lostSenha: {
         alignSelf: 'flex-end',
-        marginLeft: 216,
-        marginRight: 40,
-        width: 104,
-        height: 14,
-        marginBottom: 40
     },
+
     lostSenhaText: {
         lineHeight: 14,
         letterSpacing: 0.4,
@@ -90,6 +92,7 @@ export default StyleSheet.create({
         shadowColor: 'black',
         shadowOpacity: 0.25,
         shadowRadius: 8,
+        marginTop: 40
     },
     entrarTexto: {
         fontWeight: '500',
