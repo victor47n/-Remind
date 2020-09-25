@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation, NavigationContainer } from '@react-navigation/native';
-import { View, FlatList, Image, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
+import React, { useState } from 'react';
+// import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { View,
+    //  FlatList, Image, Text, TouchableOpacity, TouchableHighlight
+     } from 'react-native';
 // import CheckBox from '@react-native-community/checkbox';
-import { LinearGradient } from 'expo-linear-gradient';
-import { StatusBar } from 'expo-status-bar';
+// import { LinearGradient } from 'expo-linear-gradient';
+// import { StatusBar } from 'expo-status-bar';
 
 import styles from './styles';
 
@@ -53,7 +55,8 @@ export default function Home() {
 
     return (
         <View style={styles.container}>
-            <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />
+            <h1>TESTANDO</h1>
+            {/* <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />
             <LinearGradient style={styles.header}
                 colors={['#6C64FB', '#9B67FF']}
                 start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
@@ -114,7 +117,7 @@ export default function Home() {
                     </View>
                 )}
             >
-            </FlatList>
+            </FlatList> */}
         </View>
     );
 }

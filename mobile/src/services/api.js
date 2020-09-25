@@ -18,4 +18,4 @@ api.interceptors.request.use(async (config) => {
       alert('Token is missing');
     }
   });
-export default api
+export default api;

@@ -12,19 +12,18 @@ export default function Login() {
 
     async function handleLogin(e) {
        
-        const data = {
-          email,
-          password,
-        };
-
+  
         try {
-          const response = await api.post('auth', data);
+          const response = await api.post('auth', {email,password});
             
-        //   await AsyncStorage.setItem('@Reminder:token', response.data.token);
-          navigateToHome();
+          await AsyncStorage.setItem('@Reminder:token', response.data.token);
+          navigateToRegister();
           console.log(response.data.token);
           return alert('Deu certo');
         } catch (error) {
+            console.log(response.token);
+            console.log(response.email);
+            console.log(response.password);
             console.log(error);
             alert('Algo de errado');
         } 
