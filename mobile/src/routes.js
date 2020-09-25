@@ -19,6 +19,7 @@ function DrawerScreen() {
         <Drawer.Navigator initialRouteName="Home" drawerContent={props => <DrawerContent {...props} />}>
             <Drawer.Screen name="Notifications" component={Reminder} />
             <Drawer.Screen name="Home" component={Home} />
+            <Drawer.Screen name="Profile" component={Profile} />
         </Drawer.Navigator>
     );
 }

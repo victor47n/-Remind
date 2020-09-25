@@ -1,11 +1,32 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
+import React,{useState} from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, TouchableHighlight, AsyncStorage } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import api from '../../services/api';
 
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    async function handleLogin(e) {
+       
+           const data = {
+            email,
+            password,
+        };
+        
+        try {
+            const response = await api.post('auth', data);
+            
+            navigateToHome();
+            await AsyncStorage.setItem('@Reminder:token', response.data.token);
+            console.log(response.data.token);
+        } catch (error) {
+            alert('Algo de errado');
+        } 
+    }
     const navigation = useNavigation();
 
     function navigateToRegister() {
@@ -39,9 +60,9 @@ export default function Login() {
 
                 </View>
                 <View style={styles.formulario}>
-                    <TextInput style={styles.input} placeholder="Email" autoCapitalize="none" placeholderTextColor="#E0E0E0" autoCorrect={false} />
+                    <TextInput style={styles.input} value={email} onChange={e =>  setEmail(e.target.value)} placeholder="Email" autoCapitalize="none" placeholderTextColor="#E0E0E0" autoCorrect={false} />
 
-                    <TextInput style={styles.input} placeholder="Senha" autoCapitalize="none" placeholderTextColor="#E0E0E0" autoCorrect={false} />
+                    <TextInput style={styles.input} value={password} onChange={e =>  setPassword(e.target.value)} secureTextEntry={true} placeholder="Senha" autoCapitalize="none" placeholderTextColor="#E0E0E0" autoCorrect={false} />
                 </View>
 
                 <TouchableOpacity onPress={navigateToRecoverPassword} style={styles.lostSenha}>

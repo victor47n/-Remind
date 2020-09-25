@@ -26,8 +26,7 @@ export default StyleSheet.create({
         paddingRight: 44
     },
     titulo: {
-        width: 155,
-        height: 80,
+        
         fontFamily: 'Roboto',
         letterSpacing: 0.25,
         lineHeight: 40,
@@ -37,8 +36,7 @@ export default StyleSheet.create({
         margin: 0
     },
     descricao: {
-        width: 280,
-        height: 36,
+        
         display: 'flex',
         alignItems: 'flex-end',
         fontFamily: 'Roboto',
