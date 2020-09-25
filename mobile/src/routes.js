@@ -12,6 +12,7 @@ import RecoverPassword from './pages/RecoverPassword';
 import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import Reminder from './pages/Reminder';
+import Profile from './pages/Profile';
 import { DrawerContent } from './pages/Navigation/DrawerContent'
 
 function DrawerScreen() {

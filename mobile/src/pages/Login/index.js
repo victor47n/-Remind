@@ -12,18 +12,20 @@ export default function Login() {
 
     async function handleLogin(e) {
        
-           const data = {
-            email,
-            password,
+        const data = {
+          email,
+          password,
         };
-        
+
         try {
-            const response = await api.post('auth', data);
+          const response = await api.post('auth', data);
             
-            navigateToHome();
-            await AsyncStorage.setItem('@Reminder:token', response.data.token);
-            console.log(response.data.token);
+        //   await AsyncStorage.setItem('@Reminder:token', response.data.token);
+          navigateToHome();
+          console.log(response.data.token);
+          return alert('Deu certo');
         } catch (error) {
+            console.log(error);
             alert('Algo de errado');
         } 
     }
@@ -31,14 +33,17 @@ export default function Login() {
 
     function navigateToRegister() {
         navigation.navigate('Register');
+        console.log("teste");
     }
 
     function navigateToRecoverPassword() {
         navigation.navigate('RecoverPassword');
+        console.log("teste");
     }
 
     function navigateToHome() {
         navigation.navigate('Home');
+        console.log("teste");
     }
 
     return (
@@ -69,7 +74,7 @@ export default function Login() {
                     <Text style={styles.lostSenhaText}>Esqueceu a senha?</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={navigateToHome} >
+                <TouchableOpacity onPress={handleLogin} >
                     <LinearGradient style={styles.entrar}
                         colors={['#6C64FB', '#9B67FF']}
                         start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
