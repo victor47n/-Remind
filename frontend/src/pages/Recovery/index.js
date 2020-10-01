@@ -1,18 +1,23 @@
 import React, { useState }  from 'react';
-
 import api from '../../sevices/api';
 import './styles.css';
-
+import useRouter from "use-react-router"
+import { matchPath } from "react-router-dom"
 
 export default function Recovery() {
 const [password, setPassword] = useState('');
 const [passwordConf, setPasswordConf] = useState('');
 
+
 function handleConfirmation(e) {
+    const params = useParams("/forgot_password/:email=:token");
+    const {token, email} = params
     e.preventDefault();
     if(password === passwordConf){
       const data = {
-        password,
+        email,
+        token,
+        password
     };  
 
     try {
@@ -30,6 +35,15 @@ function handleConfirmation(e) {
     
 }
 
+export default function useParams(path) {
+    const { location } = useRouter()
+    const { pathname } = location
+  
+    const pattern = `(.*)?${path}`
+    const match = matchPath(pathname, { path: pattern }) || {}
+  
+    return match.params
+  }
 
     return(
         <div className="body">
