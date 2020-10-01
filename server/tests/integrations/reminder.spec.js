@@ -20,6 +20,8 @@ describe('Reminders Tests', () => {
       expect(response.body).toHaveProperty('repeat'); 
       expect(response.body).toHaveProperty('_id'); 
       expect(response.statusCode).toEqual(200);
+      
+      
       // console.log(response.body);
   });
   
@@ -33,8 +35,8 @@ describe('Reminders Tests', () => {
         password: "12345678"
     });
     expect(response.body).toHaveProperty('token'); 
-    // expect(response).toHaveBeenCalledWith(...expected); 
-
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.token).toHaveLength(171);
     const token = response.body.token;
 
     const reminder = await request(app)
@@ -76,10 +78,8 @@ describe('Reminders Tests', () => {
           password: "12345678"
       });
       expect(auth.body).toHaveProperty('token');
-      expect(auth.body.password).toEqual(undefined);
-
-      
-
+      expect(auth.statusCode).toEqual(200);
+      expect(auth.body.token).toHaveLength(171);
       const token = auth.body.token;
 
       const reminder = await request(app)
@@ -89,6 +89,7 @@ describe('Reminders Tests', () => {
         dateActivity: "2020-09-04T09:00:00",
         dayWeek: [2,3,4]
       });
+      expect(reminder.statusCode).toEqual(200);
       expect(reminder.body).toHaveProperty('_id');
       // console.log(reminder.body);
 
@@ -105,6 +106,7 @@ describe('Reminders Tests', () => {
       .get(`/reminder/${reminderId}`)
       .set('Authorization', `Bearer ${token}`);
 
+      expect(feedback.statusCode).toEqual(200);
       expect(feedback.body).toEqual({"reminder":null})
     });
     
@@ -124,7 +126,9 @@ describe('Reminders Tests', () => {
             email: "teste@gmail.com",
             password: "12345678"
         });
+        
         expect(auth.body).toHaveProperty('token');
+        expect(auth.body.token).toHaveLength(171);
         expect(auth.statusCode).toEqual(200);
   
         const token = auth.body.token;

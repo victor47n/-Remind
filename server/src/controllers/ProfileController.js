@@ -25,7 +25,7 @@ module.exports = {
             const user = await User.findByIdAndUpdate(userId, {
                 name,
                 email,
-                password
+                password,
             }, { new: true });
             
             await user.save()

@@ -1,10 +1,6 @@
-const express = require('express');
-const authMiddleware = require('../middlewares/auth')
 const Reminder = require('../models/reminder');
 
-const router = express.Router();
 
-router.use(authMiddleware);
 module.exports = {
   async store(req, res){
     try {
@@ -27,7 +23,7 @@ module.exports = {
 
       await reminder.save();
 
-      return res.json( reminder );
+      return res.send({ reminder });
     } catch (err) {
       res.status(400).send({ error: 'Error creating new reminder' });
     }
@@ -36,7 +32,8 @@ module.exports = {
   async update(req, res){
     try {
       const { description, status, repeat, dateActivity, dayWeek } = req.body;
-
+      
+      dateActivity.setHours(dateActivity.getHours() - 3);
       // const number =  Array();
       // if(dateActivity === )
 

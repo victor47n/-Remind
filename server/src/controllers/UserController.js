@@ -11,6 +11,7 @@ function generateToken(params = {}) {
 
 module.exports ={
   async store(req, res){
+    console.log(req.body);
     const { email } = req.body;
    
     try{
