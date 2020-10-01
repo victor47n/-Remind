@@ -13,7 +13,7 @@ export default function Register() {
 
     const navigation = useNavigation();
 
-    async function handleRegister(e) {
+    async function handleRegister() {
         if (password === passwordConf) {
            const data = {
             name,
@@ -38,7 +38,7 @@ export default function Register() {
     };
 
 
-    return <View style={styles.background}>
+    return( <View style={styles.background}>
         <LinearGradient style={styles.header}
             colors={['#6C64FB', '#9B67FF']}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
@@ -60,19 +60,19 @@ export default function Register() {
         <View style={styles.formulario}>
         
          
-            <TextInput style={styles.input} value={name} onChange={e =>  setName(e.target.value)}  autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Nome" autoCorrect={false}>
+            <TextInput style={styles.input} value={name} onChangeText={setName}  autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Nome" autoCorrect={false}>
 
             </TextInput>
 
-            <TextInput style={styles.input} value={email} onChange={e =>  setEmail(e.target.value)} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Email" autoCorrect={false}>
+            <TextInput style={styles.input} value={email} onChangeText={setEmail} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Email" autoCorrect={false}>
 
             </TextInput>
 
-            <TextInput secureTextEntry={true}  style={styles.input} value={password} onChange={e =>  setPassword(e.target.value)} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Senha" autoCorrect={false}>
+            <TextInput secureTextEntry={true}  style={styles.input} value={password} onChangeText={setPassword} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Senha" autoCorrect={false}>
 
             </TextInput>
 
-            <TextInput secureTextEntry={true} style={styles.input} value={passwordConf} onChange={e =>  setPasswordConf(e.target.value)} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Confirmar Senha" autoCorrect={false}>
+            <TextInput secureTextEntry={true} style={styles.input} value={passwordConf} onChangeText={setPasswordConf} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Confirmar Senha" autoCorrect={false}>
 
             </TextInput>
        
@@ -91,4 +91,5 @@ export default function Register() {
         </TouchableOpacity>
 
     </View>
+    )
 }

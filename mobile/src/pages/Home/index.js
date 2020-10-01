@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
 import { View, FlatList, Image, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+//import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 

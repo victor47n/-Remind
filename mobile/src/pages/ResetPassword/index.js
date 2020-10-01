@@ -1,12 +1,39 @@
-import React from 'react';
+import React,  { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
+import api from '../../services/api';
 
 export default function ResetarSenha() {
+    const [password, setPassword] = useState('');
+    const [passwordConf, setPasswordConf] = useState('');
+    const [token, setToken] = useState('');
+
+
     const navigation = useNavigation();
+
+    async function handleResetPassword(e) {
+        if (password === passwordConf) {
+           const data = {
+            email,
+            token,
+            password,
+        };
+        console.log(data);
+        try {
+            const response = await api.post('/reset_password', data);
+            alert('Senha Alterada com Sucesso');
+        } catch (error) {
+            alert(error);
+        } 
+
+        } else {
+            alert('Senhas incorretas');
+        }
+        
+    }
 
     function navigateBack() {
         navigation.goBack();
@@ -30,13 +57,13 @@ export default function ResetarSenha() {
 
         <View style={styles.body}>
 
-            <TextInput style={styles.input} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Senha" autoCorrect={false}></TextInput>
+            <TextInput style={styles.input} autoCapitalize="none" value={password} onChange={e => setPassword(e.target.value)} placeholderTextColor="#E0E0E0" placeholder="Senha" autoCorrect={false}></TextInput>
 
-            <TextInput style={styles.input} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Confirmar Senha" autoCorrect={false}></TextInput>
+            <TextInput style={styles.input} autoCapitalize="none" value={passwordConf} onChange={e => setPasswordConf(e.target.value)} placeholderTextColor="#E0E0E0" placeholder="Confirmar Senha" autoCorrect={false}></TextInput>
 
-            <TextInput style={styles.input} autoCapitalize="none" placeholderTextColor="#E0E0E0" placeholder="Token" autoCorrect={false}></TextInput>
+            <TextInput style={styles.input} autoCapitalize="none" value={token} onChange={e => setToken(e.target.value)} placeholderTextColor="#E0E0E0" placeholder="Token" autoCorrect={false}></TextInput>
 
-            <TouchableOpacity onPress={() => { }} >
+            <TouchableOpacity onPress={handleResetPassword}>
                 <LinearGradient style={styles.botao}
                     colors={['#6C64FB', '#9B67FF']}
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
