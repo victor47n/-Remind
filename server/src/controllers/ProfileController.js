@@ -16,7 +16,7 @@ function generateToken(params = {}) {
 module.exports = {
     async update(req, res) {
         try {
-            const { name, email, password, birthdate } = req.body;
+            const { name, email, password } = req.body;
             const { userId } = req.params;
 
             if (email) {
@@ -31,7 +31,6 @@ module.exports = {
                 name,
                 email,
                 password,
-                birthdate
             }, { new: true });
 
             res.send({

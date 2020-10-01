@@ -1,10 +1,6 @@
-const express = require('express');
-const authMiddleware = require('../middlewares/auth')
+
 const Reminder = require('../models/reminder');
 
-const router = express.Router();
-
-router.use(authMiddleware);
 module.exports = {
   async index(req, res){
     try {

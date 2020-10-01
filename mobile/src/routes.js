@@ -15,6 +15,9 @@ import Reminder from './pages/Reminder';
 import Profile from './pages/Profile';
 import { DrawerContent } from './pages/Navigation/DrawerContent'
 
+// RN >= 0.52
+import {YellowBox} from 'react-native';
+YellowBox.ignoreWarnings(['Warning: ReactNative.createElement']);
 function DrawerScreen() {
     return (
         <Drawer.Navigator initialRouteName="Home" drawerContent={props => <DrawerContent {...props} />}>
