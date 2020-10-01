@@ -45,7 +45,7 @@ routes.get('/profile_list/:userId', celebrate({
 routes.put('/profile_edit/:userId', celebrate({
   [Segments.BODY]: Joi.object().keys({
     name: Joi.string().required(),
-    email: Joi.string().required(),
+    email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
   [Segments.PARAMS]: Joi.object().keys({

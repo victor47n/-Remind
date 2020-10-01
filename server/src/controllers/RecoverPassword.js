@@ -24,12 +24,15 @@ module.exports = {
         }
       });
 
+     
+      const link = `http://localhost:3333/reset_password/${email}/${token}`;
+
       mailer.sendMail({
         to: email,
         subject: 'Recuperação de Senha',
         from: 'remind.app0101@gmail.com',
         template: 'auth/forgot_password',
-        context: { token },
+        context: { link },
       }, (err) => {
 
         if (err) {

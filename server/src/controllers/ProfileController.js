@@ -7,11 +7,6 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-function generateToken(params = {}) {
-    return jwt.sign(params, authConfig.secret, {
-        expiresIn: 86400,
-    });
-}
 
 module.exports = {
     async update(req, res) {
@@ -32,10 +27,9 @@ module.exports = {
                 email,
                 password
             }, { new: true });
-
             
             await user.save()
-
+            
             return res.send(user);
         } catch (err) {
             return res.status(400).send({ error: 'Error updating reminder' });
