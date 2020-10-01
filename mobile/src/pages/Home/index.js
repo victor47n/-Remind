@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation, NavigationContainer } from '@react-navigation/native';
-import { View, FlatList, Image, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { View, FlatList, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -11,7 +11,6 @@ import styles from './styles';
 export default function Home() {
     const navigation = useNavigation();
     const [remindCheck, setRemindCheck] = useState([]);
-    const [state, setState] = useState(false);
 
     const data = [
         {
@@ -39,6 +38,10 @@ export default function Home() {
         navigation.navigate('Reminder');
     }
 
+    function navigateToCalendar() {
+        navigation.navigate('CalendarReminder');
+    }
+
     function handleStateReminder(id) {
         const alreadySelected = remindCheck.findIndex(item => item === id);
 
@@ -62,7 +65,9 @@ export default function Home() {
                     <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
                         <MaterialIcons name="menu" size={24} color="#FAFAFA" />
                     </TouchableOpacity>
-                    <MaterialCommunityIcons name="calendar-blank" size={24} color="#FAFAFA" />
+                    <TouchableOpacity onPress={navigateToCalendar}>
+                        <MaterialCommunityIcons name="calendar-blank" size={24} color="#FAFAFA" />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.headerDate}>
