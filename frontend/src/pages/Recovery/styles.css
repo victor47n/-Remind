@@ -1,0 +1,16 @@
+#app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 30px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+#container {
+    background: #FAFAFA;
+    width: 900px;
+    height: 500px;
+    margin: 290px 510px;
+}
