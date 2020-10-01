@@ -24,7 +24,7 @@ export function DrawerContent(props) {
                     <Text style={styles.headerName}>Lorem Ipsum</Text>
                     <Text style={styles.headerEmail}>Lorem Ipsum</Text>
 
-                    <TouchableOpacity style={styles.options} onPress={navigateToHome}>
+                    <TouchableOpacity style={styles.options} onPress={navigateToProfile} >
                         <MaterialIcons name="perm-identity" size={24} color="#FAFAFA" />
                         <Text style={styles.optionsText}>Perfil</Text>
                     </TouchableOpacity>

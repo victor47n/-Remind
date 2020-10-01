@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation, NavigationContainer, useRoute } from '@react-navigation/native';
-import { View, FlatList, Image, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { View, FlatList, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -59,9 +59,13 @@ export default function Home({ navigation  }) {
     function navigateToDetail() {
         navigation.navigate('Reminder');
     }
- 
-    function handleStateReminder(_id) {
-        const alreadySelected = remindCheck.findIndex(item => item === _id);
+
+    function navigateToCalendar() {
+        navigation.navigate('CalendarReminder');
+    }
+
+    function handleStateReminder(id) {
+        const alreadySelected = remindCheck.findIndex(item => item === id);
 
         if (alreadySelected >= 0) {
             const filteredItems = remindCheck.filter(item => item !== _id)
@@ -83,7 +87,9 @@ export default function Home({ navigation  }) {
                     <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
                         <MaterialIcons name="menu" size={24} color="#FAFAFA" />
                     </TouchableOpacity>
-                    <MaterialCommunityIcons name="calendar-blank" size={24} color="#FAFAFA" />
+                    <TouchableOpacity onPress={navigateToCalendar}>
+                        <MaterialCommunityIcons name="calendar-blank" size={24} color="#FAFAFA" />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.headerDate}>
@@ -149,20 +155,4 @@ export default function Home({ navigation  }) {
     );
 }
 
-    // const data = [
-    //     {
-    //         id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    //         title: 'First Item',
-    //         status: 'open'
-    //     },
-    //     {
-    //         id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    //         title: 'Second Item',
-    //         status: 'close'
-    //     },
-    //     {
-    //         id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    //         title: 'Third Item',
-    //         status: 'open'
-    //     },
-    // ];
+  
