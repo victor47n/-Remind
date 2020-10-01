@@ -6,10 +6,10 @@ module.exports = {
   // automock: false,
 
   // Stop running tests after `n` failures
-  // bail: 0,
+  bail: true,
 
   // The directory where Jest should store its cached dependency information
-  // cacheDirectory: "C:\\Users\\jairo\\AppData\\Local\\Temp\\jest",
+  // cacheDirectory: "C:\\Users\\jhefe\\AppData\\Local\\Temp\\jest",
 
   // Automatically clear mock calls and instances between every test
   clearMocks: true,

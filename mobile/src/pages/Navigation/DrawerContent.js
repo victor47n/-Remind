@@ -1,11 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
+import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Constants from 'expo-constants';
 
 export function DrawerContent(props) {
+    const navigation = useNavigation();
+    function navigateToHome() {
+        navigation.navigate('Home');
+    }
+    function navigateToLogin() {
+        navigation.goBack();
+    }
     return (
         <View style={{ flex: 1 }}>
             <LinearGradient style={styles.background}
@@ -16,11 +24,11 @@ export function DrawerContent(props) {
                     <Text style={styles.headerName}>Lorem Ipsum</Text>
                     <Text style={styles.headerEmail}>Lorem Ipsum</Text>
 
-                    <TouchableOpacity style={styles.options} >
+                    <TouchableOpacity style={styles.options} onPress={navigateToProfile} >
                         <MaterialIcons name="perm-identity" size={24} color="#FAFAFA" />
                         <Text style={styles.optionsText}>Perfil</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.options} >
+                    <TouchableOpacity style={styles.options} onPress={navigateToLogin}>
                         <MaterialIcons name="power-settings-new" size={24} color="#FAFAFA" />
                         <Text style={styles.optionsText}>Sair</Text>
                     </TouchableOpacity>
