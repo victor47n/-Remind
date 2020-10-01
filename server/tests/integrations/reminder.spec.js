@@ -1,12 +1,12 @@
 const request = require('supertest');
 const app = require('../../src/app');
-// const Reminder = require('../../src/models/reminder')
+const Reminder = require('../../src/models/reminder')
 
 describe('Reminders Tests', () => {
 
-  // afterAll(async () => {
-  //   await Reminder.remove({});
-  // })
+  afterAll(async () => {
+    await Reminder.remove({});
+  })
 
   /******TESTE PARA CRIAR LEMBRETE******/    
   it('POST/Criar novo lembrete.', async () => {
@@ -17,11 +17,12 @@ describe('Reminders Tests', () => {
         dateActivity: "2020-09-04T09:00:00",
         dayWeek: [2,3,4]
       });
+      expect(response.body).toHaveProperty('repeat'); 
       expect(response.body).toHaveProperty('_id'); 
       expect(response.statusCode).toEqual(200);
       // console.log(response.body);
   });
-
+  
   /******TESTE PARA EDITAR LEMBRETE******/    
   it('PUT/Editar lembrete.', async () => {
     const response = await request(app)
@@ -32,6 +33,8 @@ describe('Reminders Tests', () => {
         password: "12345678"
     });
     expect(response.body).toHaveProperty('token'); 
+    // expect(response).toHaveBeenCalledWith(...expected); 
+
     const token = response.body.token;
 
     const reminder = await request(app)
@@ -43,7 +46,7 @@ describe('Reminders Tests', () => {
     });
     expect(reminder.body).toHaveProperty('_id');
     expect(reminder.statusCode).toEqual(200);
-    console.table(reminder.body);
+    // console.table(reminder.body);
 
     const reminderId = reminder.body._id;
     
@@ -60,7 +63,7 @@ describe('Reminders Tests', () => {
       });
 
       expect(up.statusCode).toEqual(200);
-      console.table(up.body.reminder);
+      // console.table(up.body.reminder);
   });
 
   /******TESTE PARA DELETAR LEMBRETE******/    
@@ -73,6 +76,9 @@ describe('Reminders Tests', () => {
           password: "12345678"
       });
       expect(auth.body).toHaveProperty('token');
+      expect(auth.body.password).toEqual(undefined);
+
+      
 
       const token = auth.body.token;
 

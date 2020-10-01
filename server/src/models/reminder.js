@@ -38,4 +38,4 @@ const TestReminder = mongoose.model("Tests", RemindersSchema);
 
 const Reminder = process.env.NODE_ENV === 'test' ? TestReminder : Reminders;
 
-module.exports = TestReminder;
+module.exports = Reminder;
