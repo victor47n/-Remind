@@ -13,6 +13,7 @@ import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import Reminder from './pages/Reminder';
 import Profile from './pages/Profile';
+import OpenReminder from './pages/OpenReminder';
 import CalendarReminder from './pages/CalendarReminder';
 import { DrawerContent } from './pages/Navigation/DrawerContent'
 
@@ -24,6 +25,7 @@ function DrawerScreen() {
         <Drawer.Navigator initialRouteName="Home" drawerContent={props => <DrawerContent {...props} />}>
             <Drawer.Screen name="Notifications" component={Reminder} />
             <Drawer.Screen name="Home" component={Home} />
+            <Drawer.Screen name="OpenReminder" component={OpenReminder} />
             <Drawer.Screen name="Profile" component={Profile} />
             <Drawer.Screen name="CalendarReminder" component={CalendarReminder} />
         </Drawer.Navigator>
