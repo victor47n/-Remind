@@ -1,19 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Constants from 'expo-constants';
 
-export function DrawerContent({ navigation }) {
+export function DrawerContent({ route,navigation }) {
     
+    
+
     function navigateToLogin() {
         navigation.navigate('Login');
     }
     function navigateToProfile() {
         navigation.navigate('Profile');
     }
+    
     
     return (
         <View style={{ flex: 1 }}>

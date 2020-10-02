@@ -15,7 +15,7 @@ import moment from "moment";
 import styles from './styles';
 
 
-export default function Home({ navigation  }) {
+export default function Home({ navigation }) {
     const [remindCheck, setRemindCheck] = useState([]);
     const [reminders, setReminders] = useState([]);
     const [dateNow, setDateNow] = useState(moment());
@@ -25,24 +25,20 @@ export default function Home({ navigation  }) {
 
     async function loadReminders(){
         const  token = await AsyncStorage.getItem('token');
-        const  userId = await AsyncStorage.getItem('@Reminder:userId');
+        const getList = await api.get('reminders');
         
+        if(getList){
+            let arrayReminders = getList.data.reminders;
+            await setReminders(arrayReminders.filter(
+                (reminder) =>
+                moment(new Date(reminder.dateActivity), "YYYY-MM-DD").format("YYYY-MM-DD") 
+                ==
+                moment(new Date(dateUp), "YYYY-MM-DD").format("YYYY-MM-DD")
+            ));
+        }
         setDateNow(moment().format('ll'));
+        };
         
-       const getList = await api.get('reminders');
-       let array = getList.data.reminders._id;
-    //    console.log("Teste>:",array);
-
-       if(getList){
-           let arrayReminders = getList.data.reminders;
-           let filtroOne = await arrayReminders.filter((reminder) => moment(new Date(reminder.dateActivity), "YYYY-MM-DD").format("YYYY-MM-DD") == moment(new Date(dateUp), "YYYY-MM-DD").format("YYYY-MM-DD"));
-           await setReminders(filtroOne.filter(reminder => (reminder.user__id== userId)));
-        //    && reminder.user._id == userId
-        //    const list = arrayReminders.filter(reminder => (console.log(reminder.user._id)));
-        //    console.log("FILTRO 01:", filtroOne.filter(reminder => (reminder.user._id == userId)));
-       }
-    };
-    
     useEffect(() => {
         // const timer = setInterval(() => {
             loadReminders()
@@ -55,8 +51,9 @@ export default function Home({ navigation  }) {
         navigation.navigate('Reminder');
     }
 
-    function navigateToDetail() {
-        navigation.navigate('Reminder');
+    function navigateToDetail(reminder) {
+        console.log("REMINDER", reminder)
+        navigation.navigate('OpenReminder', { reminder });
     }
 
     function navigateToCalendar() {
@@ -117,13 +114,11 @@ export default function Home({ navigation  }) {
                 
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: reminder }) => {
-                    
-                        
                         return(
                             <View style={styles.remind}>
                             <TouchableHighlight
                                 style={remindCheck.includes(reminder._id) ? styles.reminderBoxSelected : styles.reminderBox}
-                                onPress={navigateToDetail}
+                                onPress={() => navigateToDetail(reminder)}
                                 underlayColor="#FE9DA4"
                             // activeOpacity={0.6}
                             >
@@ -144,12 +139,8 @@ export default function Home({ navigation  }) {
                             </TouchableHighlight>
                         </View>
                         )
-                    
-               
-              
-}}
-            >
-            </FlatList>
+                    }}
+            />
         </View>
     );
 }

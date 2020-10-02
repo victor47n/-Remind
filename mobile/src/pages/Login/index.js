@@ -19,7 +19,6 @@ export default function Login() {
             
             const userId = response.data.user._id;
             const token = response.data.token;
-            console.log("RESPONSE:",response.data);
             
             await AsyncStorage.setItem('@Reminder:token', token );
             await AsyncStorage.setItem('@Reminder:userId', userId );

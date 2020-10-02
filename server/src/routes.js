@@ -69,6 +69,8 @@ routes.get('/reminder/:reminderId', celebrate({
 routes.post('/reminder', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required().max(400),
+    dateActivity: Joi.date(),
+    dayWeek: Joi.array(),
   })
 }), ReminderController.store);
 

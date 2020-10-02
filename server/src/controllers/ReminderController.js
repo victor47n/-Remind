@@ -6,7 +6,7 @@ module.exports = {
     try {
       const status = false;
       const repeat = false;
-      const { description, dateActivity, dayWeek } = req.body;
+      const { description, dateActivity, dayWeek, userId} = req.body;
       
       
       dateActivity.setHours(dateActivity.getHours() - 3);
@@ -17,7 +17,7 @@ module.exports = {
         dateActivity,
         repeat,
         dayWeek,
-        user: req.userId
+        user: userId
       }
       );
 
