@@ -42,7 +42,7 @@ export default StyleSheet.create({
         shadowColor: '#000', // iOS
         shadowOpacity: 0.39, // iOS
         shadowRadius: 8.3,  // iOS
-        shadowOffset: {width: 0, height: 6}, // iOS
+        shadowOffset: { width: 0, height: 6 }, // iOS
         elevation: 13, // Android
     },
 
@@ -59,7 +59,7 @@ export default StyleSheet.create({
         shadowColor: '#000', // iOS
         shadowOpacity: 0.39, // iOS
         shadowRadius: 8.3,  // iOS
-        shadowOffset: {width: 0, height: 6}, // iOS
+        shadowOffset: { width: 0, height: 6 }, // iOS
         elevation: 13, // Android
         justifyContent: 'center',
         alignItems: 'center',
@@ -67,13 +67,13 @@ export default StyleSheet.create({
 
     inputDateSelected: {
         height: 48,
-        width: 160,
+        minWidth: '60%',
         borderRadius: 25,
         backgroundColor: '#F5F5F5',
         shadowColor: '#000', // iOS
         shadowOpacity: 0.39, // iOS
         shadowRadius: 8.3,  // iOS
-        shadowOffset: {width: 0, height: 6}, // iOS
+        shadowOffset: { width: 0, height: 6 }, // iOS
         elevation: 6, // Android
         justifyContent: 'center',
         alignItems: 'center',
@@ -98,22 +98,22 @@ export default StyleSheet.create({
     inputHours: {
         marginLeft: 20,
         height: 48,
-        width: 100,
+        minWidth: '40%',
         borderRadius: 25,
         backgroundColor: '#FAFAFA',
         shadowColor: '#000', // iOS
         shadowOpacity: 0.39, // iOS
         shadowRadius: 8.3,  // iOS
-        shadowOffset: {width: 0, height: 6}, // iOS
+        shadowOffset: { width: 0, height: 6 }, // iOS
         elevation: 13, // Android
         justifyContent: 'center',
         alignItems: 'center',
     },
 
     toggleSwitch: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingTop: 32
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 32
     },
 
     switchText: {
@@ -148,7 +148,7 @@ export default StyleSheet.create({
         shadowColor: '#000', // iOS
         shadowOpacity: 0.39, // iOS
         shadowRadius: 8.3,  // iOS
-        shadowOffset: {width: 0, height: 6}, // iOS
+        shadowOffset: { width: 0, height: 6 }, // iOS
         elevation: 4, // Android,
         justifyContent: 'center',
         alignItems: 'center'
@@ -163,7 +163,7 @@ export default StyleSheet.create({
         shadowColor: '#000', // iOS
         shadowOpacity: 0.39, // iOS
         shadowRadius: 8.3,  // iOS
-        shadowOffset: {width: 0, height: 6}, // iOS
+        shadowOffset: { width: 0, height: 6 }, // iOS
         elevation: 15, // Android,
         justifyContent: 'center',
         alignItems: 'center'
@@ -184,6 +184,34 @@ export default StyleSheet.create({
         color: '#FAFAFA',
         fontWeight: "500",
         letterSpacing: 0.4,
+        textTransform: 'uppercase',
+    },
+
+    buttonSave: {
+        alignSelf: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 36,
+        minWidth: '80%',
+        borderRadius: 25,
+        position: 'absolute',
+        bottom: 0,
+        marginBottom: 16,
+        backgroundColor: '#6C64FB',
+
+
+        borderStyle: 'solid',
+        borderColor: '#E0E0E0',
+        fontFamily: 'Roboto',
+        borderWidth: 1,
+    },
+
+    textButtonSave: {
+        fontSize: 14,
+        fontFamily: 'Roboto',
+        color: '#FAFAFA',
+        fontWeight: "500",
+        letterSpacing: 1.25,
         textTransform: 'uppercase',
     },
 });

@@ -7,9 +7,12 @@ const RecoverPassword = require('./controllers/RecoverPassword');
 const ReminderController = require('./controllers/ReminderController');
 const RemindersListController = require('./controllers/RemindersListController');
 const profileController = require('./controllers/ProfileController');
+const authMiddleware = require('./middlewares/auth');
 
-
+const route = express.Router();
 const routes = express.Router();
+
+route.use(authMiddleware);
 
 //Cadastro e Login
 routes.post('/auth', celebrate({
@@ -62,15 +65,15 @@ routes.put('/profile_edit/:userId', celebrate({
 }), profileController.update);
 
 //Cadastro de Lembretes
-routes.get('/reminders', RemindersListController.index);
+route.get('/reminders', RemindersListController.index);
 
-routes.get('/reminder/:reminderId', celebrate({
+route.get('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
     reminderId: Joi.string(),
   })
 }), RemindersListController.show);
 
-routes.post('/reminder', celebrate({
+route.post('/reminder', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required().max(400),
     dateActivity: Joi.date().required(),
@@ -78,7 +81,7 @@ routes.post('/reminder', celebrate({
   })
 }), ReminderController.store);
 
-routes.put('/reminder/:reminderId', celebrate({
+route.put('/reminder/:reminderId', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required(),
     status: Joi.boolean().required(),
@@ -91,7 +94,7 @@ routes.put('/reminder/:reminderId', celebrate({
   })
 }), ReminderController.update);
 
-routes.delete('/reminder/:reminderId', celebrate({
+route.delete('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
     reminderId: Joi.string().required(),
   })
