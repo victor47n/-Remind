@@ -12,17 +12,12 @@ html, body, #root {
 body {
     background: linear-gradient(107.56deg, #6C64FB 0%, #9B67FF 100%);
     -webkit-font-smoothing: antialiased;
+    display: flex;
+    justify-content: center;
+    
+    align-items: center;
 }
 
 body, input, button {
     font-family: Roboto, sans-serif;
-}
-#app {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 30px;
-    
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
 }
