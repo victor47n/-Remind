@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { View, FlatList, Text, TouchableOpacity, TouchableHighlight, EventSubscriptionVendor } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -13,7 +13,6 @@ import 'moment/locale/pt-br';
 import moment from "moment";
 
 import styles from './styles';
-
 
 export default function Home({ navigation }) {
     const [remindCheck, setRemindCheck] = useState([]);
@@ -145,8 +144,7 @@ export default function Home({ navigation }) {
                         </View>
                     )
                 }}
-            >
-            </FlatList>
+            />
         </View>
     );
 }
