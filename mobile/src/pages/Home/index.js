@@ -5,13 +5,11 @@ import { View, FlatList, Text, TouchableOpacity, TouchableHighlight, EventSubscr
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
-// import { AsyncStorage } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../../services/api'
 import '../Login'
 import 'moment/locale/pt-br';
-// import locale from '../../config/moment-with-locales'
 import moment from "moment";
 
 import styles from './styles';
