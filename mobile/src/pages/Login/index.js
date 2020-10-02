@@ -17,13 +17,16 @@ export default function Login() {
         try {
             const response = await api.post('auth', {email,password});
             
+            const userName = response.data.user.name;
             const userId = response.data.user._id;
             const token = response.data.token;
             console.log("RESPONSE:",response.data);
             
             await AsyncStorage.setItem('@Reminder:token', token );
             await AsyncStorage.setItem('@Reminder:userId', userId );
-            
+            await AsyncStorage.setItem('@Reminder:userEmail', email );
+            await AsyncStorage.setItem('@Reminder:userName', userName );
+
             navigateToHome(userId);
         } catch (error) {
             alert("Email ou senha incorreta, tente novamente.");

@@ -64,7 +64,7 @@ export default StyleSheet.create({
         fontSize: 16
     },
     buttonBox: {
-        marginTop: 147,
+        marginTop: 40,
         alignSelf: 'center',
     },
     botao: {
