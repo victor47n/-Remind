@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import styles from './styles';
-import { useRoute } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import api from '../../services/api';
-
+import styles from './styles';
 import moment from "moment";
+
 
 export default function OpenReminder({ route, navigation }) {
     // const [daysWeek, setDaysWeek] = useState([])

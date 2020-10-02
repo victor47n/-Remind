@@ -8,42 +8,39 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import api from '../../services/api'
 import 'moment/locale/pt-br';
-import'../Login'
-
 import moment from "moment";
 
 import styles from './styles';
 
-
 export default function Home({ navigation }) {
-    const [remindCheck, setRemindCheck] = useState([]);
-    const [reminders, setReminders] = useState([]);
-    const [dateNow, setDateNow] = useState(moment());
-    
-    moment.locale('pt-br');    
-    let dateUp = new Date();
+    const [remindCheck, setRemindCheck] = useState([]);
+    const [reminders, setReminders] = useState([]);
+    const [dateNow, setDateNow] = useState(new Date());
 
-    async function loadReminders(){
-        const  token = await AsyncStorage.getItem('token');
-        const getList = await api.get('reminders');
-        
-        if(getList){
+    moment.locale('pt-br')
+    let dateUp = new Date();
+
+    async function loadReminders() {
+        const token = await AsyncStorage.getItem('token');
+        const getList = await api.get(`reminders/${userId}`);
+
+        if (getList) {
             let arrayReminders = getList.data.reminders;
-            await setReminders(arrayReminders.filter(
-                (reminder) =>
-                moment(new Date(reminder.dateActivity), "YYYY-MM-DD").format("YYYY-MM-DD") 
-                ==
-                moment(new Date(dateUp), "YYYY-MM-DD").format("YYYY-MM-DD")
+
+            await setReminders(arrayReminders.filter(reminder =>
+                moment(new Date(reminder.dateActivity)).format("YYYY-MM-DD")
+                ===
+                moment(new Date(dateUp)).format("YYYY-MM-DD")
             ));
         }
         setDateNow(moment().format('ll'));
-        };
-        
+    };
+
     useEffect(() => {
         // const timer = setInterval(() => {
-            loadReminders()
-        // }, 10000);
-          
+        loadReminders()
+        // }, 1000);
+
         // return () => clearInterval(timer);
     }, []);
 
@@ -71,7 +68,7 @@ export default function Home({ navigation }) {
             setRemindCheck([...remindCheck, id]);
         }
     }
-
+    
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />
@@ -110,12 +107,15 @@ export default function Home({ navigation }) {
             <FlatList
                 style={styles.containerReminder}
                 data={reminders}
-                keyExtractor={ reminder => String(reminder._id) }
-                
+                keyExtractor={reminder => String(reminder._id)}
+                onEndReached={loadReminders}
+                onEndReachedThreshold={0.2}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: reminder }) => {
-                        return(
-                            <View style={styles.remind}>
+
+
+                    return (
+                        <View style={styles.remind}>
                             <TouchableHighlight
                                 style={remindCheck.includes(reminder._id) ? styles.reminderBoxSelected : styles.reminderBox}
                                 onPress={() => navigateToDetail(reminder)}
@@ -132,7 +132,7 @@ export default function Home({ navigation }) {
                                     <View>
                                         <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextDescriptionSelected : styles.reminderTextDescription}>{reminder.description}</Text>
                                         <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextTimeSelected : styles.reminderTextTime}>
-                                            {`${moment(new Date(reminder.dateActivity),"hmm").format("HH:mm")}`}
+                                            {`${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}`}
                                         </Text>
                                     </View>
                                 </View>
@@ -145,4 +145,3 @@ export default function Home({ navigation }) {
     );
 }
 
-  

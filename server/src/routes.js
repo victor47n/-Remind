@@ -57,37 +57,43 @@ routes.put('/profile_edit/:userId', celebrate({
   })
 }), profileController.update);
 
-//Cadastro de Lembretes
-route.get('/reminders', RemindersListController.index);
+/* Lembretes */
+routes.get('/reminders/:userId', celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+        userId: Joi.required(),
+      })  
+}), RemindersListController.index);
 
-route.get('/reminder/:reminderId', celebrate({
+routes.get('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
     reminderId: Joi.string(),
   })
 }), RemindersListController.show);
 
-route.post('/reminder', celebrate({
+routes.post('/reminder', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required().max(400),
     dateActivity: Joi.date(),
+    repeat: Joi.boolean(),
+    userId: Joi.required(),
     dayWeek: Joi.array(),
   })
 }), ReminderController.store);
 
-route.put('/reminder/:reminderId', celebrate({
+routes.put('/reminder/:reminderId', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required(),
     status: Joi.boolean().required(),
     repeat: Joi.boolean().required(),
-    dateActivity: Joi.date().required(),
-    dayWeek: Joi.array().required(),
+    dateActivity: Joi.date(),
+    dayWeek: Joi.array(),
   }),
   [Segments.PARAMS]: Joi.object().keys({
     reminderId: Joi.string(),
   })
 }), ReminderController.update);
 
-route.delete('/reminder/:reminderId', celebrate({
+routes.delete('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
     reminderId: Joi.string().required(),
   })
