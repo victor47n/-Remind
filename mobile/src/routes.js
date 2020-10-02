@@ -13,6 +13,7 @@ import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import Reminder from './pages/Reminder';
 import Profile from './pages/Profile';
+import OpenReminder from './pages/OpenReminder';
 import CalendarReminder from './pages/CalendarReminder';
 import { DrawerContent } from './pages/Navigation/DrawerContent'
 
@@ -25,6 +26,7 @@ function DrawerScreen() {
             <Drawer.Screen name="Login" component={Login} />
             <Drawer.Screen name="Notifications" component={Reminder} />
             <Drawer.Screen name="Home" component={Home} />
+            <Drawer.Screen name="OpenReminder" component={OpenReminder} />
             <Drawer.Screen name="Profile" component={Profile} />
             <Drawer.Screen name="CalendarReminder" component={CalendarReminder} />
         </Drawer.Navigator>
@@ -35,6 +37,8 @@ export default function Routes() {
     return (
         <NavigationContainer>
             <AppStack.Navigator screenOptions={{ headerShown: false }}>
+                <AppStack.Screen name="Login" component={Login} />
+                <AppStack.Screen name="OpenReminder" component={OpenReminder} />
                 {/* <AppStack.Screen name="Login" component={Login} />
                 <AppStack.Screen name="Register" component={Register} />
                 <AppStack.Screen name="RecoverPassword" component={RecoverPassword} />

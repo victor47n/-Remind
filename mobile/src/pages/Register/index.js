@@ -35,7 +35,8 @@ export default function Register() {
         navigation.goBack();
     };
 
-    return <View style={styles.background}>
+
+    return( <View style={styles.background}>
         <LinearGradient style={styles.header}
             colors={['#6C64FB', '#9B67FF']}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
@@ -96,5 +97,7 @@ export default function Register() {
                 <Text style={styles.registrarTexto} >REGISTRAR</Text>
             </LinearGradient>
         </TouchableOpacity>
-    </View >
+
+    </View>
+    )
 }
