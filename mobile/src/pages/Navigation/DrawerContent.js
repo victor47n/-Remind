@@ -8,11 +8,13 @@ import Constants from 'expo-constants';
 
 export function DrawerContent(props) {
     const navigation = useNavigation();
-    function navigateToHome() {
-        navigation.navigate('Home');
-    }
+
     function navigateToLogin() {
         navigation.goBack();
+    }
+
+    function navigateToProfile() {
+        navigation.navigate('Profile');
     }
     return (
         <View style={{ flex: 1 }}>

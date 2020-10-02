@@ -5,6 +5,7 @@ import { View, FlatList, Text, TextInput, TouchableOpacity, Switch, Button } fro
 import { LinearGradient } from 'expo-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { StatusBar } from 'expo-status-bar';
+import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 // import 'moment-timezone';
 import 'moment/locale/pt-br';
@@ -12,6 +13,7 @@ import 'moment/locale/pt-br';
 moment.locale('pt-BR');
 
 import styles from './styles';
+import api from '../../services/api';
 
 export default function Home() {
     const navigation = useNavigation();
@@ -25,45 +27,41 @@ export default function Home() {
     const [show, setShow] = useState(false);
 
     const [description, setDescription] = useState('');
-    // const [status, setStatus] = useState('');
-    // const [dateActivity, setDateActivity] = useState('');
     const [repeat, setRepeat] = useState(false);
-    // const [dayWeek, setDayWeek] = useState('');
-    // const [user, setUser] = useState('');
 
     const data = [
         {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+            id: '0',
             title: 'Domingo',
             first_letter: 'D'
         },
         {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+            id: '1',
             title: 'Segunda',
             first_letter: 'S'
         },
         {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
+            id: '2',
             title: 'Terça',
             first_letter: 'T'
         },
         {
-            id: '5d4f2v1g8-3da1-471f-bd96-54584d12f54s',
+            id: '3',
             title: 'Quarta',
             first_letter: 'Q'
         },
         {
-            id: '965g8t5r4-7da2-471f-bd96-65989d8a99ad',
+            id: '4',
             title: 'Quinta',
             first_letter: 'Q'
         },
         {
-            id: 'vf23e586-38w5-471f-bd96-54g87r61tr2l',
+            id: '5',
             title: 'Sexta',
             first_letter: 'S'
         },
         {
-            id: 'a5w87r4f-3da1-471f-bd96-22swrt6y9h4f',
+            id: '6',
             title: 'Sabado',
             first_letter: 'S'
         },
@@ -95,12 +93,11 @@ export default function Home() {
     };
 
     const formatDate = (date) => {
-        return `${date.getDate()}/${date.getMonth() +
-            1}/${date.getFullYear()}`;
+        return `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
     };
 
     const formatHours = (time) => {
-        return `${time.getHours()}:${time.getMinutes()}`;
+        return `${("0" + time.getHours()).slice(-2)}:${("0" + time.getMinutes()).slice(-2)}`;
     };
 
     function navigateToHome() {
@@ -120,15 +117,13 @@ export default function Home() {
     }
 
     async function handleRegisterReminder() {
-        const dateReminder = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes());
-
         if (repeat === true) {
             const data = {
                 description,
-                dateActivity: dateReminder,
+                dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
                 repeat, 
                 dayWeek,
-                // user,
+                userId: await AsyncStorage.getItem('@Reminder:userId'),
             }
 
             try {
@@ -139,8 +134,8 @@ export default function Home() {
         } else {
             const data = {
                 description,
-                dateActivity: dateReminder,
-                // user,
+                dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
+                userId: await AsyncStorage.getItem('@Reminder:userId'),
             }
 
             try {

@@ -5,11 +5,10 @@ module.exports = {
     async store(req, res) {
         try {
             const status = false;
-            const repeat = false;
-            const { description, dateActivity, dayWeek } = req.body;
+            const { description, dateActivity, repeat, dayWeek, userId } = req.body;
 
 
-            dateActivity.setHours(dateActivity.getHours() - 3);
+            // dateActivity.setHours(dateActivity.getHours() - 3);
 
             const reminder = await Reminder.create({
                 status,
@@ -17,7 +16,7 @@ module.exports = {
                 dateActivity,
                 repeat,
                 dayWeek,
-                user: req.userId
+                user: userId,
             }
             );
 

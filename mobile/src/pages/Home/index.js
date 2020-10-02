@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { View, FlatList, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, TouchableHighlight, EventSubscriptionVendor } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -9,7 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../../services/api'
-import'../Login'
+import '../Login'
 import 'moment/locale/pt-br';
 // import locale from '../../config/moment-with-locales'
 import moment from "moment";
@@ -17,38 +17,39 @@ import moment from "moment";
 import styles from './styles';
 
 
-export default function Home({ navigation  }) {
-    const [remindCheck, setRemindCheck] = useState([]);
-    const [reminders, setReminders] = useState([]);
-    const [dateNow, setDateNow] = useState(new Date());
-    
-    moment.locale('pt-br')    
-    let dateUp = new Date();
+export default function Home({ navigation }) {
+    const [remindCheck, setRemindCheck] = useState([]);
+    const [reminders, setReminders] = useState([]);
+    const [dateNow, setDateNow] = useState(new Date());
 
-    async function loadReminders(){
-        const  token = await AsyncStorage.getItem('token');
-        const  userId = await AsyncStorage.getItem('@Reminder:userId');
-        
+    moment.locale('pt-br')
+    let dateUp = new Date();
+
+    async function loadReminders() {
+        const token = await AsyncStorage.getItem('token');
+        const userId = await AsyncStorage.getItem('@Reminder:userId');
+
         setDateNow(moment().format('ll'));
-        
-       const getList = await api.get('reminders');
-       let array = getList.data.reminders._id;
-       console.log("Teste>:",array);
 
-       if(getList){
-           let arrayReminders = getList.data.reminders;
-           await setReminders(arrayReminders.filter(reminder => moment(new Date(reminder.dateActivity),"YYYY-MM-DD").format("YYYY-MM-DD")  ==  moment(new Date(dateUp),"YYYY-MM-DD").format("YYYY-MM-DD"))
-           );
-        //    && reminder.user._id == userId
-        //    const list = arrayReminders.map(reminder => (console.log(reminder.user._id)));
-       }
+        console.log("ID do usuário: ", userId)
+        const getList = await api.get(`reminders/${userId}`);
+
+        if (getList) {
+            let arrayReminders = getList.data.reminders;
+
+            await setReminders(arrayReminders.filter(reminder =>
+                moment(new Date(reminder.dateActivity)).format("YYYY-MM-DD")
+                ===
+                moment(new Date(dateUp)).format("YYYY-MM-DD")
+            ));
+        }
     };
-    
+
     useEffect(() => {
         // const timer = setInterval(() => {
-            loadReminders()    
-        // }, 10000);
-          
+        loadReminders()
+        // }, 1000);
+
         // return () => clearInterval(timer);
     }, []);
 
@@ -114,14 +115,15 @@ export default function Home({ navigation  }) {
             <FlatList
                 style={styles.containerReminder}
                 data={reminders}
-                keyExtractor={ reminder => String(reminder._id) }
-                
+                keyExtractor={reminder => String(reminder._id)}
+                onEndReached={loadReminders}
+                onEndReachedThreshold={0.2}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: reminder }) => {
-                    
-                        
-                        return(
-                            <View style={styles.remind}>
+
+
+                    return (
+                        <View style={styles.remind}>
                             <TouchableHighlight
                                 style={remindCheck.includes(reminder._id) ? styles.reminderBoxSelected : styles.reminderBox}
                                 onPress={navigateToDetail}
@@ -138,21 +140,17 @@ export default function Home({ navigation  }) {
                                     <View>
                                         <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextDescriptionSelected : styles.reminderTextDescription}>{reminder.description}</Text>
                                         <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextTimeSelected : styles.reminderTextTime}>
-                                            {`${moment(new Date(reminder.dateActivity),"hmm").utc().format("HH:mm")}`}
+                                            {`${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}`}
                                         </Text>
                                     </View>
                                 </View>
                             </TouchableHighlight>
                         </View>
-                        )
-                    
-               
-              
-}}
+                    )
+                }}
             >
             </FlatList>
         </View>
     );
 }
 
-  

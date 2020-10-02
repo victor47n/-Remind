@@ -25,7 +25,7 @@ module.exports = {
       });
 
      
-      const link = `http://localhost:3333/reset_password/${email}/${token}`;
+      const link = `http://localhost:3000/reset_password/${email}/${token}`;
 
       mailer.sendMail({
         to: email,
