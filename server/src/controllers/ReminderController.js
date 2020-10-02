@@ -1,10 +1,6 @@
-const express = require('express');
-const authMiddleware = require('../middlewares/auth')
 const Reminder = require('../models/reminder');
 
-const router = express.Router();
 
-router.use(authMiddleware);
 module.exports = {
     async store(req, res) {
         try {
@@ -27,7 +23,7 @@ module.exports = {
 
             await reminder.save();
 
-            return res.json(reminder);
+            return res.send({ reminder });
         } catch (err) {
             res.status(400).send({ error: 'Error creating new reminder' });
         }
@@ -37,8 +33,7 @@ module.exports = {
         try {
             const { description, status, repeat, dateActivity, dayWeek } = req.body;
 
-            // const number =  Array();
-            // if(dateActivity === )
+            dateActivity.setHours(dateActivity.getHours() - 3);
 
             const reminder = await Reminder.findByIdAndUpdate(req.params.reminderId, {
                 description,
@@ -48,11 +43,7 @@ module.exports = {
                 dayWeek,
             }, { new: true });
 
-
-            // console.log({reminder});
             await reminder.save();
-
-
             return res.send({ reminder });
         } catch (err) {
             return res.status(400).send({ error: 'Error updating reminder' });
@@ -62,7 +53,6 @@ module.exports = {
     async destroy(req, res) {
         try {
             await Reminder.findByIdAndRemove(req.params.reminderId);
-
             return res.send();
         } catch (err) {
             return res.status(400).send({ error: 'Erro deleting reminder' });

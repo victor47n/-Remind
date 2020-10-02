@@ -7,13 +7,13 @@ const RecoverPassword = require('./controllers/RecoverPassword');
 const ReminderController = require('./controllers/ReminderController');
 const RemindersListController = require('./controllers/RemindersListController');
 const profileController = require('./controllers/ProfileController');
-const authMiddleware = require('./middlewares/auth');
+const authMiddleware = require('./middlewares/auth')
 
 const route = express.Router();
 const routes = express.Router();
 
-route.use(authMiddleware);
 
+route.use(authMiddleware);
 //Cadastro e Login
 routes.post('/auth', celebrate({
   [Segments.BODY]: Joi.object().keys({
@@ -37,13 +37,7 @@ routes.post('/forgot_password', celebrate({
   })
 }), RecoverPassword.create);
 
-routes.post('/reset_password', celebrate({
-  [Segments.BODY]: Joi.object().keys({
-    email: Joi.string().required().email(),
-    token: Joi.string().required(),
-    password: Joi.string().required(),
-  })
-}), RecoverPassword.store);
+routes.post('/reset_password', RecoverPassword.store);
 
 //Profile
 routes.get('/profile_list/:userId', celebrate({
@@ -55,9 +49,8 @@ routes.get('/profile_list/:userId', celebrate({
 routes.put('/profile_edit/:userId', celebrate({
   [Segments.BODY]: Joi.object().keys({
     name: Joi.string().required(),
-    email: Joi.string().required(),
+    email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-    birthdate: Joi.date().required(),
   }),
   [Segments.PARAMS]: Joi.object().keys({
     userId: Joi.string(),

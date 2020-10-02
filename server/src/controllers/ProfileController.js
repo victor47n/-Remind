@@ -7,16 +7,11 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-function generateToken(params = {}) {
-    return jwt.sign(params, authConfig.secret, {
-        expiresIn: 86400,
-    });
-}
 
 module.exports = {
     async update(req, res) {
         try {
-            const { name, email, password, birthdate } = req.body;
+            const { name, email, password } = req.body;
             const { userId } = req.params;
 
             if (email) {
@@ -31,16 +26,10 @@ module.exports = {
                 name,
                 email,
                 password,
-                birthdate
             }, { new: true });
-
-            res.send({
-                user,
-                token: generateToken({ id: user.id }),
-            });
-
+            
             await user.save()
-
+            
             return res.send(user);
         } catch (err) {
             return res.status(400).send({ error: 'Error updating reminder' });

@@ -8,7 +8,7 @@ const api = axios.create({
 api.interceptors.request.use(async (config) => {
     try {
       const token = await AsyncStorage.getItem('@Reminder:token');
-  
+
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -18,4 +18,4 @@ api.interceptors.request.use(async (config) => {
       alert('Token is missing');
     }
   });
-export default api
+export default api;
