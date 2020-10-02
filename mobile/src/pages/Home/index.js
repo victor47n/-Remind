@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { View, FlatList, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
-// import { AsyncStorage } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-
 import api from '../../services/api'
-import'../Login'
 import 'moment/locale/pt-br';
-// import locale from '../../config/moment-with-locales'
+import'../Login'
+
 import moment from "moment";
 
 import styles from './styles';
@@ -20,7 +18,7 @@ import styles from './styles';
 export default function Home({ navigation  }) {
     const [remindCheck, setRemindCheck] = useState([]);
     const [reminders, setReminders] = useState([]);
-    const [dateNow, setDateNow] = useState(new Date());
+    const [dateNow, setDateNow] = useState(moment());
     
     moment.locale('pt-br')    
     let dateUp = new Date();
@@ -33,20 +31,22 @@ export default function Home({ navigation  }) {
         
        const getList = await api.get('reminders');
        let array = getList.data.reminders._id;
-       console.log("Teste>:",array);
+    //    console.log("Teste>:",array);
 
        if(getList){
            let arrayReminders = getList.data.reminders;
-           await setReminders(arrayReminders.filter(reminder => moment(new Date(reminder.dateActivity),"YYYY-MM-DD").format("YYYY-MM-DD")  ==  moment(new Date(dateUp),"YYYY-MM-DD").format("YYYY-MM-DD"))
-           );
+           let filtroOne = await arrayReminders.filter(reminder => moment(new Date(reminder.dateActivity),"YYYY-MM-DD").format("YYYY-MM-DD")  ==  moment(new Date(dateUp),"YYYY-MM-DD").format("YYYY-MM-DD"));
+           await setReminders(await arrayReminders.filter(reminder => moment(new Date(reminder.dateActivity),"YYYY-MM-DD").format("YYYY-MM-DD")  ==  moment(new Date(dateUp),"YYYY-MM-DD").format("YYYY-MM-DD")));
+        
         //    && reminder.user._id == userId
-        //    const list = arrayReminders.map(reminder => (console.log(reminder.user._id)));
+        //    const list = arrayReminders.filter(reminder => (console.log(reminder.user._id)));
+        //    console.log("FILTRO 01:", filtroOne.filter(reminder => (reminder.user._id == userId)));
        }
     };
     
     useEffect(() => {
         // const timer = setInterval(() => {
-            loadReminders()    
+            loadReminders()
         // }, 10000);
           
         // return () => clearInterval(timer);
@@ -68,11 +68,11 @@ export default function Home({ navigation  }) {
         const alreadySelected = remindCheck.findIndex(item => item === id);
 
         if (alreadySelected >= 0) {
-            const filteredItems = remindCheck.filter(item => item !== _id)
+            const filteredItems = remindCheck.filter(item => item !== id)
 
             setRemindCheck(filteredItems);
         } else {
-            setRemindCheck([...remindCheck, _id]);
+            setRemindCheck([...remindCheck, id]);
         }
     }
 

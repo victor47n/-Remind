@@ -6,9 +6,11 @@ import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function Profile() {
+export default function Profile({ navigation }) {
 
-
+    function navigateToBack() {
+        navigation.navigate('Home');
+    }
     return (
         <View style={styles.container}>
 
@@ -16,7 +18,7 @@ export default function Profile() {
                 colors={['#6C64FB', '#9B67FF']}
                 start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
             >
-                <TouchableOpacity style={styles.buttonBack}>
+                <TouchableOpacity style={styles.buttonBack} onPress={navigateToBack}>
                     <MaterialIcons name="arrow-back" size={24} color="#FFFFFF" />
                 </TouchableOpacity>
                 

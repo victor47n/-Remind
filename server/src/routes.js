@@ -9,8 +9,8 @@ const RemindersListController = require('./controllers/RemindersListController')
 const profileController = require('./controllers/ProfileController');
 const authMiddleware = require('./middlewares/auth')
 
-const route = express.Router();
 const routes = express.Router();
+const route = express.Router();
 
 
 route.use(authMiddleware);
@@ -60,21 +60,19 @@ routes.put('/profile_edit/:userId', celebrate({
 //Cadastro de Lembretes
 routes.get('/reminders', RemindersListController.index);
 
-route.get('/reminder/:reminderId', celebrate({
+routes.get('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
     reminderId: Joi.string(),
   })
 }), RemindersListController.show);
 
-route.post('/reminder', celebrate({
+routes.post('/reminder', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required().max(400),
-    dateActivity: Joi.date().required(),
-    dayWeek: Joi.array().required(),
   })
 }), ReminderController.store);
 
-route.put('/reminder/:reminderId', celebrate({
+routes.put('/reminder/:reminderId', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required(),
     status: Joi.boolean().required(),
@@ -87,7 +85,7 @@ route.put('/reminder/:reminderId', celebrate({
   })
 }), ReminderController.update);
 
-route.delete('/reminder/:reminderId', celebrate({
+routes.delete('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
     reminderId: Joi.string().required(),
   })

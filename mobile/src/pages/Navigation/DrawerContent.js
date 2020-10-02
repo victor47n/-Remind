@@ -6,14 +6,15 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Constants from 'expo-constants';
 
-export function DrawerContent(props) {
-    const navigation = useNavigation();
-    function navigateToHome() {
-        navigation.navigate('Home');
-    }
+export function DrawerContent({ navigation }) {
+    
     function navigateToLogin() {
-        navigation.goBack();
+        navigation.navigate('Login');
     }
+    function navigateToProfile() {
+        navigation.navigate('Profile');
+    }
+    
     return (
         <View style={{ flex: 1 }}>
             <LinearGradient style={styles.background}
