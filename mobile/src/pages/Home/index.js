@@ -20,7 +20,7 @@ export default function Home({ navigation  }) {
     const [reminders, setReminders] = useState([]);
     const [dateNow, setDateNow] = useState(moment());
     
-    moment.locale('pt-br')    
+    moment.locale('pt-br');    
     let dateUp = new Date();
 
     async function loadReminders(){
@@ -35,9 +35,8 @@ export default function Home({ navigation  }) {
 
        if(getList){
            let arrayReminders = getList.data.reminders;
-           let filtroOne = await arrayReminders.filter(reminder => moment(new Date(reminder.dateActivity),"YYYY-MM-DD").format("YYYY-MM-DD")  ==  moment(new Date(dateUp),"YYYY-MM-DD").format("YYYY-MM-DD"));
-           await setReminders(await arrayReminders.filter(reminder => moment(new Date(reminder.dateActivity),"YYYY-MM-DD").format("YYYY-MM-DD")  ==  moment(new Date(dateUp),"YYYY-MM-DD").format("YYYY-MM-DD")));
-        
+           let filtroOne = await arrayReminders.filter((reminder) => moment(new Date(reminder.dateActivity), "YYYY-MM-DD").format("YYYY-MM-DD") == moment(new Date(dateUp), "YYYY-MM-DD").format("YYYY-MM-DD"));
+           await setReminders(filtroOne.filter(reminder => (reminder.user__id== userId)));
         //    && reminder.user._id == userId
         //    const list = arrayReminders.filter(reminder => (console.log(reminder.user._id)));
         //    console.log("FILTRO 01:", filtroOne.filter(reminder => (reminder.user._id == userId)));
@@ -138,7 +137,7 @@ export default function Home({ navigation  }) {
                                     <View>
                                         <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextDescriptionSelected : styles.reminderTextDescription}>{reminder.description}</Text>
                                         <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextTimeSelected : styles.reminderTextTime}>
-                                            {`${moment(new Date(reminder.dateActivity),"hmm").utc().format("HH:mm")}`}
+                                            {`${moment(new Date(reminder.dateActivity),"hmm").format("HH:mm")}`}
                                         </Text>
                                     </View>
                                 </View>

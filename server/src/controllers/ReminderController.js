@@ -33,7 +33,7 @@ module.exports = {
     try {
       const { description, status, repeat, dateActivity, dayWeek } = req.body;
       
-      dateActivity.setHours(dateActivity.getHours() - 3);
+      dateActivity.setHours(dateActivity.getHours());
       // const number =  Array();
       // if(dateActivity === )
 
