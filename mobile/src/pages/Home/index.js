@@ -53,8 +53,8 @@ export default function Home({ navigation }) {
         navigation.navigate('Reminder');
     }
 
-    function navigateToDetail() {
-        navigation.navigate('Reminder');
+    function navigateToDetail(reminder) {
+        navigation.navigate('OpenReminder', { reminder });
     }
 
     function navigateToCalendar() {
@@ -122,7 +122,7 @@ export default function Home({ navigation }) {
                         <View style={styles.remind}>
                             <TouchableHighlight
                                 style={remindCheck.includes(reminder._id) ? styles.reminderBoxSelected : styles.reminderBox}
-                                onPress={navigateToDetail}
+                                onPress={() => navigateToDetail(reminder)}
                                 underlayColor="#FE9DA4"
                             // activeOpacity={0.6}
                             >

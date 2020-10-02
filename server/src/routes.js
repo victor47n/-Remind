@@ -84,7 +84,7 @@ routes.put('/reminder/:reminderId', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required(),
     status: Joi.boolean().required(),
-    repeat: Joi.boolean().required(),
+    repeat: Joi.boolean(),
     dateActivity: Joi.date(),
     dayWeek: Joi.array(),
   }),

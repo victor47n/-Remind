@@ -6,40 +6,77 @@ import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import api from '../../services/api';
+import 'moment/locale/pt-br';
+import moment from "moment";
 
+export default function OpenReminder({ route, navigation }) {
+    const reminder = route.params.reminder;
 
+    moment.locale('pt-br')
 
-export default function OpenReminder() {
+    function goToBack() {
+        navigation.goBack();
+    }
+
+    function navigateToReminder() {
+        navigation.navigate('Reminder');
+    }
+
+    function finishReminder() {
+        try {
+            const response = api.put(`reminder/${reminder._id}`, {
+                body: JSON.stringify({
+                    description: reminder.description,
+                    status: true,
+                })
+            });
+        } catch (error) {
+            alert(error);
+        }
+    }
+
+    function excluir() {
+        const data = {
+            description: reminder.description,
+            status: true,
+        }
+
+        try {
+            const response = api.delete(`reminder/${reminder._id}`, data);
+            console.log(response);
+        } catch (error) {
+            alert(error);
+        }
+    }
+
     return (
         <View style={styles.background}>
-
-       
             <LinearGradient colors={["#6C64FB", "#9B67FF"]} style={styles.statusBar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />
-            <View style={styles.iconsContainer}>      
-                <TouchableOpacity style={styles.buttonClose} >
-                    <MaterialIcons name="close" size={24} color="#ffffff" />
-                </TouchableOpacity>
+                <View style={styles.iconsContainer}>
+                    <TouchableOpacity style={styles.buttonClose} onPress={goToBack} >
+                        <MaterialIcons name="close" size={24} color="#ffffff" />
+                    </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonEdit}>
-                    <MaterialIcons name="mode-edit" size={24} color="#ffffff" />
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonEdit}>
+                        <MaterialIcons name="mode-edit" size={24} color="#ffffff" />
+                    </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonDots}>
-                <MaterialCommunityIcons name="dots-vertical" size={24} color="#ffffff" />
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity style={styles.buttonDots} onPress={() => excluir}>
+                        <MaterialIcons name="delete" size={24} color="#ffffff" />
+                    </TouchableOpacity>
+                </View>
 
-            <View style={styles.container}> 
+                <View style={styles.container}>
 
-                <Text style={styles.reminderName}>Nome Lembrete</Text>
-                <Text style={styles.reminderHour}>Hoje • 19:00</Text>
-                <Text style={styles.reminderRepeat}>Repete Repetição</Text>
-            </View>
-          
+                    <Text style={styles.reminderName}>{reminder.description}</Text>
+                    <Text style={styles.reminderHour}>{`${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}`}</Text>
+                    {/* <Text style={styles.reminderRepeat}>Repete Repetição</Text> */}
+                </View>
+
             </LinearGradient >
 
-            <TouchableOpacity >
+            <TouchableOpacity onPress={finishReminder}>
                 <LinearGradient colors={["#FE9DA4", "#FC81A7"]} style={styles.buttonBar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                     <Text style={styles.buttonText} >Marcar como concluído</Text>
                 </LinearGradient>
