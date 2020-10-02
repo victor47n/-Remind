@@ -28,8 +28,7 @@ export default function Home({ navigation }) {
         const userId = await AsyncStorage.getItem('@Reminder:userId');
 
         setDateNow(moment().format('ll'));
-
-        console.log("ID do usuário: ", userId)
+        
         const getList = await api.get(`reminders/${userId}`);
 
         if (getList) {
