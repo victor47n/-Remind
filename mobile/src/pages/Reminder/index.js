@@ -5,19 +5,31 @@ import { View, FlatList, Text, TextInput, TouchableOpacity, Switch, Button } fro
 import { LinearGradient } from 'expo-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { StatusBar } from 'expo-status-bar';
+import moment from 'moment';
+// import 'moment-timezone';
+import 'moment/locale/pt-br';
+// moment.tz.setDefault('UTC');
+moment.locale('pt-BR');
 
 import styles from './styles';
 
 export default function Home() {
     const navigation = useNavigation();
-    const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    // const [isEnabled, setIsEnabled] = useState(false);
+    const toggleSwitch = () => setRepeat(previousState => !previousState);
     const [dayWeek, setDayWeek] = useState([]);
 
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+
+    const [description, setDescription] = useState('');
+    // const [status, setStatus] = useState('');
+    // const [dateActivity, setDateActivity] = useState('');
+    const [repeat, setRepeat] = useState(false);
+    // const [dayWeek, setDayWeek] = useState('');
+    // const [user, setUser] = useState('');
 
     const data = [
         {
@@ -107,6 +119,38 @@ export default function Home() {
         }
     }
 
+    async function handleRegisterReminder() {
+        const dateReminder = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes());
+
+        if (repeat === true) {
+            const data = {
+                description,
+                dateActivity: dateReminder,
+                repeat, 
+                dayWeek,
+                // user,
+            }
+
+            try {
+                const response = await api.post('reminder', data);
+            } catch (error) {
+                alert(error);
+            }
+        } else {
+            const data = {
+                description,
+                dateActivity: dateReminder,
+                // user,
+            }
+
+            try {
+                const response = await api.post('reminder', data);
+            } catch (error) {
+                alert(error);
+            }
+        }
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />
@@ -123,6 +167,8 @@ export default function Home() {
             <View style={styles.content}>
                 <TextInput
                     style={styles.input}
+                    value={description}
+                    onChangeText={setDescription}
                     placeholder="Lembre-me de..."
                     placeholderTextColor="#E0E0E0"
                     // keyboardType="text"
@@ -135,17 +181,19 @@ export default function Home() {
                 <View style={styles.toggleSwitch}>
                     <Switch
                         trackColor={{ false: "#767577", true: "#FC81A780" }}
-                        thumbColor={isEnabled ? "#FC81A7" : "#f4f3f4"}
+                        thumbColor={repeat ? "#FC81A7" : "#f4f3f4"}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={toggleSwitch}
-                        value={isEnabled}
+                        value={repeat}
                     />
                     <Text style={styles.switchText}>Repetir</Text>
                 </View>
 
                 <View style={styles.datePick}>
-                    <TouchableOpacity style={isEnabled ? styles.inputDateSelected : styles.inputDate} onPress={isEnabled ? null : showDatepicker}>
-                        <Text style={isEnabled ? styles.inputDateTextSelected : styles.inputDateText}>{formatDate(date)}</Text>
+                    <TouchableOpacity style={repeat ? styles.inputDateSelected : styles.inputDate} onPress={repeat ? null : showDatepicker}>
+                        <Text style={repeat ? styles.inputDateTextSelected : styles.inputDateText}>
+                            {formatDate(date)}
+                        </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.inputHours} onPress={showTimepicker}>
@@ -158,6 +206,7 @@ export default function Home() {
                         <DateTimePicker
                             testID="dateTimePicker"
                             value={date}
+                            minimumDate={new Date()}
                             mode={mode}
                             is24Hour={true}
                             display="default"
@@ -166,34 +215,7 @@ export default function Home() {
                     )}
                 </View>
             </View>
-            {isEnabled && (
-                // <View style={styles.repeatBox}>
-                //     <Text style={styles.repeatTitle}>Repetir às/aos</Text>
-
-                //     <View style={styles.week}>
-                //         <TouchableOpacity style={dayWeek.includes(1) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(1)}>
-                //             <Text>D</Text>
-                //         </TouchableOpacity>
-                //         <TouchableOpacity style={dayWeek.includes(2) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(2)}>
-                //             <Text>S</Text>
-                //         </TouchableOpacity>
-                //         <TouchableOpacity style={dayWeek.includes(3) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(3)}>
-                //             <Text>T</Text>
-                //         </TouchableOpacity>
-                //         <TouchableOpacity style={dayWeek.includes(4) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(4)}>
-                //             <Text>Q</Text>
-                //         </TouchableOpacity>
-                //         <TouchableOpacity style={dayWeek.includes(5) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(5)}>
-                //             <Text>Q</Text>
-                //         </TouchableOpacity>
-                //         <TouchableOpacity style={dayWeek.includes(6) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(6)}>
-                //             <Text>S</Text>
-                //         </TouchableOpacity>
-                //         <TouchableOpacity style={dayWeek.includes(7) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(7)}>
-                //             <Text>S</Text>
-                //         </TouchableOpacity>
-                //     </View>
-                // </View>
+            {repeat && (
                 <View style={styles.repeatBox}>
                     <Text style={styles.repeatTitle}>Repetir às/aos</Text>
                     <FlatList
@@ -212,6 +234,10 @@ export default function Home() {
                     </FlatList>
                 </View>
             )}
+
+            <TouchableOpacity style={styles.buttonSave} onPress={handleRegisterReminder}>
+                <Text style={styles.textButtonSave}>Salvar</Text>
+            </TouchableOpacity>
         </View>
     );
 }

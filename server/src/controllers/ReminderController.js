@@ -37,34 +37,59 @@ module.exports = {
       // const number =  Array();
       // if(dateActivity === )
 
-      const reminder = await Reminder.findByIdAndUpdate(req.params.reminderId,{ 
-        description,
-        status, 
-        repeat, 
-        dateActivity,
-        dayWeek,
-      },{ new: true });
+            const reminder = await Reminder.create({
+                status,
+                description,
+                dateActivity,
+                repeat,
+                dayWeek,
+                user: req.userId
+            }
+            );
 
-      
-      // console.log({reminder});
-      await reminder.save();
+            await reminder.save();
+
+            return res.json(reminder);
+        } catch (err) {
+            res.status(400).send({ error: 'Error creating new reminder' });
+        }
+    },
+
+    async update(req, res) {
+        try {
+            const { description, status, repeat, dateActivity, dayWeek } = req.body;
+
+            // const number =  Array();
+            // if(dateActivity === )
+
+            const reminder = await Reminder.findByIdAndUpdate(req.params.reminderId, {
+                description,
+                status,
+                repeat,
+                dateActivity,
+                dayWeek,
+            }, { new: true });
 
 
-      return res.send({ reminder });
-    } catch (err) {
-      return res.status(400).send({ error: 'Error updating reminder' });
+            // console.log({reminder});
+            await reminder.save();
+
+
+            return res.send({ reminder });
+        } catch (err) {
+            return res.status(400).send({ error: 'Error updating reminder' });
+        }
+    },
+
+    async destroy(req, res) {
+        try {
+            await Reminder.findByIdAndRemove(req.params.reminderId);
+
+            return res.send();
+        } catch (err) {
+            return res.status(400).send({ error: 'Erro deleting reminder' });
+        }
     }
-  },
-
-  async destroy(req, res){
-    try {
-      await Reminder.findByIdAndRemove(req.params.reminderId);
-      
-      return res.send();
-    } catch (err) {
-      return res.status(400).send({ error: 'Erro deleting reminder' });
-    }
-  }
 };
 
 
