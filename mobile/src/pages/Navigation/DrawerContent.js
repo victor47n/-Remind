@@ -14,6 +14,9 @@ export function DrawerContent(props) {
     function navigateToLogin() {
         navigation.goBack();
     }
+    function navigateToProfile() {
+        navigation.navigate('Profile');
+    }
     return (
         <View style={{ flex: 1 }}>
             <LinearGradient style={styles.background}
