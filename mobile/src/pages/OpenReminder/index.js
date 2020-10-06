@@ -23,26 +23,25 @@ export default function OpenReminder({ route, navigation }) {
     }
 
     function finishReminder() {
+        const data = {
+            reminderId: reminder._id,
+            description: reminder.description,
+            status: true,
+            repeat: reminder.repeat,
+            dateActivity: reminder.dateActivity,
+            dayWeek: reminder.dayWeek,
+        }
+
         try {
-            const response = api.put(`reminder/${reminder._id}`, {
-                body: JSON.stringify({
-                    description: reminder.description,
-                    status: true,
-                })
-            });
+            const response = api.put('reminder', data);
         } catch (error) {
             alert(error);
         }
     }
 
     function excluir() {
-        const data = {
-            description: reminder.description,
-            status: true,
-        }
-
         try {
-            const response = api.delete(`reminder/${reminder._id}`, data);
+            const response = api.delete(`reminder/${reminder._id}`);
             console.log(response);
         } catch (error) {
             alert(error);
@@ -62,7 +61,7 @@ export default function OpenReminder({ route, navigation }) {
                         <MaterialIcons name="mode-edit" size={24} color="#ffffff" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.buttonDots} onPress={() => excluir}>
+                    <TouchableOpacity style={styles.buttonDots} onPress={excluir}>
                         <MaterialIcons name="delete" size={24} color="#ffffff" />
                     </TouchableOpacity>
                 </View>

@@ -10,12 +10,13 @@ import moment from 'moment';
 // import 'moment-timezone';
 import 'moment/locale/pt-br';
 // moment.tz.setDefault('UTC');
-moment.locale('pt-BR');
+
 
 import styles from './styles';
 import api from '../../services/api';
 
 export default function Home() {
+    moment.locale('pt-BR');
     const navigation = useNavigation();
     // const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setRepeat(previousState => !previousState);

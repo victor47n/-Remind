@@ -30,11 +30,11 @@ module.exports = {
 
     async update(req, res) {
         try {
-            const { description, status, repeat, dateActivity, dayWeek } = req.body;
+            const { reminderId, description, status, repeat, dateActivity, dayWeek } = req.body;
 
-            dateActivity.setHours(dateActivity.getHours() - 3);
+            // dateActivity.setHours(dateActivity.getHours() - 3);
 
-            const reminder = await Reminder.findByIdAndUpdate(req.params.reminderId, {
+            const reminder = await Reminder.findByIdAndUpdate(reminderId, {
                 description,
                 status,
                 repeat,

@@ -65,11 +65,11 @@ export default function Home({ navigation }) {
         const alreadySelected = remindCheck.findIndex(item => item === id);
 
         if (alreadySelected >= 0) {
-            const filteredItems = remindCheck.filter(item => item !== _id)
+            const filteredItems = remindCheck.filter(item => item !== id)
 
             setRemindCheck(filteredItems);
         } else {
-            setRemindCheck([...remindCheck, _id]);
+            setRemindCheck([...remindCheck, id]);
         }
     }
 
