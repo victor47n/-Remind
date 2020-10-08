@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -10,30 +10,29 @@ import api from '../../services/api';
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    
+
     const navigation = useNavigation();
-    
+
     async function handleLogin() {
         try {
-            const response = await api.post('auth', {email,password});
-            
+            const response = await api.post('auth', { email, password });
+
             const userName = response.data.user.name;
             const userId = response.data.user._id;
             const token = response.data.token;
-            console.log("RESPONSE:",response.data);
-            
-            await AsyncStorage.setItem('@Reminder:token', token );
-            await AsyncStorage.setItem('@Reminder:userId', userId );
-            await AsyncStorage.setItem('@Reminder:userEmail', email );
-            await AsyncStorage.setItem('@Reminder:userName', userName );
+
+            await AsyncStorage.setItem('@Reminder:token', token);
+            await AsyncStorage.setItem('@Reminder:userId', userId);
+            await AsyncStorage.setItem('@Reminder:userEmail', email);
+            await AsyncStorage.setItem('@Reminder:userName', userName);
 
             navigateToHome(userId);
         } catch (error) {
             alert("Email ou senha incorreta, tente novamente.");
-        } 
+        }
 
     }
-  
+
 
     function navigateToRegister() {
         navigation.navigate('Register');
@@ -46,7 +45,7 @@ export default function Login() {
     function navigateToHome() {
         navigation.navigate('Home');
     }
-    
+
     return (
         <View style={styles.background}>
             <LinearGradient
@@ -61,7 +60,6 @@ export default function Login() {
                     style="light"
                 />
             </LinearGradient>
-            {/* <StatusBar style="light" backgroundColor={'#6C64FB'} /> */}
 
             <View style={styles.container}>
                 <View style={styles.header}>

@@ -122,12 +122,17 @@ export default function Home() {
             const data = {
                 description,
                 dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
-                repeat, 
-                dayWeek,
+                repeat,
+                dayWeek:
+                    dayWeek.map(_day => {
+                        return { number: _day }
+                    })
+                ,
                 userId: await AsyncStorage.getItem('@Reminder:userId'),
             }
 
             try {
+                // alert(dayWeek.length);
                 const response = await api.post('reminder', data);
             } catch (error) {
                 alert(error);

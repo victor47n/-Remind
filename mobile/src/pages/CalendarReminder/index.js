@@ -95,7 +95,7 @@ export default function CalendarReminder() {
 
     async function loadReminders() {
         const userId = await AsyncStorage.getItem('@Reminder:userId');
-        
+
         const getList = await api.get(`reminders/${userId}`);
 
         if (getList) {
@@ -103,9 +103,9 @@ export default function CalendarReminder() {
 
             arrayReminders.map(_data => {
                 var teste = moment(new Date(_data.dateActivity)).format("YYYY-MM-DD");
-                dates[teste] = {marked: true};
+                dates[teste] = { marked: true };
             })
-            
+
             setDates(dates)
         }
     };

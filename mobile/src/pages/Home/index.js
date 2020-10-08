@@ -27,26 +27,22 @@ export default function Home({ navigation }) {
         const userId = await AsyncStorage.getItem('@Reminder:userId');
 
         setDateNow(moment().format('ll'));
-        
-        const getList = await api.get(`reminders/${userId}`);
 
-        if (getList) {
+
+        console.log(userId);
+
+        const getList = await api.get(`reminders-today/${userId}`);
+
+        if (getList.data.reminders) {
             let arrayReminders = getList.data.reminders;
-
-            await setReminders(arrayReminders.filter(reminder =>
-                moment(new Date(reminder.dateActivity)).format("YYYY-MM-DD")
-                ===
-                moment(new Date(dateUp)).format("YYYY-MM-DD")
-            ));
+            setReminders(arrayReminders);
+        } else {
+            console.log("Sem lembretes para hoje");
         }
     };
 
     useEffect(() => {
-        // const timer = setInterval(() => {
         loadReminders()
-        // }, 1000);
-
-        // return () => clearInterval(timer);
     }, []);
 
     function navigateToReminder() {

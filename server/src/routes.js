@@ -27,7 +27,7 @@ routes.post('/register', celebrate({
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-   // birthdate: Joi.date().required(),
+    // birthdate: Joi.date().required(),
   })
 }), UserController.store);
 
@@ -59,10 +59,16 @@ routes.put('/profile_edit/:userId', celebrate({
 
 /* Lembretes */
 routes.get('/reminders/:userId', celebrate({
-    [Segments.PARAMS]: Joi.object().keys({
-        userId: Joi.required(),
-      })  
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.required(),
+  })
 }), RemindersListController.index);
+
+routes.get('/reminders-today/:userId', celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.required(),
+  })
+}), RemindersListController.today);
 
 routes.get('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
@@ -89,9 +95,9 @@ routes.put('/reminder', celebrate({
     dateActivity: Joi.date(),
     dayWeek: Joi.array(),
   }),
-//   [Segments.PARAMS]: Joi.object().keys({
-//     reminderId: Joi.string(),
-//   })
+  //   [Segments.PARAMS]: Joi.object().keys({
+  //     reminderId: Joi.string(),
+  //   })
 }), ReminderController.update);
 
 routes.delete('/reminder/:reminderId', celebrate({
