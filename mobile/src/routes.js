@@ -12,6 +12,7 @@ import RecoverPassword from './pages/RecoverPassword';
 import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import Reminder from './pages/Reminder';
+import EditReminder from './pages/EditReminder';
 import Profile from './pages/Profile';
 import OpenReminder from './pages/OpenReminder';
 import CalendarReminder from './pages/CalendarReminder';
@@ -42,6 +43,7 @@ export default function Routes() {
                 <AppStack.Screen name="ResetPassword" component={ResetPassword} />
                 <AppStack.Screen name="Home" component={DrawerScreen} />
                 <AppStack.Screen name="Reminder" component={Reminder} />
+                <AppStack.Screen name="EditReminder" component={EditReminder} />
             </AppStack.Navigator>
         </NavigationContainer>
     );

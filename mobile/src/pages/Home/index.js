@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { View, FlatList, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
@@ -7,7 +7,9 @@ import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import api from '../../services/api'
+import MethodContext from '../../components/MethodContext'
 import 'moment/locale/pt-br';
+
 import moment from "moment";
 
 import styles from './styles';
@@ -17,39 +19,37 @@ export default function Home({ navigation }) {
     const [reminders, setReminders] = useState([]);
     const [dateNow, setDateNow] = useState(new Date());
 
-    moment.locale('pt-br')
     let dateUp = new Date();
-
+    
     async function loadReminders() {
+        moment.locale('pt-br')
         const token = await AsyncStorage.getItem('token');
-        const getList = await api.get(`reminders/${userId}`);
+        const userId = await AsyncStorage.getItem('@Reminder:userId');
 
-        if (getList) {
-            let arrayReminders = getList.data.reminders;
-
-            await setReminders(arrayReminders.filter(reminder =>
-                moment(new Date(reminder.dateActivity)).format("YYYY-MM-DD")
-                ===
-                moment(new Date(dateUp)).format("YYYY-MM-DD")
-            ));
-        }
         setDateNow(moment().format('ll'));
+
+
+        console.log(userId);
+
+        const getList = await api.get(`reminders-today/${userId}`);
+
+        if (getList.data.reminders) {
+            let arrayReminders = getList.data.reminders;
+            setReminders(arrayReminders);
+        } else {
+            console.log("Sem lembretes para hoje");
+        }
     };
 
     useEffect(() => {
-        // const timer = setInterval(() => {
-        loadReminders()
-        // }, 1000);
-
-        // return () => clearInterval(timer);
-    }, []);
+        loadReminders();
+    }, [reminders]);
 
     function navigateToReminder() {
         navigation.navigate('Reminder');
     }
 
     function navigateToDetail(reminder) {
-        console.log("REMINDER", reminder)
         navigation.navigate('OpenReminder', { reminder });
     }
 
@@ -68,9 +68,9 @@ export default function Home({ navigation }) {
             setRemindCheck([...remindCheck, id]);
         }
     }
-    
     return (
         <View style={styles.container}>
+            <MethodContext.Provider value={{ loadingReminders }}>
             <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />
             <LinearGradient style={styles.header}
                 colors={['#6C64FB', '#9B67FF']}
@@ -108,7 +108,7 @@ export default function Home({ navigation }) {
                 style={styles.containerReminder}
                 data={reminders}
                 keyExtractor={reminder => String(reminder._id)}
-                onEndReached={loadReminders}
+                onEndReached={loadingReminders}
                 onEndReachedThreshold={0.2}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: reminder }) => {
@@ -141,6 +141,7 @@ export default function Home({ navigation }) {
                         )
                     }}
             />
+            </MethodContext.Provider>
         </View>
     );
 }

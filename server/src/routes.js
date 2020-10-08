@@ -64,6 +64,12 @@ routes.get('/reminders/:userId', celebrate({
       })  
 }), RemindersListController.index);
 
+routes.get('/reminders-today/:userId', celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.required(),
+  })
+}), RemindersListController.today);
+
 routes.get('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
     reminderId: Joi.string(),
@@ -80,17 +86,17 @@ routes.post('/reminder', celebrate({
   })
 }), ReminderController.store);
 
-routes.put('/reminder/:reminderId', celebrate({
+routes.put('/reminder/edit', celebrate({
   [Segments.BODY]: Joi.object().keys({
+    reminderId: Joi.string().required(),
     description: Joi.string().required(),
-    status: Joi.boolean().required(),
-    repeat: Joi.boolean().required(),
+    status: Joi.boolean(),
+    repeat: Joi.boolean(),
     dateActivity: Joi.date(),
     dayWeek: Joi.array(),
   }),
-  [Segments.PARAMS]: Joi.object().keys({
-    reminderId: Joi.string(),
-  })
+  // [Segments.PARAMS]: Joi.object().keys({
+  // })
 }), ReminderController.update);
 
 routes.delete('/reminder/:reminderId', celebrate({

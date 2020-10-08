@@ -8,11 +8,15 @@ import moment from "moment";
 
 
 export default function OpenReminder({ route, navigation }) {
+    // const [isUpdate, setIsUpdate] = useState(false)
     // const [daysWeek, setDaysWeek] = useState([])
     const reminder = route.params.reminder;
 
     function goToBack() {
-        navigation.goBack();
+        navigation.navigate("Home");
+    }
+    function navigateToReminder(reminder) {
+        navigation.navigate('EditReminder', { reminder });
     }
     // function Semana() {
     //     reminder.dayWeek.map(_day => {
@@ -36,7 +40,7 @@ export default function OpenReminder({ route, navigation }) {
                     <MaterialIcons name="close" size={24} color="#ffffff" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonEdit}>
+                <TouchableOpacity style={styles.buttonEdit} onPress={() => navigateToReminder(reminder)}>
                     <MaterialIcons name="mode-edit" size={24} color="#ffffff" />
                 </TouchableOpacity>
 
@@ -45,12 +49,9 @@ export default function OpenReminder({ route, navigation }) {
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.container}> 
-
+            <View style={styles.container}>
                 <Text style={styles.reminderName}>{reminder.description}</Text>
                 <Text style={styles.reminderHour}>Hoje • {`${moment(new Date(reminder.dateActivity),"hmm").format("HH:mm")}`}</Text>
-       
-                
             </View>
           
             </LinearGradient >

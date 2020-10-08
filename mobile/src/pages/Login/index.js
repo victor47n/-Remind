@@ -22,15 +22,21 @@ export default function Login() {
             
             await AsyncStorage.setItem('@Reminder:token', token );
             await AsyncStorage.setItem('@Reminder:userId', userId );
-            
-            navigateToHome(userId);
+
+            if (response.status >= 200 && response.status < 300) {
+                // Clear();
+                navigateToHome(userId);
+            }
         } catch (error) {
             alert("Email ou senha incorreta, tente novamente.");
         } 
 
     }
   
-
+    function Clear(){
+        setEmail("");
+        setPassword("");
+    }
     function navigateToRegister() {
         navigation.navigate('Register');
     }

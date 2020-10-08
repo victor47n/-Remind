@@ -7,7 +7,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
-// import MethodContext from '../../components/MethodContext'
 // import 'moment-timezone';
 
 // moment.tz.setDefault('UTC');
@@ -16,22 +15,24 @@ moment.locale('pt-BR');
 import styles from './styles';
 import api from '../../services/api';
 
-export default function Home({ navigation }) {
-    
-    // const { loadReminds } = useContext(MethodContext);
+export default function EditReminder({ route, navigation }) {
+  
     // const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setRepeat(previousState => !previousState);
-    // const { loadReminders } = useContext(MethodContext)
     const [dayWeek, setDayWeek] = useState([]);
+
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    const [status, setStatus] = useState(false);
 
     const [description, setDescription] = useState('');
     const [repeat, setRepeat] = useState(false);
 
-    const dataWeek = [
+    const reminder = route.params.reminder;
+
+    const data = [
         {
             id: '0',
             title: 'Domingo',
@@ -71,11 +72,11 @@ export default function Home({ navigation }) {
 
     const onChange = (event, selectedDate) => {
         if (mode == 'date') {
-            const currentDate = selectedDate || dataWeek;
+            const currentDate = selectedDate || date;
             setShow(Platform.OS === 'ios');
             setDate(currentDate);
         } else {
-            const currentDate = selectedDate || dataWeek;
+            const currentDate = selectedDate || time;
             setShow(Platform.OS === 'ios');
             setTime(currentDate);
         }
@@ -87,15 +88,15 @@ export default function Home({ navigation }) {
     };
 
     const showDatepicker = () => {
-        showMode('dataWeek');
+        showMode('date');
     };
 
     const showTimepicker = () => {
         showMode('time');
     };
 
-    const formatDate = (dataWeek) => {
-        return `${("0" + dataWeek.getDate()).slice(-2)}/${("0" + (dataWeek.getMonth() + 1)).slice(-2)}/${dataWeek.getFullYear()}`;
+    const formatDate = (date) => {
+        return `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
     };
 
     const formatHours = (time) => {
@@ -117,53 +118,54 @@ export default function Home({ navigation }) {
             setDayWeek([...dayWeek, id]);
         }
     }
+    useEffect(() => {
+      setDescription(reminder.description);
+      setRepeat(reminder.repeat);
+      setDate(new Date(reminder.dateActivity));
+      setTime(new Date(reminder.dateActivity));
+      setStatus(reminder.status);
+    },[])
 
     async function handleRegisterReminder() {
+        const reminderId = reminder._id;
         if (repeat === true) {
             const data = {
                 description,
                 dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
+                status,
                 repeat, 
                 dayWeek,
-                userId: await AsyncStorage.getItem('@Reminder:userId'),
+                reminderId,
             }
-
+            console.log("Teste:", data);
             try {
-                const response = await api.post('reminder', data);
-                if (response.status >= 200 && response.status < 300) {
-                    // Clear();
-                    navigateBack();
-                }
+                const token = await AsyncStorage.getItem('@Reminder:token')
+                const response = await api.put('reminder/edit', data);
             } catch (error) {
+                console.log("Teste Erro 01:", error)
                 alert(error);
             }
         } else {
             const data = {
                 description,
                 dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
-                userId: await AsyncStorage.getItem('@Reminder:userId'),
+                status,
+                repeat, 
+                dayWeek,
+                reminderId,
             }
 
             try {
-                const response = await api.post('reminder', data);
-                if (response.status >= 200 && response.status < 300) {
-                    // Clear();
-                    navigateBack();
-                }
+                console.log("Teste:", data);
+                const token = await AsyncStorage.getItem('@Reminder:token')
+                const response = await api.put('reminder/edit', data);
             } catch (error) {
+                console.log("Teste Erro 02:", error.message);
                 alert(error);
             }
         }
     }
-    function Clear(){
-        setDescription("");
-        setRepeat("");
-        setDayWeek("");
-    }
 
-    function navigateBack() {
-        navigation.navigate("Home");
-    };
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />
@@ -174,7 +176,7 @@ export default function Home({ navigation }) {
                 <TouchableOpacity style={styles.buttonBack} onPress={navigateToHome}>
                     <MaterialIcons name="arrow-back" size={24} color="#FAFAFA" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Lembrete</Text>
+                <Text style={styles.headerTitle}>Editar Lembrete</Text>
             </LinearGradient>
 
             <View style={styles.content}>
