@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { View, FlatList, Text, TouchableOpacity, SectionList } from 'react-native';
@@ -7,12 +7,26 @@ import { Calendar, CalendarList, Agenda, LocaleConfig } from 'react-native-calen
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
+import AsyncStorage from '@react-native-community/async-storage';
 
+import api from '../../services/api'
 import styles from './styles';
+import 'moment/locale/pt-br';
+import moment from "moment";
 
 export default function CalendarReminder() {
     const navigation = useNavigation();
     const [remindCheck, setRemindCheck] = useState([]);
+    const [dates, setDates] = useState({});
+
+    moment.locale('pt-br')
+    let now = new Date();
+
+    moment.updateLocale('pt-br', {
+        months: 'Janeiro_Fevereiro_Março_Abril_Maio_Junho_Julho_Agosto_Setembro_Outubro_Novembro_Dezembro'.split(
+            '_'
+        ),
+    });
 
     function navigateToHome() {
         navigation.navigate('Home');
@@ -37,6 +51,11 @@ export default function CalendarReminder() {
         } else {
             return <Ionicons name="ios-arrow-forward" size={24} color="#FAFAFA" />
         };
+    }
+
+    function DateHeader(props) {
+        console.log("DATA CALENDARIO", props);
+        return <Text style={styles.dateHeader}>{moment(props.date).format("MMMM")}</Text>
     }
 
     function handleStateReminder(id) {
@@ -73,6 +92,27 @@ export default function CalendarReminder() {
             ]
         },
     ];
+
+    async function loadReminders() {
+        const userId = await AsyncStorage.getItem('@Reminder:userId');
+
+        const getList = await api.get(`reminders/${userId}`);
+
+        if (getList) {
+            let arrayReminders = getList.data.reminders;
+
+            arrayReminders.map(_data => {
+                var teste = moment(new Date(_data.dateActivity)).format("YYYY-MM-DD");
+                dates[teste] = { marked: true };
+            })
+
+            setDates(dates)
+        }
+    };
+
+    useEffect(() => {
+        loadReminders();
+    }, [])
 
     const Item = ({ info }) => (
         <View style={styles.item}>
@@ -131,7 +171,7 @@ export default function CalendarReminder() {
                     // day from another month that is visible in calendar page. Default = false
                     disableMonthChange={true}
                     // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
-                    firstDay={1}
+                    firstDay={0}
                     // Hide day names. Default = false
                     hideDayNames={false}
                     // Show week numbers to the left. Default = false
@@ -147,16 +187,13 @@ export default function CalendarReminder() {
                     // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
                     disableAllTouchEventsForDisabledDays={true}
                     // Replace default month and year title with custom one. the function receive a date as parameter.
-                    renderHeader={(date) => {/*Return JSX*/ }}
+                    // renderHeader={(date) => DateHeader(date) }
                     // Enable the option to swipe between months. Default = false
                     enableSwipeMonths={true}
 
                     style={styles.calendar}
 
-                    markedDates={{
-                        '2020-09-01': { marked: true,  },
-                        '2020-09-16': { marked: true, },
-                    }}
+                    markedDates={dates}
 
                     theme={{
                         backgroundColor: '#transparent',
@@ -172,8 +209,8 @@ export default function CalendarReminder() {
                         selectedDotColor: '#FAFAFA',
                         arrowColor: '#FAFAFA',
                         disabledArrowColor: '#FAFAFA80',
-                        monthTextColor: 'blue',
-                        indicatorColor: 'blue',
+                        monthTextColor: '#FAFAFA',
+                        indicatorColor: '#FAFAFA',
                         textDayFontFamily: 'Roboto',
                         textMonthFontFamily: 'Roboto',
                         textDayHeaderFontFamily: 'Roboto',

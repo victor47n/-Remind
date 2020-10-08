@@ -17,6 +17,13 @@ export default StyleSheet.create({
         paddingHorizontal: 16,
     },
 
+    dateHeader: {
+        fontFamily: 'Roboto',
+        fontSize: 16,
+        color: '#FAFAFA',
+        letterSpacing: 0.25,
+    },
+
     calendar: {
         marginTop: 24,
         marginHorizontal: 40,

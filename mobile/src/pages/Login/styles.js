@@ -11,11 +11,7 @@ export default StyleSheet.create({
     statusBar: {
         backgroundColor: '#6C64FB',
         paddingHorizontal: 16,
-        // paddingTop: Constants.statusBarHeight,
         height: Constants.statusBarHeight
-        // paddingBottom: 16,
-        // flexDirection: 'row',
-        // alignItems: 'center',
     },
 
     container: {
@@ -42,6 +38,7 @@ export default StyleSheet.create({
         letterSpacing: 0.15,
         lineHeight: 19
     },
+
     headTextEntered: {
         display: 'flex',
         color: '#9B67FF',
@@ -50,10 +47,12 @@ export default StyleSheet.create({
         letterSpacing: 0.15,
         lineHeight: 19
     },
+
     formulario: {
         alignSelf: 'center',
         marginTop: 22,
     },
+
     input: {
         shadowOffset: { width: 0, height: 3, },
         shadowColor: 'black',
@@ -69,6 +68,7 @@ export default StyleSheet.create({
         width: 280,
         fontSize: 16
     },
+    
     lostSenha: {
         alignSelf: 'flex-end',
     },
@@ -80,6 +80,7 @@ export default StyleSheet.create({
         fontFamily: 'Roboto',
         color: '#9B67FF'
     },
+
     entrar: {
         paddingVertical: 10,
         borderRadius: 25,
@@ -94,6 +95,7 @@ export default StyleSheet.create({
         shadowRadius: 8,
         marginTop: 40
     },
+
     entrarTexto: {
         fontWeight: '500',
         lineHeight: 16,

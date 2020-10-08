@@ -27,7 +27,7 @@ routes.post('/register', celebrate({
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-   // birthdate: Joi.date().required(),
+    // birthdate: Joi.date().required(),
   })
 }), UserController.store);
 
@@ -59,9 +59,9 @@ routes.put('/profile_edit/:userId', celebrate({
 
 /* Lembretes */
 routes.get('/reminders/:userId', celebrate({
-    [Segments.PARAMS]: Joi.object().keys({
-        userId: Joi.required(),
-      })  
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.required(),
+  })
 }), RemindersListController.index);
 
 routes.get('/reminders-today/:userId', celebrate({

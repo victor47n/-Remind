@@ -11,17 +11,14 @@ import moment from 'moment';
 // import 'moment-timezone';
 
 // moment.tz.setDefault('UTC');
-moment.locale('pt-BR');
+
 
 import styles from './styles';
 import api from '../../services/api';
 
-export default function Home({ navigation }) {
-    
-    // const { loadReminds } = useContext(MethodContext);
-    // const [isEnabled, setIsEnabled] = useState(false);
+export default function Reminder({ navigation }) {
+    moment.locale('pt-BR');
     const toggleSwitch = () => setRepeat(previousState => !previousState);
-    // const { loadReminders } = useContext(MethodContext)
     const [dayWeek, setDayWeek] = useState([]);
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
@@ -123,12 +120,17 @@ export default function Home({ navigation }) {
             const data = {
                 description,
                 dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
-                repeat, 
-                dayWeek,
+                repeat,
+                dayWeek:
+                    dayWeek.map(_day => {
+                        return { number: _day }
+                    })
+                ,
                 userId: await AsyncStorage.getItem('@Reminder:userId'),
             }
 
             try {
+                // alert(dayWeek.length);
                 const response = await api.post('reminder', data);
                 if (response.status >= 200 && response.status < 300) {
                     // Clear();

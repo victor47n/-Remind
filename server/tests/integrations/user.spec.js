@@ -1,13 +1,7 @@
 const request = require('supertest');
-<<<<<<< HEAD:server/tests/integrations/user.spec.js
 const app = require('../../../src/app');
 const bcrypt = require('bcryptjs');
 const User = require('../../models/user');
-=======
-const app = require('../../app');
-//const User = require('../../models/user');
-
->>>>>>> f378f7d6bbd59ca1f49b415d91dee512d7903fbf:server/src/tests/integrations/session.test.js
 
 describe('Register', () => {
     it('Should receive JWT token when register', async () => {

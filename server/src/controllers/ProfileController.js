@@ -19,17 +19,25 @@ module.exports = {
                 if ((userFind) && (userFind._id != userId)) {
                     return res.status(400).send({ error: "Email already existe." });
                 }
-
             }
 
-            const user = await User.findByIdAndUpdate(userId, {
-                name,
-                email,
-                password,
-            }, { new: true });
-            
+            const user = null;
+
+            if (password != null) {
+                user = await User.findByIdAndUpdate(userId, {
+                    name,
+                    email,
+                    password,
+                }, { new: true });
+            } else {
+                user = await User.findByIdAndUpdate(userId, {
+                    name,
+                    email,
+                }, { new: true });
+            }
+
             await user.save()
-            
+
             return res.send(user);
         } catch (err) {
             return res.status(400).send({ error: 'Error updating reminder' });

@@ -19,8 +19,10 @@ const RemindersSchema = new mongoose.Schema({
         require: false,
     },
     dayWeek: [{
-        type: Number,
-        require: false,
+        number: {
+            type: Number,
+            require: false,
+        }
     }],
     user: {
         type: mongoose.Schema.Types.ObjectId,

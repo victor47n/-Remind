@@ -70,7 +70,6 @@ export default function Home({ navigation }) {
     }
     return (
         <View style={styles.container}>
-            <MethodContext.Provider value={{ loadingReminders }}>
             <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />
             <LinearGradient style={styles.header}
                 colors={['#6C64FB', '#9B67FF']}
@@ -138,10 +137,9 @@ export default function Home({ navigation }) {
                                 </View>
                             </TouchableHighlight>
                         </View>
-                        )
-                    }}
+                    )
+                }}
             />
-            </MethodContext.Provider>
         </View>
     );
 }
