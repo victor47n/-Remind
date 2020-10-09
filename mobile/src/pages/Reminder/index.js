@@ -15,13 +15,11 @@ import 'moment/locale/pt-br';
 import styles from './styles';
 import api from '../../services/api';
 
-export default function Home() {
+export default function Reminder() {
     moment.locale('pt-BR');
     const navigation = useNavigation();
-    // const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setRepeat(previousState => !previousState);
     const [dayWeek, setDayWeek] = useState([]);
-
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [mode, setMode] = useState('date');

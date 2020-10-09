@@ -86,7 +86,7 @@ routes.post('/reminder', celebrate({
   })
 }), ReminderController.store);
 
-routes.put('/reminder', celebrate({
+routes.put('/reminder/edit', celebrate({
   [Segments.BODY]: Joi.object().keys({
     reminderId: Joi.string(),
     description: Joi.string().required(),
@@ -95,9 +95,6 @@ routes.put('/reminder', celebrate({
     dateActivity: Joi.date(),
     dayWeek: Joi.array(),
   }),
-  //   [Segments.PARAMS]: Joi.object().keys({
-  //     reminderId: Joi.string(),
-  //   })
 }), ReminderController.update);
 
 routes.delete('/reminder/:reminderId', celebrate({
