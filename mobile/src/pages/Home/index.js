@@ -29,7 +29,7 @@ export default function Home({ navigation }) {
         setDateNow(moment().format('ll'));
 
 
-        console.log(userId);
+        
 
         const getList = await api.get(`reminders-today/${userId}`);
 
@@ -107,7 +107,7 @@ export default function Home({ navigation }) {
                 style={styles.containerReminder}
                 data={reminders}
                 keyExtractor={reminder => String(reminder._id)}
-                onEndReached={loadingReminders}
+                onEndReached={loadReminders}
                 onEndReachedThreshold={0.2}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: reminder }) => {

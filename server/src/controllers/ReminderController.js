@@ -36,12 +36,13 @@ module.exports = {
                 status,
                 repeat,
                 dateActivity,
-                dayWeek,
+                dayWeek,                
             }, { new: true });
             console.log("Teste Rota");
             await reminder.save();
             return res.send({ reminder });
         } catch (err) {
+            console.log(err)
             return res.status(400).send({ error: 'Error updating reminder' });
         }
     },

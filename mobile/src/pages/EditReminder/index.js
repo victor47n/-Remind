@@ -121,6 +121,7 @@ export default function EditReminder({ route, navigation }) {
     useEffect(() => {
       setDescription(reminder.description);
       setRepeat(reminder.repeat);
+      console.log(repeat)
       setDate(new Date(reminder.dateActivity));
       setTime(new Date(reminder.dateActivity));
       setStatus(reminder.status);
@@ -128,12 +129,15 @@ export default function EditReminder({ route, navigation }) {
 
     async function handleRegisterReminder() {
         const reminderId = reminder._id;
+        
+        
         if (repeat === true) {
+            
             const data = {
                 description,
                 dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
                 status,
-                repeat, 
+                repeat:true, 
                 dayWeek,
                 reminderId,
             }
@@ -141,16 +145,18 @@ export default function EditReminder({ route, navigation }) {
             try {
                 const token = await AsyncStorage.getItem('@Reminder:token')
                 const response = await api.put('reminder/edit', data);
+                navigation.navigate("OpenReminder");
             } catch (error) {
                 console.log("Teste Erro 01:", error)
                 alert(error);
             }
         } else {
+            setRepeat(false);
             const data = {
                 description,
                 dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
                 status,
-                repeat, 
+                repeat:false, 
                 dayWeek,
                 reminderId,
             }
@@ -159,7 +165,9 @@ export default function EditReminder({ route, navigation }) {
                 console.log("Teste:", data);
                 const token = await AsyncStorage.getItem('@Reminder:token')
                 const response = await api.put('reminder/edit', data);
+                navigation.navigate("OpenReminder");
             } catch (error) {
+                console.log(reminderId)
                 console.log("Teste Erro 02:", error.message);
                 alert(error);
             }

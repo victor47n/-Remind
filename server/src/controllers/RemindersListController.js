@@ -22,9 +22,7 @@ module.exports = {
 
             var end = new Date();
             end.setHours(23, 59, 59, 999);
-
-            console.log("ID: ", req.params)
-
+            
             const reminders = await Reminder.find({ user: req.params.userId })
                 .or([
                     { dayWeek: { $elemMatch: { number: getDay(new Date()) } } },
@@ -41,10 +39,8 @@ module.exports = {
     async show(req, res) {
         try {
             const reminder = await Reminder.findById(req.params.reminderId).populate('user');
-
             return res.send({ reminder });
         } catch (error) {
-            console.log(error)
             return res.status(400).send({ error: 'Erro loading reminder' });
         }
     }

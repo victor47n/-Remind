@@ -144,6 +144,7 @@ export default function Reminder({ navigation }) {
                 description,
                 dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
                 userId: await AsyncStorage.getItem('@Reminder:userId'),
+                repeat:false,
             }
 
             try {

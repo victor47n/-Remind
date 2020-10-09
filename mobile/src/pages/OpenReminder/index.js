@@ -7,17 +7,30 @@ import api from '../../services/api';
 import 'moment/locale/pt-br';
 import moment from "moment";
 
+import styles from './styles';
+
 export default function OpenReminder({ route, navigation }) {
-    const reminder = route.params.reminder;
+    const [reminder, setReminder] = useState([]);
+    const detailReminder = route.params.reminder;
 
     moment.locale('pt-br')
 
+    async function showReminder(){
+        const response = await api.get(`reminder/${detailReminder._id}`);
+        const detail = response.data.reminder;
+        setReminder(detail);
+    }
+    
     function goToBack() {
         navigation.goBack();
     }
 
-    function navigateToReminder() {
-        navigation.navigate('Reminder');
+    useEffect(() => {
+        showReminder()
+    }, [reminder])
+
+    function navigateToReminder(reminder) {
+        navigation.navigate('EditReminder', { reminder });
     }
 
     function finishReminder() {
@@ -55,7 +68,7 @@ export default function OpenReminder({ route, navigation }) {
                         <MaterialIcons name="close" size={24} color="#ffffff" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.buttonEdit}>
+                    <TouchableOpacity style={styles.buttonEdit} onPress={() => navigateToReminder(reminder)} >
                         <MaterialIcons name="mode-edit" size={24} color="#ffffff" />
                     </TouchableOpacity>
 
