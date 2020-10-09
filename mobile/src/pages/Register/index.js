@@ -24,6 +24,10 @@ export default function Register() {
             console.log(data);
             try {
                 const response = await api.post('register', data);
+                if (response.status >= 200 && response.status < 300) {
+                    Clear();
+                    navigateBack();
+                }
             } catch (error) {
                 alert(error);
             }
@@ -36,6 +40,12 @@ export default function Register() {
         navigation.goBack();
     };
 
+    function Clear(){
+        setName("");
+        setEmail("");
+        setPassword("");
+        setPasswordConf("");
+    }
     return (
         <View style={styles.background}>
             <LinearGradient

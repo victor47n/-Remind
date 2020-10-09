@@ -7,9 +7,6 @@ module.exports = {
             const status = false;
             const { description, dateActivity, repeat, dayWeek, userId } = req.body;
 
-
-            // dateActivity.setHours(dateActivity.getHours() - 3);
-
             const reminder = await Reminder.create({
                 status,
                 description,
@@ -39,12 +36,13 @@ module.exports = {
                 status,
                 repeat,
                 dateActivity,
-                dayWeek,
+                dayWeek,                
             }, { new: true });
-
+            console.log("Teste Rota");
             await reminder.save();
             return res.send({ reminder });
         } catch (err) {
+            console.log(err)
             return res.status(400).send({ error: 'Error updating reminder' });
         }
     },
@@ -58,6 +56,3 @@ module.exports = {
         }
     }
 };
-
-
-

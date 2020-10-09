@@ -12,6 +12,7 @@ import RecoverPassword from './pages/RecoverPassword';
 import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import Reminder from './pages/Reminder';
+import EditReminder from './pages/EditReminder';
 import Profile from './pages/Profile';
 import OpenReminder from './pages/OpenReminder';
 import CalendarReminder from './pages/CalendarReminder';
@@ -22,13 +23,13 @@ import {YellowBox} from 'react-native';
 YellowBox.ignoreWarnings(['Warning: ReactNative.createElement']);
 function DrawerScreen() {
     return (
-        <Drawer.Navigator initialRouteName="Home" drawerContent={props => <DrawerContent {...props} />}>
-            <Drawer.Screen name="Notifications" component={Reminder} />
-            <Drawer.Screen name="Home" component={Home} />
-            <Drawer.Screen name="OpenReminder" component={OpenReminder} />
-            <Drawer.Screen name="Profile" component={Profile} />
-            <Drawer.Screen name="CalendarReminder" component={CalendarReminder} />
-        </Drawer.Navigator>
+            <Drawer.Navigator initialRouteName="Home" drawerContent={props => <DrawerContent {...props} />}>
+                <Drawer.Screen name="Notifications" component={Reminder} />
+                <Drawer.Screen name="Home" component={Home} />
+                <Drawer.Screen name="OpenReminder" component={OpenReminder} />
+                <Drawer.Screen name="Profile" component={Profile} />
+                <Drawer.Screen name="CalendarReminder" component={CalendarReminder} />
+            </Drawer.Navigator>
     );
 }
 
@@ -41,6 +42,7 @@ export default function Routes() {
                 <AppStack.Screen name="RecoverPassword" component={RecoverPassword} />
                 <AppStack.Screen name="Home" component={DrawerScreen} />
                 <AppStack.Screen name="Reminder" component={Reminder} />
+                <AppStack.Screen name="EditReminder" component={EditReminder} />
             </AppStack.Navigator>
         </NavigationContainer>
     );

@@ -62,6 +62,9 @@ export default function Profile({ navigation }) {
     }, []);
 
 
+    function navigateToBack() {
+        navigation.navigate('Home');
+    }
     return (
         <View style={styles.container}>
 

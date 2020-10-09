@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { View, FlatList, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
-import AsyncStorage from '@react-native-community/async-storage';
-
 import api from '../../services/api'
-import '../Login'
+import MethodContext from '../../components/MethodContext'
 import 'moment/locale/pt-br';
+
 import moment from "moment";
 
 import styles from './styles';
@@ -19,17 +19,17 @@ export default function Home({ navigation }) {
     const [reminders, setReminders] = useState([]);
     const [dateNow, setDateNow] = useState(new Date());
 
-    moment.locale('pt-br')
     let dateUp = new Date();
-
+    
     async function loadReminders() {
+        moment.locale('pt-br')
         const token = await AsyncStorage.getItem('token');
         const userId = await AsyncStorage.getItem('@Reminder:userId');
 
         setDateNow(moment().format('ll'));
 
 
-        console.log(userId);
+        
 
         const getList = await api.get(`reminders-today/${userId}`);
 
@@ -42,8 +42,8 @@ export default function Home({ navigation }) {
     };
 
     useEffect(() => {
-        loadReminders()
-    }, []);
+        loadReminders();
+    }, [reminders]);
 
     function navigateToReminder() {
         navigation.navigate('Reminder');
@@ -68,7 +68,6 @@ export default function Home({ navigation }) {
             setRemindCheck([...remindCheck, id]);
         }
     }
-
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />

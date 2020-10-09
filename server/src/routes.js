@@ -9,11 +9,11 @@ const RemindersListController = require('./controllers/RemindersListController')
 const profileController = require('./controllers/ProfileController');
 const authMiddleware = require('./middlewares/auth')
 
-// const route = express.Router();
 const routes = express.Router();
+const route = express.Router();
 
 
-// route.use(authMiddleware);
+route.use(authMiddleware);
 //Cadastro e Login
 routes.post('/auth', celebrate({
   [Segments.BODY]: Joi.object().keys({
@@ -88,9 +88,9 @@ routes.post('/reminder', celebrate({
 
 routes.put('/reminder/edit', celebrate({
   [Segments.BODY]: Joi.object().keys({
-    reminderId: Joi.string(),
+    reminderId: Joi.string().required(),
     description: Joi.string().required(),
-    status: Joi.boolean().required(),
+    status: Joi.boolean(),
     repeat: Joi.boolean(),
     dateActivity: Joi.date(),
     dayWeek: Joi.array(),
