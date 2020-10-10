@@ -28,7 +28,7 @@ export default function Reminder({ navigation }) {
     const [description, setDescription] = useState('');
     const [repeat, setRepeat] = useState(false);
 
-    const dataWeek = [
+    const data = [
         {
             id: '0',
             title: 'Domingo',
