@@ -14,7 +14,6 @@ import styles from './styles';
 export default function EditReminder({ route, navigation }) {
     moment.locale('pt-BR');
     moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
-    // const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setRepeat(previousState => !previousState);
     const [dayWeek, setDayWeek] = useState([]);
     const [date, setDate] = useState(new Date());
@@ -31,64 +30,41 @@ export default function EditReminder({ route, navigation }) {
     const data = [
         {
             number: '0',
-            title: 'Domingo',
-            first_letter: 'D'
         },
         {
             number: '1',
-            title: 'Segunda',
-            first_letter: 'S'
         },
         {
             number: '2',
-            title: 'Terça',
-            first_letter: 'T'
         },
         {
             number: '3',
-            title: 'Quarta',
-            first_letter: 'Q'
         },
         {
             number: '4',
-            title: 'Quinta',
-            first_letter: 'Q'
         },
         {
             number: '5',
-            title: 'Sexta',
-            first_letter: 'S'
         },
         {
             number: '6',
-            title: 'Sabado',
-            first_letter: 'S'
         },
     ];
 
-    function compareDayWeek(){
+    function compareDayWeek() {
         setDescription(reminder.description);
         setRepeat(reminder.repeat);
         setDate(new Date(reminder.dateActivity));
         setTime(new Date(reminder.dateActivity));
         setStatus(reminder.status);
-        setDayWeek(reminder.dayWeek);
-      
-        console.log("COMEÇA AQUIII: ",dayWeek);
-        reminder.dayWeek.map(day => {
-            handleDayWeek(day.number);
-            // setDayWeek(day.number)
-        });  
+        reminder.dayWeek.forEach(item => setDayWeek(prevState => [...prevState, `${item.number}`]));
     }
 
     useEffect(() => {
+        setDayWeek([]);
         compareDayWeek();
-       
-       
-        
+    }, []);
 
-      },[dayWeek]);
-     
     const onChange = (event, selectedDate) => {
         if (mode == 'date') {
             const currentDate = selectedDate || date;
@@ -129,6 +105,8 @@ export default function EditReminder({ route, navigation }) {
     function handleDayWeek(number) {
         const alreadySelected = dayWeek.findIndex(item => item === number);
 
+        console.log("Entrou aqui: ", alreadySelected);
+
         if (alreadySelected >= 0) {
             const filteredItems = dayWeek.filter(item => item !== number)
 
@@ -138,18 +116,16 @@ export default function EditReminder({ route, navigation }) {
         }
     }
 
-
     async function handleRegisterReminder() {
         const reminderId = reminder._id;
-        
-        
+
         if (repeat === true) {
-            
+
             const data = {
                 description,
                 dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
                 status,
-                repeat:true, 
+                repeat: true,
                 dayWeek,
                 reminderId,
             }
@@ -168,7 +144,7 @@ export default function EditReminder({ route, navigation }) {
                 description,
                 dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
                 status,
-                repeat:false, 
+                repeat: false,
                 dayWeek,
                 reminderId,
             }
@@ -206,11 +182,8 @@ export default function EditReminder({ route, navigation }) {
                     onChangeText={setDescription}
                     placeholder="Lembre-me de..."
                     placeholderTextColor="#E0E0E0"
-                    // keyboardType="text"
                     autoCapitalize="sentences"
                     autoCorrect={false}
-                // selectionColor="#6C64FB"
-                // underlineColorAndroid="#6C64FB"
                 />
 
                 <View style={styles.toggleSwitch}>

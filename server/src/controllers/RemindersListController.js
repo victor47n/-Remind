@@ -22,7 +22,7 @@ module.exports = {
 
             var end = new Date();
             end.setHours(23, 59, 59, 999);
-            
+
             const reminders = await Reminder.find({ user: req.params.userId })
                 .or([
                     { dayWeek: { $elemMatch: { number: getDay(new Date()) } } },
