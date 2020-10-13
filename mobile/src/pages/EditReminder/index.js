@@ -31,7 +31,6 @@ export default function EditReminder({ route, navigation }) {
     async function showReminder(){
         const response = await api.get(`reminder/${reminderInfo._id}`);
         const detail = response.data.reminder;
-        console.log(reminderInfo._id);
         setReminder(detail);
     }
 
@@ -140,13 +139,11 @@ export default function EditReminder({ route, navigation }) {
                     }),
                 reminderId,
             }
-            console.log("Teste01:", data);
             try {
                 const token = await AsyncStorage.getItem('@Reminder:token')
                 const response = await api.put('reminder/edit', data);
                 navigation.navigate("OpenReminder");
             } catch (error) {
-                console.log("Teste Erro 01:", error)
                 alert(error);
             }
         } else {
@@ -161,13 +158,10 @@ export default function EditReminder({ route, navigation }) {
             }
 
             try {
-                console.log("Teste02:", data);
                 const token = await AsyncStorage.getItem('@Reminder:token')
                 const response = await api.put('reminder/edit', data);
                 navigation.navigate("OpenReminder");
             } catch (error) {
-                console.log(reminderId)
-                console.log("Teste Erro 02:", error.message);
                 alert(error);
             }
         }

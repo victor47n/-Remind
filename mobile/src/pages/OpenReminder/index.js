@@ -15,11 +15,6 @@ export default function OpenReminder({ route, navigation }) {
     const [reminder, setReminder] = useState([]);
     const remindInfo = route.params.reminder;
     
-    async function teste(){
-        const date = await reminder.dayWeek;
-        console.log("TESTE:",date);    
-    }
-    
     async function showReminder(){
         const response = await api.get(`reminder/${remindInfo._id}`);
         const detail = response.data.reminder;
@@ -31,7 +26,6 @@ export default function OpenReminder({ route, navigation }) {
     }
 
     useEffect(() => {
-        // teste();
         showReminder()
     }, [reminder])
 
@@ -59,7 +53,6 @@ export default function OpenReminder({ route, navigation }) {
     function excluir() {
         try {
             const response = api.delete(`reminder/${reminder._id}`);
-            console.log(response);
         } catch (error) {
             alert(error);
         }
