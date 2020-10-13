@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, TextInput, TouchableOpacity, Switch, Button } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
@@ -10,13 +10,18 @@ import moment from "moment";
 import styles from './styles';
 
 export default function OpenReminder({ route, navigation }) {
+    moment.locale('pt-BR');
+    moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
     const [reminder, setReminder] = useState([]);
-    const detailReminder = route.params.reminder;
-
-    moment.locale('pt-br')
-
+    const remindInfo = route.params.reminder;
+    
+    async function teste(){
+        const date = await reminder.dayWeek;
+        console.log("TESTE:",date);    
+    }
+    
     async function showReminder(){
-        const response = await api.get(`reminder/${detailReminder._id}`);
+        const response = await api.get(`reminder/${remindInfo._id}`);
         const detail = response.data.reminder;
         setReminder(detail);
     }
@@ -26,6 +31,7 @@ export default function OpenReminder({ route, navigation }) {
     }
 
     useEffect(() => {
+        // teste();
         showReminder()
     }, [reminder])
 
@@ -58,6 +64,30 @@ export default function OpenReminder({ route, navigation }) {
             alert(error);
         }
     }
+    // reminder.dayWeek.map(_day => {
+    //     moment(_day).format('dddd');
+    //     console.log(_day) 
+    // })
+    let showDayWeek = () =>{
+        return(
+            <View>
+                {/* <Text style={styles.reminderRepeat}>{}</Text>  */}
+                {
+                reminder.dayWeek.map(day => {
+                        <Text key={day.number} >{moment(day.number, "d").format('dddd')}</Text>
+                 })
+                }
+            </View>
+        )
+    }
+    let showDate = () => {
+        return(
+            <View>
+                <Text style={styles.reminderRepeat}>{moment(reminder.dateActivity).format('LL')}</Text> 
+                <Text style={styles.reminderRepeat}>{moment(reminder.dateActivity).add(3, 'days').calendar()}</Text> 
+            </View>
+        )
+    }
 
     return (
         <View style={styles.background}>
@@ -80,7 +110,8 @@ export default function OpenReminder({ route, navigation }) {
                 <View style={styles.container}>
 
                     <Text style={styles.reminderName}>{reminder.description}</Text>
-                    <Text style={styles.reminderHour}>{`${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}`}</Text>
+                    {reminder.repeat ?  showDayWeek() : showDate() }
+                    {/* <Text style={styles.reminderHour}>{`${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}`}</Text> */}
                     {/* <Text style={styles.reminderRepeat}>Repete Repetição</Text> */}
                 </View>
 

@@ -27,9 +27,6 @@ export default function Home({ navigation }) {
 
         setDateNow(moment().format('ll'));
 
-
-
-
         const getList = await api.get(`reminders-today/${userId}`);
 
         if (getList.data.reminders) {

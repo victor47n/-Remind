@@ -14,8 +14,7 @@ module.exports = {
                 repeat,
                 dayWeek,
                 user: userId,
-            }
-            );
+            });
 
             await reminder.save();
 
