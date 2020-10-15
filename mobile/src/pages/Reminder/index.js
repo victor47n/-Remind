@@ -19,7 +19,7 @@ import api from '../../services/api';
 export default function Reminder({ navigation }) {
     moment.locale('pt-BR');
     const toggleSwitch = () => setRepeat(previousState => !previousState);
-    const [dayWeek, setDayWeek] = useState([]);
+    const [daysWeek, setDaysWeek] = useState([]);
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -104,14 +104,14 @@ export default function Reminder({ navigation }) {
     }
 
     function handleDayWeek(id) {
-        const alreadySelected = dayWeek.findIndex(item => item === id);
+        const alreadySelected = daysWeek.findIndex(item => item === id);
 
         if (alreadySelected >= 0) {
-            const filteredItems = dayWeek.filter(item => item !== id)
+            const filteredItems = daysWeek.filter(item => item !== id)
 
-            setDayWeek(filteredItems);
+            setDaysWeek(filteredItems);
         } else {
-            setDayWeek([...dayWeek, id]);
+            setDaysWeek([...daysWeek, id]);
         }
     }
 
@@ -122,7 +122,7 @@ export default function Reminder({ navigation }) {
                 dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
                 repeat,
                 dayWeek:
-                    dayWeek.map(_day => {
+                    daysWeek.map(_day => {
                         return { number: _day }
                     })
                 ,
@@ -161,7 +161,7 @@ export default function Reminder({ navigation }) {
     function Clear() {
         setDescription("");
         setRepeat("");
-        setDayWeek("");
+        setDaysWeek("");
     }
 
     function navigateBack() {
@@ -242,8 +242,8 @@ export default function Reminder({ navigation }) {
                         keyExtractor={_week => String(_week.id)}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item: _week }) => (
-                            <TouchableOpacity style={dayWeek.includes(_week.id) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(_week.id)}>
-                                <Text style={dayWeek.includes(_week.id) ? styles.weekDayTextSelected : styles.weekDayText}>{_week.first_letter}</Text>
+                            <TouchableOpacity style={daysWeek.includes(_week.id) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(_week.id)}>
+                                <Text style={daysWeek.includes(_week.id) ? styles.weekDayTextSelected : styles.weekDayText}>{_week.first_letter}</Text>
                             </TouchableOpacity>
                         )}
                     >

@@ -16,6 +16,7 @@ export default function EditReminder({ route, navigation }) {
     moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
     const toggleSwitch = () => setRepeat(previousState => !previousState);
     const [dayWeek, setDayWeek] = useState([]);
+    const [reminder, setReminder] = useState({});
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -25,7 +26,13 @@ export default function EditReminder({ route, navigation }) {
     const [description, setDescription] = useState('');
     const [repeat, setRepeat] = useState(false);
 
-    const reminder = route.params.reminder;
+    const reminderInfo = route.params.reminder;
+    
+    async function showReminder(){
+        const response = await api.get(`reminder/${reminderInfo._id}`);
+        const detail = response.data.reminder;
+        setReminder(detail);
+    }
 
     const data = [
         {
@@ -52,16 +59,16 @@ export default function EditReminder({ route, navigation }) {
     ];
 
     function compareDayWeek() {
-        setDescription(reminder.description);
-        setRepeat(reminder.repeat);
-        setDate(new Date(reminder.dateActivity));
-        setTime(new Date(reminder.dateActivity));
-        setStatus(reminder.status);
-        reminder.dayWeek.forEach(item => setDayWeek(prevState => [...prevState, `${item.number}`]));
+        setDescription(reminderInfo.description);
+        setRepeat(reminderInfo.repeat);
+        setDate(new Date(reminderInfo.dateActivity));
+        setTime(new Date(reminderInfo.dateActivity));
+        setStatus(reminderInfo.status);
+        reminderInfo.dayWeek.forEach(item => setDayWeek(prevState => [...prevState, `${item.number}`]));
     }
 
     useEffect(() => {
-        setDayWeek([]);
+        showReminder();
         compareDayWeek();
     }, []);
 
@@ -120,43 +127,41 @@ export default function EditReminder({ route, navigation }) {
         const reminderId = reminder._id;
 
         if (repeat === true) {
-
+            
             const data = {
                 description,
                 dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
                 status,
-                repeat: true,
-                dayWeek,
+                repeat,
+                dayWeek:
+                    dayWeek.map(_day => {
+                        return { number: _day }
+                    }),
                 reminderId,
             }
-            console.log("Teste01:", data);
             try {
                 const token = await AsyncStorage.getItem('@Reminder:token')
                 const response = await api.put('reminder/edit', data);
                 navigation.navigate("OpenReminder");
             } catch (error) {
-                console.log("Teste Erro 01:", error)
                 alert(error);
             }
         } else {
-            setRepeat(false);
+            setDayWeek([]);
             const data = {
                 description,
                 dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
                 status,
-                repeat: false,
+                repeat,
                 dayWeek,
                 reminderId,
             }
 
             try {
-                console.log("Teste02:", data);
                 const token = await AsyncStorage.getItem('@Reminder:token')
                 const response = await api.put('reminder/edit', data);
                 navigation.navigate("OpenReminder");
             } catch (error) {
-                console.log(reminderId)
-                console.log("Teste Erro 02:", error.message);
                 alert(error);
             }
         }

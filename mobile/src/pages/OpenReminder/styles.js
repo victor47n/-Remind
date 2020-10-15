@@ -50,6 +50,7 @@ export default StyleSheet.create({
     fontFamily: 'Roboto',
     fontSize: 24,
     lineHeight: 28,
+    marginBottom: 10,
  
     },
     reminderHour: {
@@ -65,6 +66,7 @@ export default StyleSheet.create({
         fontSize: 16,
         lineHeight: 19,
         letterSpacing: 0.0015,
+        marginVertical: 3 ,
     },
     buttonBar: {
         height: 48,
