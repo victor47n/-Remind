@@ -7,7 +7,6 @@ import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import api from '../../services/api'
-import MethodContext from '../../components/MethodContext'
 import 'moment/locale/pt-br';
 
 import moment from "moment";
@@ -20,7 +19,7 @@ export default function Home({ navigation }) {
     const [dateNow, setDateNow] = useState(new Date());
 
     let dateUp = new Date();
-    
+
     async function loadReminders() {
         moment.locale('pt-br')
         const token = await AsyncStorage.getItem('token');
@@ -29,7 +28,7 @@ export default function Home({ navigation }) {
         setDateNow(moment().format('ll'));
 
 
-        
+
 
         const getList = await api.get(`reminders-today/${userId}`);
 

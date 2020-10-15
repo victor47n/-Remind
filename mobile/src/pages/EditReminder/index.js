@@ -7,20 +7,15 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
-// import 'moment-timezone';
 
-// moment.tz.setDefault('UTC');
-moment.locale('pt-BR');
-
-import styles from './styles';
 import api from '../../services/api';
+import styles from './styles';
 
 export default function EditReminder({ route, navigation }) {
-  
-    // const [isEnabled, setIsEnabled] = useState(false);
+    moment.locale('pt-BR');
+    moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
     const toggleSwitch = () => setRepeat(previousState => !previousState);
     const [dayWeek, setDayWeek] = useState([]);
-
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -34,41 +29,41 @@ export default function EditReminder({ route, navigation }) {
 
     const data = [
         {
-            id: '0',
-            title: 'Domingo',
-            first_letter: 'D'
+            number: '0',
         },
         {
-            id: '1',
-            title: 'Segunda',
-            first_letter: 'S'
+            number: '1',
         },
         {
-            id: '2',
-            title: 'Terça',
-            first_letter: 'T'
+            number: '2',
         },
         {
-            id: '3',
-            title: 'Quarta',
-            first_letter: 'Q'
+            number: '3',
         },
         {
-            id: '4',
-            title: 'Quinta',
-            first_letter: 'Q'
+            number: '4',
         },
         {
-            id: '5',
-            title: 'Sexta',
-            first_letter: 'S'
+            number: '5',
         },
         {
-            id: '6',
-            title: 'Sabado',
-            first_letter: 'S'
+            number: '6',
         },
     ];
+
+    function compareDayWeek() {
+        setDescription(reminder.description);
+        setRepeat(reminder.repeat);
+        setDate(new Date(reminder.dateActivity));
+        setTime(new Date(reminder.dateActivity));
+        setStatus(reminder.status);
+        reminder.dayWeek.forEach(item => setDayWeek(prevState => [...prevState, `${item.number}`]));
+    }
+
+    useEffect(() => {
+        setDayWeek([]);
+        compareDayWeek();
+    }, []);
 
     const onChange = (event, selectedDate) => {
         if (mode == 'date') {
@@ -107,41 +102,34 @@ export default function EditReminder({ route, navigation }) {
         navigation.navigate('Home');
     }
 
-    function handleDayWeek(id) {
-        const alreadySelected = dayWeek.findIndex(item => item === id);
+    function handleDayWeek(number) {
+        const alreadySelected = dayWeek.findIndex(item => item === number);
+
+        console.log("Entrou aqui: ", alreadySelected);
 
         if (alreadySelected >= 0) {
-            const filteredItems = dayWeek.filter(item => item !== id)
+            const filteredItems = dayWeek.filter(item => item !== number)
 
             setDayWeek(filteredItems);
         } else {
-            setDayWeek([...dayWeek, id]);
+            setDayWeek([...dayWeek, number]);
         }
     }
-    useEffect(() => {
-      setDescription(reminder.description);
-      setRepeat(reminder.repeat);
-      console.log(repeat)
-      setDate(new Date(reminder.dateActivity));
-      setTime(new Date(reminder.dateActivity));
-      setStatus(reminder.status);
-    },[])
 
     async function handleRegisterReminder() {
         const reminderId = reminder._id;
-        
-        
+
         if (repeat === true) {
-            
+
             const data = {
                 description,
                 dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
                 status,
-                repeat:true, 
+                repeat: true,
                 dayWeek,
                 reminderId,
             }
-            console.log("Teste:", data);
+            console.log("Teste01:", data);
             try {
                 const token = await AsyncStorage.getItem('@Reminder:token')
                 const response = await api.put('reminder/edit', data);
@@ -156,13 +144,13 @@ export default function EditReminder({ route, navigation }) {
                 description,
                 dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
                 status,
-                repeat:false, 
+                repeat: false,
                 dayWeek,
                 reminderId,
             }
 
             try {
-                console.log("Teste:", data);
+                console.log("Teste02:", data);
                 const token = await AsyncStorage.getItem('@Reminder:token')
                 const response = await api.put('reminder/edit', data);
                 navigation.navigate("OpenReminder");
@@ -194,11 +182,8 @@ export default function EditReminder({ route, navigation }) {
                     onChangeText={setDescription}
                     placeholder="Lembre-me de..."
                     placeholderTextColor="#E0E0E0"
-                    // keyboardType="text"
                     autoCapitalize="sentences"
                     autoCorrect={false}
-                // selectionColor="#6C64FB"
-                // underlineColorAndroid="#6C64FB"
                 />
 
                 <View style={styles.toggleSwitch}>
@@ -246,11 +231,11 @@ export default function EditReminder({ route, navigation }) {
                         data={data}
                         numColumns={7}
                         contentContainerStyle={{ paddingBottom: 24, paddingTop: 16, paddingHorizontal: 40, }}
-                        keyExtractor={_week => String(_week.id)}
+                        keyExtractor={_week => String(_week.number)}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item: _week }) => (
-                            <TouchableOpacity style={dayWeek.includes(_week.id) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(_week.id)}>
-                                <Text style={dayWeek.includes(_week.id) ? styles.weekDayTextSelected : styles.weekDayText}>{_week.first_letter}</Text>
+                            <TouchableOpacity style={dayWeek.includes(_week.number) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(_week.number)}>
+                                <Text style={dayWeek.includes(_week.number) ? styles.weekDayTextSelected : styles.weekDayText}>{moment(new Date(_week.number), "d").format('dd')}</Text>
                             </TouchableOpacity>
                         )}
                     >

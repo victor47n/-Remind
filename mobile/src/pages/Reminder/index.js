@@ -28,7 +28,7 @@ export default function Reminder({ navigation }) {
     const [description, setDescription] = useState('');
     const [repeat, setRepeat] = useState(false);
 
-    const dataWeek = [
+    const data = [
         {
             id: '0',
             title: 'Domingo',
@@ -144,7 +144,7 @@ export default function Reminder({ navigation }) {
                 description,
                 dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
                 userId: await AsyncStorage.getItem('@Reminder:userId'),
-                repeat:false,
+                repeat: false,
             }
 
             try {
@@ -158,7 +158,7 @@ export default function Reminder({ navigation }) {
             }
         }
     }
-    function Clear(){
+    function Clear() {
         setDescription("");
         setRepeat("");
         setDayWeek("");
