@@ -21,7 +21,7 @@ export default function RecuperarSenha() {
                 'Alert Title',
                 'My Alert Msg',
                 [
-                    { text: 'OK', onPress: () => navigateToResetPassword() }
+                    { text: 'OK', onPress: () => navigateBack() }
                 ],
                 { cancelable: false }
             );
@@ -31,7 +31,7 @@ export default function RecuperarSenha() {
                 'Aconteceu um erro!',
                 'error',
                 [
-                    { text: 'OK', onPress: () => navigateToResetPassword() }
+                    { text: 'OK', onPress: () => navigateBack() }
                 ],
                 { cancelable: false }
             );
@@ -43,9 +43,6 @@ export default function RecuperarSenha() {
 
     function navigateBack() {
         navigation.goBack();
-    }
-    function navigateToResetPassword() {
-        navigation.navigate('ResetPassword');
     }
 
     return (

@@ -18,9 +18,6 @@ export default StyleSheet.create({
         flex: 1,
         alignSelf: 'center',
         paddingHorizontal: 40,
-        borderColor: '#000',
-        borderWidth: 1,
-        borderStyle: "solid",
     },
 
     buttonBack: {
@@ -28,9 +25,6 @@ export default StyleSheet.create({
         alignItems: "center",
         width: 48,
         height: 48,
-        borderColor: '#000',
-        borderWidth: 1,
-        borderStyle: "solid",
         borderRadius: 25,
     },
 

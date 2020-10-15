@@ -111,8 +111,9 @@ export default function CalendarReminder() {
     };
 
     useEffect(() => {
+        setDates({})
         loadReminders();
-    }, [])
+    }, [dates])
 
     const Item = ({ info }) => (
         <View style={styles.item}>
