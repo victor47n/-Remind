@@ -12,15 +12,16 @@ import styles from './styles';
 export default function OpenReminder({ route, navigation }) {
     moment.locale('pt-BR');
     moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
+    
+    const [reminder, setReminder] = useState([]);
+    
+    
+    
     const remindInfo = route.params.reminder;
-    const [reminder, setReminder] = useState({});
-    
-    
-    
     async function showReminder(){
         const response = await api.get(`reminder/${remindInfo._id}`);
         const detail = response.data.reminder;
-        setReminder(detail);
+        await setReminder(detail);
     }
     
     function goToBack() {
@@ -29,7 +30,7 @@ export default function OpenReminder({ route, navigation }) {
 
     useEffect(() => {
         showReminder()
-    }, [reminder])
+    }, [remindInfo])
 
     function navigateToReminder(reminder) {
         navigation.navigate('EditReminder', { reminder });
@@ -38,25 +39,28 @@ export default function OpenReminder({ route, navigation }) {
     function finishReminder() {
         const reminderId = reminder._id;
         
-        if(reminder.status ==  true){
-            try {
-                set
-                const response = api.put('reminder/status', {
-                    reminderId,
-                    status: false,
-                });
-            } catch (error) {
-                console.log(error);
+        if(reminder.status){
+            if(reminder.status ==  true){
+                try {
+                    set
+                    const response = api.put('reminder/status', {
+                        reminderId,
+                        status: false,
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
             }
-        }
-        if(reminder.status ==  false){
-            try {
-                const response = api.put('reminder/status', {
-                    reminderId,
-                    status: true,
-                });
-            } catch (error) {
-                console.log(error);
+            if(reminder.status ==  false){
+                try {
+                    setReminder(remindInfo);
+                    const response = api.put('reminder/status', {
+                        reminderId,
+                        status: true,
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
             }
         }
         
@@ -64,8 +68,8 @@ export default function OpenReminder({ route, navigation }) {
 
     async function excluir() {
         try {
-            navigation.navigate('Home');
             const response = await api.delete(`reminder/${reminder._id}`);
+            navigation.goBack();
         } catch (error) {
             alert(error);
         }
@@ -75,36 +79,40 @@ export default function OpenReminder({ route, navigation }) {
     //     console.log(_day) 
     // })
     let showDayWeek = () =>{
+        if(reminder){
         return(
             <View>
                 {/* <Text style={styles.reminderRepeat}>{}</Text>  */}
                 {
                 reminder.dayWeek.map(day => {
-                        <Text key={day.number} >{reminder.dateActivity !== null ? moment(day.number, "d").format('dddd'):"Apagado"}</Text>
+                        <Text key={day.number} >{reminder !== null ? moment(day.number, "d").format('dddd'):"Apagado"}</Text>
                  })
                 }
             </View>
-        )
+        )}
     }
     let showDate = () => {
+        if(reminder){
         return(
             <View>
-                <Text style={styles.reminderRepeat}>{reminder.dateActivity !== null ? moment(reminder.dateActivity).format('LL'):"Apagado"}</Text> 
-                <Text style={styles.reminderRepeat}>{reminder.dateActivity !== null ? moment(reminder.dateActivity).add(3, 'days').calendar():"Apagado"}</Text> 
+                <Text style={styles.reminderRepeat}>{reminder !== null ? moment(reminder.dateActivity).format('LL'):"Apagado"}</Text> 
+                <Text style={styles.reminderRepeat}>{reminder !== null ? moment(reminder.dateActivity).add(3, 'days').calendar():"Apagado"}</Text> 
             </View>
-        )
+        )}
     }
 
     let buttonFinish = () => {
-        if(reminder.status == false){
-           return <Text style={styles.buttonText} >Marcar como concluído</Text>
-        }
-        if(reminder.status == true){
-            return <Text style={styles.buttonText} >Desmarcar lembrete.</Text>
+        
+        if(reminder){
+            if(reminder.status == false){
+               return <Text style={styles.buttonText} >Marcar como concluído</Text>
+            }
+            if(reminder.status == true){
+                return <Text style={styles.buttonText} >Desmarcar lembrete.</Text>
+            }
         }
     }
     
-
     return (
         <View style={styles.background}>
             <LinearGradient colors={["#6C64FB", "#9B67FF"]} style={styles.statusBar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
@@ -125,8 +133,8 @@ export default function OpenReminder({ route, navigation }) {
 
                 <View style={styles.container}>
 
-                    <Text style={styles.reminderName}>{reminder.description}</Text>
-                    {reminder.repeat ?  showDayWeek() : showDate() }
+                    <Text style={styles.reminderName}>{reminder === null ? "Apagado": reminder.description}</Text>
+                    {reminder.repeat === true ?  showDayWeek() : showDate() }
                     {/* <Text style={styles.reminderHour}>{`${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}`}</Text> */}
                     {/* <Text style={styles.reminderRepeat}>Repete Repetição</Text> */}
                 </View>
@@ -134,7 +142,7 @@ export default function OpenReminder({ route, navigation }) {
             </LinearGradient >
 
             <TouchableOpacity onPress={finishReminder}>
-                <LinearGradient colors={reminder.status === false ? ["#FE9DA4", "#FC81A7"]:["#cccccc", "#cccccc"]} style={styles.buttonBar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+                <LinearGradient colors={reminder !== null && reminder.status === false ? ["#FE9DA4", "#FC81A7"]:["#cccccc", "#cccccc"]} style={styles.buttonBar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                     {buttonFinish()}
                 </LinearGradient>
             </TouchableOpacity>
