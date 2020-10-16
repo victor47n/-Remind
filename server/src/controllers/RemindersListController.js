@@ -6,7 +6,7 @@ module.exports = {
     async index(req, res) {
         try {
 
-            const reminders = await Reminder.find({ user: req.params.userId }).populate('user');
+            const reminders = await Reminder.find({ user: req.params.userId }).sort({ dateActivity: 1 }).populate('user');
 
             return res.send({ reminders });
         } catch (error) {

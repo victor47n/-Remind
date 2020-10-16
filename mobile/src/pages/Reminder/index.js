@@ -84,15 +84,15 @@ export default function Reminder({ navigation }) {
     };
 
     const showDatepicker = () => {
-        showMode('dataWeek');
+        showMode('date');
     };
 
     const showTimepicker = () => {
         showMode('time');
     };
 
-    const formatDate = (dataWeek) => {
-        return `${("0" + dataWeek.getDate()).slice(-2)}/${("0" + (dataWeek.getMonth() + 1)).slice(-2)}/${dataWeek.getFullYear()}`;
+    const formatDate = (date) => {
+        return `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
     };
 
     const formatHours = (time) => {
