@@ -12,8 +12,10 @@ import styles from './styles';
 export default function OpenReminder({ route, navigation }) {
     moment.locale('pt-BR');
     moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
-    const [reminder, setReminder] = useState([]);
     const remindInfo = route.params.reminder;
+    const [reminder, setReminder] = useState({});
+    
+    
     
     async function showReminder(){
         const response = await api.get(`reminder/${remindInfo._id}`);
@@ -34,25 +36,36 @@ export default function OpenReminder({ route, navigation }) {
     }
 
     function finishReminder() {
-        const data = {
-            reminderId: reminder._id,
-            description: reminder.description,
-            status: true,
-            repeat: reminder.repeat,
-            dateActivity: reminder.dateActivity,
-            dayWeek: reminder.dayWeek,
+        const reminderId = reminder._id;
+        
+        if(reminder.status ==  true){
+            try {
+                set
+                const response = api.put('reminder/status', {
+                    reminderId,
+                    status: false,
+                });
+            } catch (error) {
+                console.log(error);
+            }
         }
-
-        try {
-            const response = api.put('reminder', data);
-        } catch (error) {
-            alert(error);
+        if(reminder.status ==  false){
+            try {
+                const response = api.put('reminder/status', {
+                    reminderId,
+                    status: true,
+                });
+            } catch (error) {
+                console.log(error);
+            }
         }
+        
     }
 
-    function excluir() {
+    async function excluir() {
         try {
-            const response = api.delete(`reminder/${reminder._id}`);
+            navigation.navigate('Home');
+            const response = await api.delete(`reminder/${reminder._id}`);
         } catch (error) {
             alert(error);
         }
@@ -67,7 +80,7 @@ export default function OpenReminder({ route, navigation }) {
                 {/* <Text style={styles.reminderRepeat}>{}</Text>  */}
                 {
                 reminder.dayWeek.map(day => {
-                        <Text key={day.number} >{moment(day.number, "d").format('dddd')}</Text>
+                        <Text key={day.number} >{reminder.dateActivity !== null ? moment(day.number, "d").format('dddd'):"Apagado"}</Text>
                  })
                 }
             </View>
@@ -76,11 +89,21 @@ export default function OpenReminder({ route, navigation }) {
     let showDate = () => {
         return(
             <View>
-                <Text style={styles.reminderRepeat}>{moment(reminder.dateActivity).format('LL')}</Text> 
-                <Text style={styles.reminderRepeat}>{moment(reminder.dateActivity).add(3, 'days').calendar()}</Text> 
+                <Text style={styles.reminderRepeat}>{reminder.dateActivity !== null ? moment(reminder.dateActivity).format('LL'):"Apagado"}</Text> 
+                <Text style={styles.reminderRepeat}>{reminder.dateActivity !== null ? moment(reminder.dateActivity).add(3, 'days').calendar():"Apagado"}</Text> 
             </View>
         )
     }
+
+    let buttonFinish = () => {
+        if(reminder.status == false){
+           return <Text style={styles.buttonText} >Marcar como concluído</Text>
+        }
+        if(reminder.status == true){
+            return <Text style={styles.buttonText} >Desmarcar lembrete.</Text>
+        }
+    }
+    
 
     return (
         <View style={styles.background}>
@@ -111,8 +134,8 @@ export default function OpenReminder({ route, navigation }) {
             </LinearGradient >
 
             <TouchableOpacity onPress={finishReminder}>
-                <LinearGradient colors={["#FE9DA4", "#FC81A7"]} style={styles.buttonBar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-                    <Text style={styles.buttonText} >Marcar como concluído</Text>
+                <LinearGradient colors={reminder.status === false ? ["#FE9DA4", "#FC81A7"]:["#cccccc", "#cccccc"]} style={styles.buttonBar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+                    {buttonFinish()}
                 </LinearGradient>
             </TouchableOpacity>
 
