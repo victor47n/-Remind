@@ -23,7 +23,7 @@ YellowBox.ignoreWarnings(['Warning: ReactNative.createElement']);
 function DrawerScreen() {
     return (
         <Drawer.Navigator initialRouteName="Home" drawerContent={props => <DrawerContent {...props} />}>
-            <Drawer.Screen name="Notifications" component={Reminder} />
+            <Drawer.Screen name="Reminder" component={Reminder} />
             <Drawer.Screen name="Home" component={Home} />
             <Drawer.Screen name="OpenReminder" component={OpenReminder} />
             <Drawer.Screen name="Profile" component={Profile} />
