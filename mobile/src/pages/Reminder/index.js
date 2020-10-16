@@ -68,11 +68,11 @@ export default function Reminder({ navigation }) {
 
     const onChange = (event, selectedDate) => {
         if (mode == 'date') {
-            const currentDate = selectedDate || dataWeek;
+            const currentDate = selectedDate || data;
             setShow(Platform.OS === 'ios');
             setDate(currentDate);
         } else {
-            const currentDate = selectedDate || dataWeek;
+            const currentDate = selectedDate || data;
             setShow(Platform.OS === 'ios');
             setTime(currentDate);
         }

@@ -16,8 +16,9 @@ import styles from './styles';
 export default function Home({ navigation }) {
     const [remindCheck, setRemindCheck] = useState([]);
     const [reminders, setReminders] = useState([]);
+    const [reminder, setReminder] = useState({});
     const [dateNow, setDateNow] = useState(new Date());
-
+    
     let dateUp = new Date();
 
     async function loadReminders() {
@@ -53,17 +54,45 @@ export default function Home({ navigation }) {
         navigation.navigate('CalendarReminder');
     }
 
-    function handleStateReminder(id) {
+    async function handleStateReminder(id) {
         const alreadySelected = remindCheck.findIndex(item => item === id);
+        const getReminder = await api.get(`reminder/${id}`);
+        const  getDetails = getReminder.data.reminder;
 
         if (alreadySelected >= 0) {
-            const filteredItems = remindCheck.filter(item => item !== id)
-
+            const filteredItems = remindCheck.filter(item => item !== id);
             setRemindCheck(filteredItems);
+            
+            if(getDetails.status === true){
+                try {
+                    let data = {
+                        reminderId: id,
+                        status: false,
+                    }
+                    console.log("false");
+                    const response = await api.put('reminder/status', data);
+                } catch (error) {
+                    console.log(error)  
+                }
+            }    
         } else {
-            setRemindCheck([...remindCheck, id]);
+            setRemindCheck([...remindCheck, id]);    
+
+            if(getDetails.status === false){
+                try {
+                    let data = {
+                        reminderId: id,
+                        status: true,
+                    }
+                    console.log("true");
+                    const response = await api.put('reminder/status', data);    
+                } catch (error) {
+                    console.log(error)  
+                }
+            }
         }
     }
+
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />
@@ -121,13 +150,14 @@ export default function Home({ navigation }) {
                                     <CheckBox
                                         value={remindCheck.includes(reminder._id) ? true : false}
                                         onValueChange={() => handleStateReminder(reminder._id)}
+                                        // onPress={handleStateReminder}
                                         tintColors={{ true: '#6C64FB', false: '#E0E0E0' }}
                                         style={styles.reminderCheck}
                                     />
                                     <View>
-                                        <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextDescriptionSelected : styles.reminderTextDescription}>{reminder.description}</Text>
+                                        <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextDescriptionSelected : styles.reminderTextDescription}>{reminder !== null ? reminder.description:"Apagado"}</Text>
                                         <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextTimeSelected : styles.reminderTextTime}>
-                                            {`${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}`}
+                                            {reminder !== null ?`${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}`:"Apagado"}
                                         </Text>
                                     </View>
                                 </View>

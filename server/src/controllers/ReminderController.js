@@ -37,7 +37,23 @@ module.exports = {
                 dateActivity,
                 dayWeek,                
             }, { new: true });
-            console.log("Teste Rota");
+            await reminder.save();
+            return res.send({ reminder });
+        } catch (err) {
+            console.log(err)
+            return res.status(400).send({ error: 'Error updating reminder' });
+        }
+    },
+    async updateStatus(req, res) {
+        try {
+            const { reminderId, description, status, repeat, dateActivity, dayWeek } = req.body;
+
+            // dateActivity.setHours(dateActivity.getHours() - 3);
+
+            const reminder = await Reminder.findByIdAndUpdate(reminderId, {
+                status,         
+            }, { new: true });
+
             await reminder.save();
             return res.send({ reminder });
         } catch (err) {
