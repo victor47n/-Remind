@@ -11,8 +11,8 @@ router.use(authMiddleware);
 module.exports = {
     async update(req, res) {
         try {
-            const { name, email, password } = req.body;
-            const { userId } = req.params;
+            const { userId, name, email, password } = req.body;
+            // const { userId } = req.params;
 
             if (email) {
                 const userFind = await User.findOne({ email })

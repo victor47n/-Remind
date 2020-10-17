@@ -96,9 +96,6 @@ export default function CalendarReminder() {
         },
     ];
 
-    console.log(reminder);
-    console.log(data);
-
     function getRandomColor() {
         var letters = '0123456789ABCDEF';
         var color = '#';
@@ -114,8 +111,14 @@ export default function CalendarReminder() {
         reminder.forEach(element => {
             if (element.dayWeek.length == 0) {
                 ableDates[moment(new Date(element.dateActivity)).utc(-3).format('YYYY-MM-DD')] = { marked: true };
+            } else {
+                element.dayWeek.forEach(_element => {
+                    ableDates[moment(new Date(_element)).utc(-3).format('YYYY-MM-DD')] = { marked: true };
+                })
             }
         });
+
+        console.log(ableDates);
         return ableDates;
     };
 

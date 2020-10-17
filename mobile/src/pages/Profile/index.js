@@ -14,26 +14,38 @@ export default function Profile({ navigation }) {
     const [nameTitulo, setNameTitulo] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConf, setPasswordConf] = useState('');
-
+    const [user, setUser] = useState({});
 
     async function handleChangeInfo() {
         try {
             if (password === passwordConf) {
+
                 const userId = await AsyncStorage.getItem('@Reminder:userId');
-                const response = await api.put(`/profile_edit/${userId}`, { name, email, password })
+                const data = {
+                    userId,
+                    name,
+                    email,
+                    password
+                }
+                console.log(data);
+
+                const response = await api.put('/profile/edit', data)
                 await AsyncStorage.setItem('@Reminder:userName', name);
                 await AsyncStorage.setItem('@Reminder:userEmail', email);
-                setPassword("");
-                setPasswordConf("");
+                setPassword('');
+                setPasswordConf('');
                 setEmailTitulo(email);
                 setNameTitulo(name);
+
                 alert("Mudança concluida com sucesso");
             } else {
                 alert("Senhas Diferentes");
             }
+
             console.log(response)
+
         } catch (error) {
-                
+
             console.log(error)
         }
 
@@ -44,11 +56,12 @@ export default function Profile({ navigation }) {
         navigation.goBack();
     }
 
-
-
     async function loadInfos() {
         const name = await AsyncStorage.getItem('@Reminder:userName');
         const email = await AsyncStorage.getItem('@Reminder:userEmail');
+
+        const response = await api.get(`/profile_list/${AsyncStorage.getItem('@Reminder:userId')}`);
+
         setEmail(email);
         setEmailTitulo(email)
         setName(name);
@@ -59,10 +72,10 @@ export default function Profile({ navigation }) {
         loadInfos()
     }, []);
 
-
     function navigateToBack() {
         navigation.navigate('Home');
     }
+
     return (
         <View style={styles.container}>
 
@@ -82,10 +95,7 @@ export default function Profile({ navigation }) {
 
             </LinearGradient>
 
-
-
             <View style={styles.formulary}>
-
                 <TextInput
                     style={styles.input}
                     value={name}
@@ -127,11 +137,9 @@ export default function Profile({ navigation }) {
                     autoCorrect={false}>
 
                 </TextInput>
-
             </View>
 
             <View style={styles.buttonBox}>
-
                 <TouchableOpacity onPress={handleChangeInfo} >
                     <LinearGradient style={styles.botao}
                         colors={['#6C64FB', '#9B67FF']}
@@ -140,19 +148,7 @@ export default function Profile({ navigation }) {
                         <Text style={styles.botaoTexto} >SALVAR</Text>
                     </LinearGradient>
                 </TouchableOpacity>
-
             </View>
-
         </View>
-
-
-
     );
-
-
-
-
-
-
-
 }

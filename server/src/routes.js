@@ -46,15 +46,15 @@ routes.get('/profile_list/:userId', celebrate({
   })
 }), profileController.show);
 
-routes.put('/profile_edit/:userId', celebrate({
+routes.put('/profile/edit', celebrate({
   [Segments.BODY]: Joi.object().keys({
+    userId: Joi.string(),
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
-  [Segments.PARAMS]: Joi.object().keys({
-    userId: Joi.string(),
-  })
+  // [Segments.PARAMS]: Joi.object().keys({
+  // })
 }), profileController.update);
 
 /* Lembretes */
