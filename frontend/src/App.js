@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import Recovery from './pages/Recovery';
-
+import SharedAcc from './pages/SharedAcc';
 import './global.css'
 
 
@@ -16,6 +16,7 @@ function App() {
     <Router>
     <Switch> 
       <Route  path="/reset_password/:email/:token" component={Recovery}/>
+      <Route path="/shared_acc" component={SharedAcc}/>
     </Switch>
   </Router>
     
