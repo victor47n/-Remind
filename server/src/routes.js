@@ -1,5 +1,6 @@
 const express = require('express');
 const { celebrate, Segments, Joi } = require('celebrate');
+const schedule = require("./services/schedule");
 
 const UserController = require('./controllers/UserController');
 const AuthController = require('./controllers/AuthController');
@@ -8,6 +9,7 @@ const ReminderController = require('./controllers/ReminderController');
 const RemindersListController = require('./controllers/RemindersListController');
 const profileController = require('./controllers/ProfileController');
 const authMiddleware = require('./middlewares/auth')
+const ScheduledNotification = require("./models/scheduleNotification");
 
 const routes = express.Router();
 const route = express.Router();
@@ -27,6 +29,7 @@ routes.post('/register', celebrate({
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
+    token: Joi.string().required(),
     // birthdate: Joi.date().required(),
   })
 }), UserController.store);
@@ -38,6 +41,69 @@ routes.post('/forgot_password', celebrate({
 }), RecoverPassword.create);
 
 routes.post('/reset_password', RecoverPassword.store);
+
+// Notificações
+routes.post('/notification', async function (req, res) {
+  try {
+    const payload = {
+      time: req.body.time,
+      days: req.body.days,
+      title: req.body.title,
+      body: req.body.body,
+    };
+
+    await schedule.createSchedule(payload);
+
+    res.json({
+      data: {},
+      message: "Success",
+      success: true,
+    });
+  } catch (e) {
+    res.status(400).json({ message: e.message, success: false });
+  }
+});
+
+routes.get('/notification', async function (req, res) {
+  try {
+    const list = schedule.getJobs();
+    const keys = Object.keys(list);
+
+    let schedules = await ScheduledNotification.find({});
+
+    schedules = schedules.filter((item) => keys.includes(item._id.toString()));
+
+    res.json({
+      data: { schedules },
+      status: "success",
+      message: "successfull",
+    });
+  } catch (e) {
+    res.status(400).json({ message: e.message, success: false });
+  }
+});
+
+routes.delete('/notification', async function (req, res) {
+  try {
+    const jobId = req.body.id;
+    const list = schedule.getJobs();
+    const currentJob = list[jobId];
+
+    if (!currentJob) throw new Error("Job not found");
+
+    await ScheduledNotification.findByIdAndRemove(jobId);
+
+    currentJob.cancel();
+
+    res.json({
+      data: {},
+      status: "success",
+      message: "successfull",
+    });
+  } catch (e) {
+    res.status(400).json({ message: e.message, success: false });
+  }
+});
 
 //Profile
 routes.get('/profile_list/:userId', celebrate({
