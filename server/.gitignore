@@ -4,4 +4,4 @@
 yarn.lock
 
 /src/config/*.json
-/src/utils/firebase_service_account.json
+/src/utils/firebase-service-account.json
