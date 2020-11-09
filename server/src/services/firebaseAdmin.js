@@ -1,7 +1,7 @@
 const admin = require("firebase-admin");
 const serviceAccount = require("../utils/firebase-service-account.json");
 // add your firebase db url here
-const FIREBASE_DATABASE_URL = "https://remind-d66f2.firebaseio.com";
+const FIREBASE_DATABASE_URL = process.env.FIREBASE_DATABASE_URL;
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
