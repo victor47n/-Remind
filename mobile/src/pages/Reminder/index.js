@@ -66,6 +66,11 @@ export default function Reminder({ navigation }) {
         },
     ];
 
+    // useEffect(()=>{
+    //     const date = new Date();
+    //     const teste = moment().weekday(7);
+    //     console.log(teste);
+    // },[])
     const onChange = (event, selectedDate) => {
         if (mode == 'date') {
             const currentDate = selectedDate || data;
@@ -84,15 +89,21 @@ export default function Reminder({ navigation }) {
     };
 
     const showDatepicker = () => {
-        showMode('data');
+        showMode('date');
     };
 
     const showTimepicker = () => {
         showMode('time');
     };
 
-    const formatDate = (data) => {
-        return `${("0" + data.getDate()).slice(-2)}/${("0" + (data.getMonth() + 1)).slice(-2)}/${data.getFullYear()}`;
+    const formatDate = (date) => {
+        // let day = new Date();
+        // if(date.getDate() != undefined){
+            return `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
+        // }else{
+        //     return `${("0" + day.getDate()).slice(-2)}/${("0" + (day.getMonth() + 1)).slice(-2)}/${day.getFullYear()}`;
+
+        // }
     };
 
     const formatHours = (time) => {
@@ -116,10 +127,16 @@ export default function Reminder({ navigation }) {
     }
 
     async function handleRegisterReminder() {
+        
+        // let year = moment().year();
+        // let month = moment().month(); 
+        // let date = moment().date();
+        let dateNow = new Date();
+
         if (repeat === true) {
             const data = {
                 description,
-                dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
+                dateActivity: new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), time.getHours(), time.getMinutes()),
                 repeat,
                 dayWeek:
                     daysWeek.map(_day => {
@@ -128,6 +145,7 @@ export default function Reminder({ navigation }) {
                 ,
                 userId: await AsyncStorage.getItem('@Reminder:userId'),
             }
+            console.log(time.getHours(), time.getMinutes(), time.getSeconds());
 
             try {
                 // alert(dayWeek.length);
@@ -142,11 +160,10 @@ export default function Reminder({ navigation }) {
         } else {
             const data = {
                 description,
-                dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
+                dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds()),
                 userId: await AsyncStorage.getItem('@Reminder:userId'),
                 repeat: false,
             }
-
             try {
                 const response = await api.post('reminder', data);
                 if (response.status >= 200 && response.status < 300) {
