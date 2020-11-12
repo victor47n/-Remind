@@ -1,5 +1,14 @@
 const { defaultConfiguration } = require('../app');
+const { Mongoose } = require('../database');
 const mongoose = require('../database');
+ 
+
+const dayWeek = mongoose.Schema({
+  number: {
+    type: Number,
+    require: false,
+}
+},{ _id : false });
 
 const dayWeek =  mongoose.Schema({
     number: {
