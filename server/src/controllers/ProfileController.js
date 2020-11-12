@@ -19,7 +19,6 @@ module.exports = {
                 if ((userFind) && (userFind._id != userId)) {
                     return res.status(400).send({ error: "Email already existe." });
                 }
-
             }
 
             const user = await User.findByIdAndUpdate(userId, {
@@ -47,3 +46,4 @@ module.exports = {
         }
     }
 };
+

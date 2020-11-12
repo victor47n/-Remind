@@ -30,6 +30,16 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  prime: {
+    type: Boolean,
+    require: false,
+  },
+  vinculos:[
+    {
+      type: String,
+      require: false,
+    }
+  ]
 
 });
 

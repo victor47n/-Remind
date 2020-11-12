@@ -1,5 +1,14 @@
 const { defaultConfiguration } = require('../app');
+const { Mongoose } = require('../database');
 const mongoose = require('../database');
+ 
+
+const dayWeek = mongoose.Schema({
+  number: {
+    type: Number,
+    require: false,
+}
+},{ _id : false });
 
 const RemindersSchema = new mongoose.Schema({
   description:{
@@ -18,10 +27,7 @@ const RemindersSchema = new mongoose.Schema({
     type: Boolean,
     require: false,
   },
-  dayWeek:[{
-    type: Number,
-    require: true,
-  }],
+  dayWeek:[dayWeek],
   user:{
   type: mongoose.Schema.Types.ObjectId,
   ref: 'User',
