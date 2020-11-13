@@ -40,7 +40,7 @@ export default function Register() {
         navigation.goBack();
     };
 
-    function Clear(){
+    function Clear() {
         setName("");
         setEmail("");
         setPassword("");
