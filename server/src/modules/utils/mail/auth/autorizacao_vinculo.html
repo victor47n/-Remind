@@ -1,0 +1,92 @@
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <style type="text/css">
+    body {
+      background: #e6e6e6;
+      padding: 20px;
+    }
+
+    label,
+    span,
+    body {
+      font: 400 18px Roboto, sans-serif;
+      font-weight: 500;
+      color: #282828;
+    }
+
+    span {
+      word-wrap: warp;
+      margin-top: 50px;
+    }
+
+    h1 {
+      color: #f5f5f5;
+    }
+
+    button {
+      background: rgb(117, 101, 252);
+      border-radius: 6px;
+      padding: 15px;
+      cursor: pointer;
+      color: #fff;
+      border: none;
+      font-size: 18px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .banner {
+      width: 100%;
+      height: 150px;
+      padding-left: 24px;
+      padding-bottom: 10px;
+      margin-bottom: 120px;
+      background: rgb(117, 101, 252);
+      background: -moz-linear-gradient(193deg, rgba(117, 101, 252, 1) 0%, rgba(152, 103, 255, 1) 99%);
+      background: -webkit-linear-gradient(193deg, rgba(117, 101, 252, 1) 0%, rgba(152, 103, 255, 1) 99%);
+      background: linear-gradient(193deg, rgba(117, 101, 252, 1) 0%, rgba(152, 103, 255, 1) 99%);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#7565fc", endColorstr="#9867ff", GradientType=1);
+    }
+
+    .banner h1 {
+      display: flexbox;
+      justify-content: flex-start;
+      align-items: flex-end;
+      font-size: 80px;
+      height: 100%;
+    }
+
+    .card {
+      width: 400px;
+      height: 400px;
+      background: #f5f5f5;
+      padding: 15px;
+      font-size: 30px;
+      border-radius: 5px;
+      -webkit-box-shadow: 0px 5px 12px -6px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 0px 5px 12px -6px rgba(0, 0, 0, 0.75);
+      box-shadow: 0px 5px 12px -6px rgba(0, 0, 0, 0.75);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="banner">
+      <h1>Remind</h1>
+    </div>
+    <section class="card">
+      <p>Olá, deseja vincular sua conta com {{emailSolicitante}} ?</p>
+      <a href={{link}}><button>Autorize Aqui</button></a>
+    </section>
+  </div>
+</body>
+
+</html>
