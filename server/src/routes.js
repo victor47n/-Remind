@@ -1,6 +1,5 @@
 const express = require('express');
 const { celebrate, Segments, Joi } = require('celebrate');
-const schedule = require("./services/schedule");
 
 const UserController = require('./controllers/UserController');
 const AuthController = require('./controllers/AuthController');

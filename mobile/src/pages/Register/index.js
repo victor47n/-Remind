@@ -30,6 +30,7 @@ export default function Register() {
                 }
             } catch (error) {
                 alert(error);
+                console.log(error);
             }
         } else {
             alert('Senhas incorretas');

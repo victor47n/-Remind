@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "expo-constants": "^9.2.0",
+    "expo-notifications": "^0.7.2"
+  }
+}

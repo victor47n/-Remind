@@ -1,26 +1,50 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { View, FlatList, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import {Permissions} from 'expo';
+import * as Notification from 'expo-notifications';
+import { Constants } from  'expo-constants';
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
-import api from '../../services/api'
+import api from '../../services/api';
 import 'moment/locale/pt-br';
 
 import moment from "moment";
 
 import styles from './styles';
 
+
 export default function Home({ navigation }) {
     const [remindCheck, setRemindCheck] = useState([]);
     const [reminders, setReminders] = useState([]);
     const [reminder, setReminder] = useState({});
     const [dateNow, setDateNow] = useState(new Date());
+ 
 
     let dateUp = new Date();
 
+    componentDidMount = async () => {
+        const { status: existingStatus } = await Permissions.getAsync(
+          Permissions.NOTIFICATIONS
+        );
+        let finalStatus = existingStatus;
+    
+        if (existingStatus !== 'granted') {
+          const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+          finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+          return;
+        }
+    
+        let token = await Notifications.getExpoPushTokenAsync();
+        console.log( token );
+      }
+
+      
     async function loadReminders() {
         moment.locale('pt-br')
         const token = await AsyncStorage.getItem('token');

@@ -3,13 +3,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const routes = require('./routes')
 const { errors } = require('celebrate');
-const schedule = require("./services/schedule");
+
 
 const app = express();
 
 require('dotenv/config');
-
-schedule.reSchedule();
 
 app.use(cors());
 app.use(bodyParser.json());
