@@ -83,8 +83,11 @@ export default function Routes() {
 
     async function sendToken() {
         try {
+            // const idUser = await AsyncStorage.setItem('@Reminder:userId');
+
             const data = {
-                token: expoPushToken
+                token: expoPushToken,
+                // idUser
             }
 
             const response = await api.post('expo-token', data);
@@ -92,8 +95,6 @@ export default function Routes() {
             alert(error);
         }
     }
-
-
 
     return (
         <NavigationContainer>

@@ -5,6 +5,13 @@ const ExpoTokenSchema = new mongoose.Schema({
         type: String,
         select: false,
     },
+
+    // user: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     require: true,
+    // },
+
     createdAt: {
         type: Date,
         default: Date.now,

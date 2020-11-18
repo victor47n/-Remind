@@ -7,10 +7,15 @@ const api = axios.create({
 api.interceptors.request.use(async (config) => {
   try {
     const token = await AsyncStorage.getItem('@Reminder:token');
+    // const idUser = await AsyncStorage.setItem('@Reminder:userId');
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // if (idUser) {
+    //   config.headers.UserId = `${idUser}`;
+    // }
 
     return config;
   } catch (err) {

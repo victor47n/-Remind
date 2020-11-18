@@ -8,11 +8,10 @@ const ReminderController = require('./controllers/ReminderController');
 const RemindersListController = require('./controllers/RemindersListController');
 const profileController = require('./controllers/ProfileController');
 const authMiddleware = require('./middlewares/auth');
-const ExpoTokenController = require('./controllers/ExpoTokenController');
+const NotificationController = require('./controllers/NotificationController');
 
 const routes = express.Router();
 const route = express.Router();
-
 
 route.use(authMiddleware);
 //Cadastro e Login
@@ -116,6 +115,14 @@ routes.post('/expo-token', celebrate({
 	[Segments.BODY]: Joi.object().keys({
 		token: Joi.string().required(),
 	})
-}), ExpoTokenController.store),
+}), NotificationController.storeToken);
 
-	module.exports = routes;
+routes.post('/notifications', celebrate({
+	[Segments.BODY]: Joi.object().keys({
+		// id: Joi.string().required(),
+		title: Joi.string().required(),
+		body: Joi.string().required(),
+	})
+}), NotificationController.getNotification);
+
+module.exports = routes;
