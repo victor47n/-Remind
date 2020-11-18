@@ -25,7 +25,6 @@ module.exports ={
       return res.status(400).send({ error: 'Invalid password' });
     
     user.password = undefined;
-    
   
     res.send({ 
       user,

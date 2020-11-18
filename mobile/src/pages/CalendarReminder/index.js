@@ -109,13 +109,7 @@ export default function CalendarReminder() {
         const ableDates = {};
 
         reminder.forEach(element => {
-            if (element.dayWeek.length == 0) {
-                ableDates[moment(new Date(element.dateActivity)).utc(-3).format('YYYY-MM-DD')] = { marked: true };
-            } else {
-                element.dayWeek.forEach(_element => {
-                    ableDates[moment(new Date(_element)).utc(-3).format('YYYY-MM-DD')] = { marked: true };
-                })
-            }
+            ableDates[moment(new Date(element.dateActivity)).utc(-3).format('YYYY-MM-DD')] = { marked: true };
         });
 
         console.log(ableDates);
@@ -277,7 +271,7 @@ export default function CalendarReminder() {
                         onEndReachedThreshold={0.2}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item: reminder }) => {
-                            if (reminder.dayWeek.length == 0) {
+                            
                                 return (
                                     <View>
                                         <View style={styles.sectionHeader}>
@@ -291,7 +285,7 @@ export default function CalendarReminder() {
                                                 tintColors={{ true: '#6C64FB', false: '#E0E0E0' }}
                                                 style={styles.reminderCheck}
                                             />
-                                            <Text style={styles.itemHours}>{moment(new Date(reminder.dateActivity)).utc(-3).format('kk:mm A')}</Text>
+                                            <Text style={styles.itemHours}>{moment(new Date(reminder.dateActivity)).add(3, 'hours').format('kk:mm A')}</Text>
                                             <TouchableOpacity style={styles.containerItemDescription} onPress={() => navigateToDetail(reminder)}>
                                                 <Text style={styles.itemDescription}>{reminder.description}</Text>
                                             </TouchableOpacity>
@@ -299,7 +293,7 @@ export default function CalendarReminder() {
                                     </View>
 
                                 )
-                            }
+                            
                         }}
                     />
                 </View>

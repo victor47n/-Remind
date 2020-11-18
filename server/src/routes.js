@@ -6,6 +6,7 @@ const AuthController = require('./controllers/AuthController');
 const RecoverPassword = require('./controllers/RecoverPassword');
 const ReminderController = require('./controllers/ReminderController');
 const RemindersListController = require('./controllers/RemindersListController');
+const HistoricController = require('./controllers/HistoricController');
 const profileController = require('./controllers/ProfileController');
 const authMiddleware = require('./middlewares/auth');
 const NotificationController = require('./controllers/NotificationController');
@@ -76,6 +77,12 @@ routes.get('/reminder/:reminderId', celebrate({
 	})
 }), RemindersListController.show);
 
+routes.get('/reminders/teste/:userId', celebrate({
+	[Segments.PARAMS]: Joi.object().keys({
+		userId: Joi.required(),
+	})
+}), RemindersListController.historic);
+
 routes.post('/reminder', celebrate({
 	[Segments.BODY]: Joi.object().keys({
 		description: Joi.string().required().max(400),
@@ -124,5 +131,9 @@ routes.post('/notifications', celebrate({
 		body: Joi.string().required(),
 	})
 }), NotificationController.getNotification);
+
+routes.post('/reminders/loop', HistoricController.Loop);
+routes.post('/reminders/testecadastro', HistoricController.TestesCadastros);
+
 
 module.exports = routes;
