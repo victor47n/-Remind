@@ -24,8 +24,8 @@ module.exports = {
             let stop = false; 
             let j = 0;
              // let date =  new Date(2020, 11, 28);
-            let date =  new Date(2020, 10, 27);
-            // let date =  new Date();
+            // let date =  new Date(2020, 10, 27);
+            let date =  new Date();
             const maxDaysOfMonth = getDaysInMonth(date)
             //checando se o lenbrete é repetitivo
             if(repeat == true){
