@@ -8,15 +8,14 @@ import 'moment/locale/pt-br';
 import moment from "moment";
 
 import styles from './styles';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
 
 export default function OpenReminder({ route, navigation }) {
     moment.locale('pt-BR');
     moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
 
     const [reminder, setReminder] = useState([]);
-
-
-
+    
     const remindInfo = route.params.reminder;
     async function showReminder() {
         const response = await api.get(`reminder/${remindInfo._id}`);
@@ -38,11 +37,10 @@ export default function OpenReminder({ route, navigation }) {
 
     function finishReminder() {
         const reminderId = reminder._id;
-
-        if (reminder) {
-            if (reminder.status == true) {
+        if(reminder){
+            if(reminder.status ==  true){
+                console.log("IF 01")
                 try {
-                    set
                     const response = api.put('reminder/status', {
                         reminderId,
                         status: false,
@@ -51,7 +49,8 @@ export default function OpenReminder({ route, navigation }) {
                     console.log(error);
                 }
             }
-            if (reminder.status == false) {
+            if(reminder.status ==  false){
+                console.log("IF 02");
                 try {
                     setReminder(remindInfo);
                     const response = api.put('reminder/status', {
@@ -145,7 +144,7 @@ export default function OpenReminder({ route, navigation }) {
             </LinearGradient >
 
             <TouchableOpacity onPress={finishReminder}>
-                <LinearGradient colors={reminder !== null && reminder.status === false ? ["#FE9DA4", "#FC81A7"] : ["#cccccc", "#cccccc"]} style={styles.buttonBar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+                <LinearGradient colors={reminder != null && reminder.status === false ? ["#FE9DA4", "#FC81A7"]:["#cccccc", "#cccccc"]} style={styles.buttonBar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                     {buttonFinish()}
                 </LinearGradient>
             </TouchableOpacity>
