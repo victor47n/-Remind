@@ -116,7 +116,6 @@ routes.delete('/reminder/:reminderId', celebrate({
 }), ReminderController.destroy);
 
 ////////////////////////////////////////////////////////////////////
-routes.post('/reminders/historic/:userId', HistoricController.historicRegister);
 
 routes.post('/reminders/loop', HistoricController.Loop);
 routes.post('/reminders/testecadastro', HistoricController.TestesCadastros);

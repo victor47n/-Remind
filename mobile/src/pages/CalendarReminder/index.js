@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { View, FlatList, Text, TouchableOpacity, SectionList } from 'react-native';
+import { View, Text, TouchableOpacity, SectionList, FlatList } from 'react-native';
 import * as CalendarExpo from 'expo-calendar';
-import { Calendar, CalendarList, Agenda, LocaleConfig } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -17,13 +17,17 @@ import moment from "moment";
 export default function CalendarReminder() {
     const navigation = useNavigation();
     const [remindCheck, setRemindCheck] = useState([]);
-    const [dates, setDates] = useState({});
+    const [reminder, setReminder] = useState([]);
+    const [dates, setDates] = useState([]);
 
     moment.locale('pt-br')
     let now = new Date();
 
     moment.updateLocale('pt-br', {
         months: 'Janeiro_Fevereiro_Março_Abril_Maio_Junho_Julho_Agosto_Setembro_Outubro_Novembro_Dezembro'.split(
+            '_'
+        ),
+        weekdays: 'Domingo_Segunda-feira_Terça-feira_Quarta-feira_Quinta-feira_Sexta-feira_Sábado'.split(
             '_'
         ),
     });
@@ -34,6 +38,10 @@ export default function CalendarReminder() {
 
     function navigateToReminder() {
         navigation.navigate('Reminder');
+    }
+
+    function navigateToDetail(reminder) {
+        navigation.navigate('OpenReminder', { reminder });
     }
 
     LocaleConfig.locales['pt-br'] = {
@@ -51,11 +59,6 @@ export default function CalendarReminder() {
         } else {
             return <Ionicons name="ios-arrow-forward" size={24} color="#FAFAFA" />
         };
-    }
-
-    function DateHeader(props) {
-        console.log("DATA CALENDARIO", props);
-        return <Text style={styles.dateHeader}>{moment(props.date).format("MMMM")}</Text>
     }
 
     function handleStateReminder(id) {
@@ -93,41 +96,59 @@ export default function CalendarReminder() {
         },
     ];
 
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    const getAbleDates = () => {
+        const ableDates = {};
+
+        reminder.forEach(element => {
+            ableDates[moment(new Date(element.dateActivity)).utc(-3).format('YYYY-MM-DD')] = { marked: true };
+        });
+
+        console.log(ableDates);
+        return ableDates;
+    };
+
     async function loadReminders() {
         const userId = await AsyncStorage.getItem('@Reminder:userId');
-
+        // setReminder(null);
         const getList = await api.get(`reminders/${userId}`);
+        let arrayReminders = getList.data.reminders;
 
-        if (getList) {
-            let arrayReminders = getList.data.reminders;
+        setReminder(arrayReminders);
 
-            arrayReminders.map(_data => {
-                var teste = moment(new Date(_data.dateActivity)).format("YYYY-MM-DD");
-                dates[teste] = { marked: true };
-            })
-
-            setDates(dates)
-        }
     };
 
     useEffect(() => {
         loadReminders();
     }, [])
 
-    const Item = ({ info }) => (
-        <View style={styles.item}>
-            <CheckBox
-                value={remindCheck.includes(info.id) ? true : false}
-                onValueChange={() => handleStateReminder(info.id)}
-                tintColors={{ true: '#6C64FB', false: '#E0E0E0' }}
-                style={styles.reminderCheck}
-            />
-            <Text style={styles.itemHours}>{info.hours}</Text>
-            <TouchableOpacity style={styles.containerItemDescription}>
-                <Text style={styles.itemDescription}>{info.description}</Text>
-            </TouchableOpacity>
-        </View >
-    );
+    const reloadAgenda = () => {
+        setReminder(null)
+    }
+
+    // const Item = ({ _id, dateActivity, description }) => (
+    //     console.log("Veio pra ca"),
+    //     <View style={styles.item}>
+    //         <CheckBox
+    //             value={remindCheck.includes(_id) ? true : false}
+    //             onValueChange={() => handleStateReminder(_id)}
+    //             tintColors={{ true: '#6C64FB', false: '#E0E0E0' }}
+    //             style={styles.reminderCheck}
+    //         />
+    //         <Text style={styles.itemHours}>{moment(dateActivity).format('kk:mm A')}</Text>
+    //         <TouchableOpacity style={styles.containerItemDescription}>
+    //             <Text style={styles.itemDescription}>{description}</Text>
+    //         </TouchableOpacity>
+    //     </View >
+    // );
 
     return (
         <View style={styles.container}>
@@ -158,9 +179,9 @@ export default function CalendarReminder() {
                     // Handler which gets executed on day long press. Default = undefined
                     onDayLongPress={(day) => { console.log('selected day', day) }}
                     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-                    monthFormat={'yyyy MM'}
+                    monthFormat={'MMMM yyyy'}
                     // Handler which gets executed when visible month changes in calendar. Default = undefined
-                    onMonthChange={(month) => { console.log('month changed', month) }}
+                    onMonthChange={(month) => { }}
                     // Hide month navigation arrows. Default = false
                     hideArrows={false}
                     // Replace default arrows with custom ones (direction can be 'left' or 'right')
@@ -191,10 +212,16 @@ export default function CalendarReminder() {
                     // Enable the option to swipe between months. Default = false
                     enableSwipeMonths={true}
 
+                    // onCalendarToggled={(calendarOpened) => { console.log(calendarOpened) }}
+
+                    // onRefresh={() => { reloadAgenda() }}
+
                     style={styles.calendar}
 
-                    markedDates={dates}
+                    // onRefresh={() => console.log('refreshing...')}
+                    refreshing={true}
 
+                    markedDates={{ ...getAbleDates() }}
                     theme={{
                         backgroundColor: '#transparent',
                         calendarBackground: 'transparent',
@@ -224,17 +251,50 @@ export default function CalendarReminder() {
                 />
 
                 <View style={styles.reminderList}>
-                    <SectionList
-                        sections={data}
+                    {/* <SectionList
+                        sections={reminder}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => item + index}
                         renderItem={({ item }) => <Item info={item} />}
-                        renderSectionHeader={({ section: { title, date } }) => (
+                        renderSectionHeader={({ section: { dateActivity } }) => (
                             <View style={styles.sectionHeader}>
-                                <Text style={styles.sectionTitle}>{title}</Text>
-                                <Text style={styles.sectionDate}>{date}</Text>
+                                <Text style={styles.sectionTitle}>oi</Text>
+                                <Text style={styles.sectionDate}>oi</Text>
                             </View>
                         )}
+                    /> */}
+                    <FlatList
+                        // style={styles.containerReminder}
+                        data={reminder}
+                        keyExtractor={reminder => String(reminder._id)}
+                        onEndReached={loadReminders}
+                        onEndReachedThreshold={0.2}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item: reminder }) => {
+                            
+                                return (
+                                    <View>
+                                        <View style={styles.sectionHeader}>
+                                            <Text style={styles.sectionTitle}>{moment(new Date(reminder.dateActivity)).utc(-3).format('dddd')}</Text>
+                                            <Text style={styles.sectionDate}>{moment(new Date(reminder.dateActivity)).utc(-3).format('LL')}</Text>
+                                        </View>
+                                        <View style={styles.item}>
+                                            <CheckBox
+                                                value={remindCheck.includes(reminder._id) ? true : false}
+                                                onValueChange={() => handleStateReminder(reminder._id)}
+                                                tintColors={{ true: '#6C64FB', false: '#E0E0E0' }}
+                                                style={styles.reminderCheck}
+                                            />
+                                            <Text style={styles.itemHours}>{moment(new Date(reminder.dateActivity)).add(3, 'hours').format('kk:mm A')}</Text>
+                                            <TouchableOpacity style={styles.containerItemDescription} onPress={() => navigateToDetail(reminder)}>
+                                                <Text style={styles.itemDescription}>{reminder.description}</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+
+                                )
+                            
+                        }}
                     />
                 </View>
 

@@ -17,62 +17,6 @@ const addMonths = require('date-fns/addMonths')
 // var format = require('date-fns/format')
 // import 'moment/locale/pt-br';
 module.exports = {
-  async historicRegister(req, res){
-      var start = new Date();
-      start.setHours(0, 0, 0, 0);
-
-      var end = new Date();
-      end.setHours(23, 59, 59, 999);
-      
-      const reminders = await Reminder.find({ user: req.params.userId })
-          .or([
-              { dayWeek: { $elemMatch: { number: getDay(new Date()) } } }
-              
-          ])
-          .populate('user');
-
-          if(reminders){
-            var date = new Date();
-
-            try {
-                let hist = [];
-                for(let reminder of reminders){
-                  // if(reminder.repeat == true && date.getHours() == 23 && date.getMinutes() == 59){
-                  if(reminder.repeat === true){
-                    let userId = reminder.user;
-              
-                    const reminderHistoric = await Historic.create({
-                      descriptionHistoric: reminder.description,
-                      statusHistoric: reminder.status,
-                      dateActivityHistoric: new Date,
-                      repeatHistoric: reminder.repeat,
-                      dayWeekHistoric: getDay(date),
-                      user: userId,
-                    });
-                    hist.push(reminderHistoric);
-                  } 
-                  // if(reminder.repeat == false && date.getHours() == 23 && date.getMinutes() == 59) {
-                  if(reminder.repeat === false) {
-                    let userId = reminder.user;
-                    const reminderHistoric = await Historic.create({
-                      descriptionHistoric: reminder.description,
-                      statusHistoric: reminder.status,
-                      dateActivityHistoric: reminder.dateActivity,
-                      repeatHistoric: reminder.repeat,
-                      dayWeekHistoric:getDay(date),
-                      user: userId,
-                    });
-                    hist.push(reminderHistoric);
-                  }
-              }
-            res.send(hist);
-            } catch (error) {
-              console.log("Historic error!")
-            }
-        }
-  },
-
-
   async Loop(req, res) {
     var start = new Date();
     start.setHours(0, 0, 0, 0);
@@ -93,7 +37,7 @@ module.exports = {
         
         let hist = [];
         // console.log(getDate(new Date()) + 7);
-        console.log(reminders);
+        
         for(let reminder of reminders){
           const hoje = `${getYear(date)}-` + `${getMonth(date)}-` + `${getDate(date)}`;
           const dateActivityReminder = `${getYear(reminder.dateActivity)}-` + `${getMonth(reminder.dateActivity)}-` + `${getDate(reminder.dateActivity)}`;
@@ -110,6 +54,9 @@ module.exports = {
                 // getYear(date) + getMonth(date) + dateUse + getHours(reminder.dateActivity)
                 // const parsedDate = parseISO(`${new Date}`);
                 // console.log(teste)
+                console.log("Novo Cadastro com Repeat");
+                console.log(`\n`);
+                console.log("<==================================>");
                 if(reminder.repeat === true){
                   let userId = reminder.user;
                   const reminderHistoric = await Reminder.create({

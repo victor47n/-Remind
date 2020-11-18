@@ -19,22 +19,25 @@ module.exports = {
         try {
             const status = false;
             const { description, dateActivity, repeat, dayWeek, userId } = req.body;
-            dateActivity.setHours(dateActivity.getHours() - 3);
+            // dateActivity.setHours(dateActivity.getHours() - 3);
             const reminders = [];
-            let stop = true; 
+            let stop = false; 
             let j = 0;
-            let date =  new Date();
+             // let date =  new Date(2020, 11, 28);
+            let date =  new Date(2020, 10, 27);
+            // let date =  new Date();
             const maxDaysOfMonth = getDaysInMonth(date)
             //checando se o lenbrete é repetitivo
             if(repeat == true){
-                //laço para percorrer os dias do mes
-              for(let i = getDate(date) ; stop == true; i++){
+                
+              //laço para percorrer os dias do mes
+              for(let i = getDate(date) ; stop == false; i++){
               
               if(i > maxDaysOfMonth){
-                console.log(`\n`)
-                console.log("<Passou pela transição de meses>")
+
                 date = addMonths(date, 1);
                 i = 1;
+
               }
               
                 //converte o array em numeros
@@ -47,19 +50,11 @@ module.exports = {
                 //data a ser cadastrada
                 let dateRepeat = new Date(getYear(date), getMonth(date), i, getHours(dateActivity), getMinutes(dateActivity), getSeconds(dateActivity) );
                 dateRepeat.setHours(dateActivity.getHours());
-                j += 1;
-              
-                console.log("Passou pelo for", j, "vezes e pegou o Dia", i, "do mês de", `"${moment(dateRepeat).locale("pt-br").format('MMMM')}"`);
+                
                 // ,`${getHours(dateActivity)}`,`${getMinutes(dateActivity)}`,`${getSeconds(dateActivity)}`);
                 
                 if(getDay(dateRepeat) == valor){
-                  console.log(`\n`)
-                  console.log("Pegou o dia correto! ")
-                  console.log("Data de Repetir: ", getDay(dateRepeat), "-",`${moment(dateRepeat).locale("pt-br").format('dddd')}`)
-                  console.log("Dia da semana: ", valor,  "-", `${moment().weekday(valor).locale("pt-br").format('dddd')}` )
-                  console.log(`\n`)
-                  console.log("<=================================================================>")
-                  console.log(`\n`)
+
                   const reminder = await Reminder.create({
                     status,
                     description,
@@ -71,7 +66,7 @@ module.exports = {
                   reminders.push(reminder);
                   // await reminder.save();
 
-                  stop = false;
+                  stop = true;
                   res.send({ reminder });
                 }
                 
@@ -93,7 +88,6 @@ module.exports = {
             }
      
         } catch (err) {
-            console.log(err)
             res.status(400).send({ error: 'Error creating new reminder' });
         }
     },
