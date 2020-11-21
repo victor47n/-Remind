@@ -12,11 +12,13 @@ import RecoverPassword from './pages/RecoverPassword';
 import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import Reminder from './pages/Reminder';
+import ReminderVinc from './pages/ReminderVinc';
 import EditReminder from './pages/EditReminder';
 import Profile from './pages/Profile';
 import OpenReminder from './pages/OpenReminder';
 import CalendarReminder from './pages/CalendarReminder';
 import SharedAcc from './pages/sharedAccounts';
+import SharedAccList from './pages/sharedAccountsList';
 import SharedAccScreen from './pages/sharedAccountScreen';
 import { DrawerContent } from './pages/Navigation/DrawerContent';
 
@@ -39,13 +41,15 @@ export default function Routes() {
     return (
         <NavigationContainer>
             <AppStack.Navigator screenOptions={{ headerShown: false }}>
+                <AppStack.Screen name="Login" component={Login} />
                 <AppStack.Screen name="SharedAcc" component={SharedAcc} />
                 <AppStack.Screen name="SharedAccScreen" component={SharedAccScreen} />
-                <AppStack.Screen name="Login" component={Login} />
+                <AppStack.Screen name="SharedAccList" component={SharedAccList} />
                 <AppStack.Screen name="Register" component={Register} />
                 <AppStack.Screen name="RecoverPassword" component={RecoverPassword} />
                 <AppStack.Screen name="Home" component={DrawerScreen} />
                 <AppStack.Screen name="Reminder" component={Reminder} />
+                <AppStack.Screen name="ReminderVinculo" component={ReminderVinc} />
                 <AppStack.Screen name="EditReminder" component={EditReminder} />
             </AppStack.Navigator>
         </NavigationContainer>
