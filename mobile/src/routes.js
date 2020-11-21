@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { AsyncStorage } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -27,18 +28,6 @@ import * as Notifications from 'expo-notifications';
 
 
 function DrawerScreen() {
-    return (
-        <Drawer.Navigator initialRouteName="Home" drawerContent={props => <DrawerContent {...props} />}>
-            <Drawer.Screen name="Reminder" component={Reminder} />
-            <Drawer.Screen name="Home" component={Home} />
-            <Drawer.Screen name="OpenReminder" component={OpenReminder} />
-            <Drawer.Screen name="Profile" component={Profile} />
-            <Drawer.Screen name="CalendarReminder" component={CalendarReminder} />
-        </Drawer.Navigator>
-    );
-}
-
-export default function Routes() {
     const [expoPushToken, setExpoPushToken] = useState(null);
 
     useEffect(() => {
@@ -55,13 +44,25 @@ export default function Routes() {
     async function registerForPushNotificationsAsync() {
         if (Constants.isDevice) {
             const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+
             let finalStatus = existingStatus;
+
             if (existingStatus !== 'granted') {
                 const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
                 finalStatus = status;
             }
             if (finalStatus !== 'granted') {
-                alert('Failed to get push token for push notification!');
+                Alert.alert(
+                    'Warning',
+                    'You will not receive reminders if you do not enable push notifications. If you would like to receive reminders, please enable push notifications for Fin in your settings.',
+                    [
+                        { text: 'Cancel' },
+                        // If they said no initially and want to change their mind,
+                        // we can automatically open our app in their settings
+                        // so there's less friction in turning notifications on
+                        { text: 'Enable Notifications', onPress: () => Platform.OS === 'ios' ? Linking.openURL('app-settings:') : Linking.openSettings() }
+                    ]
+                )
                 return;
             }
             const token = (await Notifications.getExpoPushTokenAsync()).data;
@@ -83,11 +84,11 @@ export default function Routes() {
 
     async function sendToken() {
         try {
-            // const idUser = await AsyncStorage.setItem('@Reminder:userId');
+            const idUser = await AsyncStorage.getItem('@Reminder:userId');
 
             const data = {
                 token: expoPushToken,
-                // idUser
+                idUser
             }
 
             const response = await api.post('expo-token', data);
@@ -96,6 +97,18 @@ export default function Routes() {
         }
     }
 
+    return (
+        <Drawer.Navigator initialRouteName="Home" drawerContent={props => <DrawerContent {...props} />}>
+            <Drawer.Screen name="Reminder" component={Reminder} />
+            <Drawer.Screen name="Home" component={Home} />
+            <Drawer.Screen name="OpenReminder" component={OpenReminder} />
+            <Drawer.Screen name="Profile" component={Profile} />
+            <Drawer.Screen name="CalendarReminder" component={CalendarReminder} />
+        </Drawer.Navigator>
+    );
+}
+
+export default function Routes() {
     return (
         <NavigationContainer>
             <AppStack.Navigator screenOptions={{ headerShown: false }}>

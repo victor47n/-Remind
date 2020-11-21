@@ -6,11 +6,11 @@ const ExpoTokenSchema = new mongoose.Schema({
         select: false,
     },
 
-    // user: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User',
-    //     require: true,
-    // },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        require: true,
+    },
 
     createdAt: {
         type: Date,

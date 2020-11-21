@@ -1,21 +1,20 @@
 const ExpoToken = require('../models/expoToken');
+const Reminder = require('../models/reminder');
+const getDay = require('date-fns/getDay');
 const { Expo } = require('expo-server-sdk');
 let expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
 
 module.exports = {
     async storeToken(req, res) {
 
-        // const { token, idUser } = req.body;
         const { token, idUser } = req.body;
 
         console.log(token);
 
-        let response = await ExpoToken.findOne({ where: { token } });
-        // let response = await ExpoToken.findOne({ where: { token, idUser } });
+        let response = await ExpoToken.findOne({ where: { token, idUser } });
 
         if (response == null) {
-            // ExpoToken.create({ token, idUser });
-            ExpoToken.create({ token });
+            ExpoToken.create({ token, user: idUser });
         }
     },
 
@@ -24,11 +23,9 @@ module.exports = {
         let messages = [];
         let somePushTokens = [];
 
-        // const { id, title, body } = req.body;
-        const { title, body } = req.body;
+        const { id, title, body } = req.body;
 
-        let response = await ExpoToken.find({}).select('id token');
-        // let response = await ExpoToken.find({ id: id }).select('id token');
+        let response = await ExpoToken.find({ user: id }).select('token');
 
         response.map((element, index, object) => {
             somePushTokens.push(element.token);
@@ -134,5 +131,30 @@ module.exports = {
                 }
             }
         })();
-    }
+    },
+
+    async notificationSend(req, res) {
+        try {
+
+            var start = new Date();
+            start.setHours(start.getHours());
+            start.setSeconds(0);
+
+            var end = new Date();
+            end.setHours(end.getHours());
+            end.setSeconds(59);
+
+            console.log("INICIO: " + start + " ---- FIM: " + end);
+
+            const reminders = await Reminder.find({
+                dateActivity: { $gte: start, $lte: end }
+            },
+                { description: 1, dateActivity: 1, user: 1, _id: 0 });
+
+            return res.send({ reminders });
+
+        } catch (error) {
+            return res.status(400).send(error);
+        }
+    },
 }

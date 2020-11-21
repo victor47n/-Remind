@@ -83,6 +83,8 @@ routes.get('/reminders/teste/:userId', celebrate({
 	})
 }), RemindersListController.historic);
 
+routes.get('/reminders/all', RemindersListController.all);
+
 routes.post('/reminder', celebrate({
 	[Segments.BODY]: Joi.object().keys({
 		description: Joi.string().required().max(400),
@@ -120,20 +122,22 @@ routes.delete('/reminder/:reminderId', celebrate({
 // NOTIFICAÇÕES
 routes.post('/expo-token', celebrate({
 	[Segments.BODY]: Joi.object().keys({
+		idUser: Joi.string().required(),
 		token: Joi.string().required(),
 	})
 }), NotificationController.storeToken);
 
 routes.post('/notifications', celebrate({
 	[Segments.BODY]: Joi.object().keys({
-		// id: Joi.string().required(),
+		id: Joi.string().required(),
 		title: Joi.string().required(),
 		body: Joi.string().required(),
 	})
 }), NotificationController.getNotification);
 
+routes.get('/notifications/send', NotificationController.notificationSend);
+
 routes.post('/reminders/loop', HistoricController.Loop);
 routes.post('/reminders/testecadastro', HistoricController.TestesCadastros);
-
 
 module.exports = routes;

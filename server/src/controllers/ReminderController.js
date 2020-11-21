@@ -9,7 +9,7 @@ const endOfMonth = require('date-fns/endOfMonth');
 const getDaysInMonth = require('date-fns/getDaysInMonth');
 const getSeconds = require('date-fns/getSeconds');
 const parseISO = require('date-fns/parseISO');
-const moment = require('moment'); 
+const moment = require('moment');
 const differenceInDays = require('date-fns/differenceInDays')
 const addDays = require('date-fns/addDays')
 const addMonths = require('date-fns/addMonths')
@@ -19,60 +19,62 @@ module.exports = {
         try {
             const status = false;
             const { description, dateActivity, repeat, dayWeek, userId } = req.body;
-            // dateActivity.setHours(dateActivity.getHours() - 3);
+
+            dateActivity.setHours(dateActivity.getHours() - 3);
+
             const reminders = [];
-            let stop = false; 
+            let stop = false;
             let j = 0;
-             // let date =  new Date(2020, 11, 28);
+            // let date =  new Date(2020, 11, 28);
             // let date =  new Date(2020, 10, 27);
-            let date =  new Date();
+            let date = new Date();
             const maxDaysOfMonth = getDaysInMonth(date)
             //checando se o lenbrete é repetitivo
-            if(repeat == true){
-                
-              //laço para percorrer os dias do mes
-              for(let i = getDate(date) ; stop == false; i++){
-              
-              if(i > maxDaysOfMonth){
+            if (repeat == true) {
 
-                date = addMonths(date, 1);
-                i = 1;
+                //laço para percorrer os dias do mes
+                for (let i = getDate(date); stop == false; i++) {
 
-              }
-              
-                //converte o array em numeros
-                const valores = dayWeek.map(day => {
-                  return day.number;
-                })
-                //pega o menor valor do array
-                const valor = Math.min(...valores);
-                
-                //data a ser cadastrada
-                let dateRepeat = new Date(getYear(date), getMonth(date), i, getHours(dateActivity), getMinutes(dateActivity), getSeconds(dateActivity) );
-                dateRepeat.setHours(dateActivity.getHours());
-                
-                // ,`${getHours(dateActivity)}`,`${getMinutes(dateActivity)}`,`${getSeconds(dateActivity)}`);
-                
-                if(getDay(dateRepeat) == valor){
+                    if (i > maxDaysOfMonth) {
 
-                  const reminder = await Reminder.create({
-                    status,
-                    description,
-                    dateActivity: dateRepeat,
-                    repeat,
-                    dayWeek,
-                    user: userId,
-                  });
-                  reminders.push(reminder);
-                  // await reminder.save();
+                        date = addMonths(date, 1);
+                        i = 1;
 
-                  stop = true;
-                  res.send({ reminder });
+                    }
+
+                    //converte o array em numeros
+                    const valores = dayWeek.map(day => {
+                        return day.number;
+                    })
+                    //pega o menor valor do array
+                    const valor = Math.min(...valores);
+
+                    //data a ser cadastrada
+                    let dateRepeat = new Date(getYear(date), getMonth(date), i, getHours(dateActivity), getMinutes(dateActivity), getSeconds(dateActivity));
+                    dateRepeat.setHours(dateActivity.getHours());
+
+                    // ,`${getHours(dateActivity)}`,`${getMinutes(dateActivity)}`,`${getSeconds(dateActivity)}`);
+
+                    if (getDay(dateRepeat) == valor) {
+
+                        const reminder = await Reminder.create({
+                            status,
+                            description,
+                            dateActivity: dateRepeat,
+                            repeat,
+                            dayWeek,
+                            user: userId,
+                        });
+                        reminders.push(reminder);
+                        // await reminder.save();
+
+                        stop = true;
+                        res.send({ reminder });
+                    }
+
+
                 }
-                
-               
-              }
-            }else{
+            } else {
                 const reminder = await Reminder.create({
                     status,
                     description,
@@ -83,10 +85,10 @@ module.exports = {
                 });
                 reminders.push(reminder);
                 // await reminder.save();
-    
+
                 res.send({ reminder });
             }
-     
+
         } catch (err) {
             res.status(400).send({ error: 'Error creating new reminder' });
         }
@@ -103,7 +105,7 @@ module.exports = {
                 status,
                 repeat,
                 dateActivity,
-                dayWeek,                
+                dayWeek,
             }, { new: true });
             await reminder.save();
             return res.send({ reminder });
@@ -119,7 +121,7 @@ module.exports = {
             // dateActivity.setHours(dateActivity.getHours() - 3);
 
             const reminder = await Reminder.findByIdAndUpdate(reminderId, {
-                status,         
+                status,
             }, { new: true });
 
             await reminder.save();
