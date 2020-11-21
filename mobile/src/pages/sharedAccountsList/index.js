@@ -25,7 +25,6 @@ export default function SharedAccList({route}) {
         const response = await api.get(`/reminders-today/${vinculo._id}`);
         
         setVinculos(response.data.user.dadosVinculos);
-
         // const vinculos = await AsyncStorage.getItem('@Reminder:vinculos');
         // console.log(vinculos);
         console.log(response.data.user.vinculos);
