@@ -6,6 +6,7 @@ const AuthController = require('./controllers/AuthController');
 const RecoverPassword = require('./controllers/RecoverPassword');
 const ReminderController = require('./controllers/ReminderController');
 const RemindersListController = require('./controllers/RemindersListController');
+const HistoricController = require('./controllers/HistoricController');
 const profileController = require('./controllers/ProfileController');
 const AuthVincController = require('./controllers/AuthVincController');
 
@@ -56,6 +57,21 @@ routes.put('/profile_edit/:userId', celebrate({
   })
 }), profileController.update);
 
+
+/* Lembretes */
+routes.get('/reminders/:userId', celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.required(),
+  })
+}), RemindersListController.index);
+
+routes.get('/reminders-today/:userId', celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.required(),
+  })
+}), RemindersListController.today);
+
+
 //Cadastro de Lembretes
 routes.get('/reminders', RemindersListController.index);
 
@@ -64,6 +80,7 @@ routes.get('/reminder/:reminderId', celebrate({
     reminderId: Joi.string(),
   })
 }), RemindersListController.show);
+
 
 routes.post('/reminder', celebrate({
   [Segments.BODY]: Joi.object().keys({
@@ -136,5 +153,11 @@ routes.delete('/autorizacao_delete/:reminderId', celebrate({
     reminderId: Joi.string().required(),
   })
 }), AuthVincController.destroy);
+
+////////////////////////////////////////////////////////////////////
+
+routes.post('/reminders/loop', HistoricController.Loop);
+routes.post('/reminders/testecadastro', HistoricController.TestesCadastros);
+
 
 module.exports = routes;
