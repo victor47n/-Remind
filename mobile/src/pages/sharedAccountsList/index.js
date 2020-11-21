@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import api from '../../services/api';
 
-export default function SharedAcc() {
+export default function SharedAccList({route}) {
     //Recebe se o usúario possui ou não uma conta vinculada.
     const [acc, setAcc] = useState('');
     const [vinculos, setVinculos] = useState([]);
@@ -16,10 +16,14 @@ export default function SharedAcc() {
 
     const navigation = useNavigation();
 
+    const vinculo = route.params.vinculo;
+    console.log(vinculo._id);
+    
     async function loadEmailVinc() {
 
         const userId = await AsyncStorage.getItem('@Reminder:userId');
-        const response = await api.get(`/profile_list/${userId}`);
+        const response = await api.get(`/reminders-today/${vinculo._id}`);
+        
         setVinculos(response.data.user.dadosVinculos);
 
         // const vinculos = await AsyncStorage.getItem('@Reminder:vinculos');
@@ -28,11 +32,6 @@ export default function SharedAcc() {
         //const getList = await api.get(`reminders-today/${userEmailAuth}`);
 
     };
-
-    async function recordVincAndNavigation(vinculo) {
-        // await AsyncStorage.setItem('@Remider:vinculo', selectedUser);
-        navigation.navigate('SharedAccList', {vinculo});
-    }
 
     function navigateBack() {
         navigation.goBack();
@@ -43,10 +42,10 @@ export default function SharedAcc() {
         navigation.navigate('Reminder');
     }
 
-    function navigateAdd() {
-        navigation.navigate('SharedAccScreen');
-        setAcc(true)
-    }
+    // function navigateAdd() {
+    //     navigation.navigate('SharedAccScreen');
+    //     setAcc(true)
+    // }
 
     useEffect(() => {
         loadEmailVinc()
@@ -55,52 +54,49 @@ export default function SharedAcc() {
     }, []);
 
     let createScreen = () => {
-
         return (
-            <>
-                {vinculos.length ?
-                    vinculos.map(vinculo => {
-                        return (
-                            <LinearGradient
-                                style={styles.falseBox}
-                                colors={["#6C64FB", "#9B67FF"]}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                            // onPress={
-                            //     recordVincAndNavigation
-                            // }
-                            >
-                                <TouchableOpacity onPress={() => recordVincAndNavigation(vinculo)}>
-
-
-                                    <View key={vinculo._id}>
-                                        <Text style={styles.falseTextBox}>{vinculo.email}</Text>
-                                        <MaterialIcons name="people-outline" size={128} color="#FAFAFA" style={styles.personIcon} />
-                                    </View>
-                                </TouchableOpacity>
-                            </LinearGradient>
-
-                        )
-                    })
-                    :
-                    <Text style={styles.falseTextBox}>Nenhuma conta vinculada</Text>
-
-                }
+            <View style={styles.container}>
                 <LinearGradient
-                    style={styles.falseAddButton}
+                    style={styles.trueBox}
                     colors={["#6C64FB", "#9B67FF"]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                 >
-                    <TouchableOpacity onPress={navigateAdd}>
-                        <MaterialIcons name="add" size={32} color="white" />
+                    <View >
+        <Text style={styles.trueTextBoxName}>{vinculo.name}</Text>
+        <Text style={styles.trueTextBoxEmail}>{vinculo.email}</Text>
+
+                        <TouchableOpacity>
+                            <Text style={styles.trueDeleteText}>EXCLUIR VINCULO</Text>
+                        </TouchableOpacity>
+                    </View>
+                </LinearGradient>
+
+                <LinearGradient
+                    style={styles.trueAddButton}
+                    colors={["#6C64FB", "#9B67FF"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                >
+                    <TouchableOpacity onPress={navigateToVincCad} >
+                        <Text style={styles.trueAddText}>NOVA TAREFA</Text>
                     </TouchableOpacity>
                 </LinearGradient>
 
-            </>
-        )
-    }
+                <LinearGradient
+                    style={styles.trueBoxReminder}
+                    colors={["#6C64FB", "#9B67FF"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                >
+                    <View>
+                    </View>
+                </LinearGradient>
 
+            </View>
+        )
+
+    }
     function navigateBack() {
         navigation.goBack();
     }
@@ -117,4 +113,5 @@ export default function SharedAcc() {
             {createScreen()}
         </View>
     )
+
 }

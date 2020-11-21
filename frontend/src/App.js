@@ -16,7 +16,7 @@ function App() {
     <Router>
     <Switch> 
       <Route  path="/reset_password/:email/:token" component={Recovery}/>
-      <Route path="/shared_acc" component={SharedAcc}/>
+      <Route path="/shared_acc/:token" component={SharedAcc}/>
     </Switch>
   </Router>
     

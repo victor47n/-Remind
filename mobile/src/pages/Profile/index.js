@@ -32,6 +32,7 @@ export default function Profile({ navigation }) {
                 const response = await api.put('/profile/edit', data)
                 await AsyncStorage.setItem('@Reminder:userName', name);
                 await AsyncStorage.setItem('@Reminder:userEmail', email);
+                                
                 setPassword('');
                 setPasswordConf('');
                 setEmailTitulo(email);
@@ -101,6 +102,8 @@ export default function Profile({ navigation }) {
                     value={name}
                     onChangeText={setName}
                     autoCapitalize="none"
+                    placeholderTextColor="#E0E0E0"
+                    placeholder="Nome"
                     autoCorrect={false}>
 
                 </TextInput>
@@ -110,6 +113,8 @@ export default function Profile({ navigation }) {
                     value={email}
                     onChangeText={setEmail}
                     autoCapitalize="none"
+                    placeholderTextColor="#E0E0E0"
+                    placeholder="E-mail"
                     autoCorrect={false}>
 
                 </TextInput>

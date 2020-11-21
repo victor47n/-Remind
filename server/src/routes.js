@@ -7,15 +7,11 @@ const RecoverPassword = require('./controllers/RecoverPassword');
 const ReminderController = require('./controllers/ReminderController');
 const RemindersListController = require('./controllers/RemindersListController');
 const profileController = require('./controllers/ProfileController');
-const authMiddleware = require('./middlewares/auth')
 const AuthVincController = require('./controllers/AuthVincController');
 
 
 const routes = express.Router();
-const route = express.Router();
 
-
-route.use(authMiddleware);
 //Cadastro e Login
 routes.post('/auth', celebrate({
   [Segments.BODY]: Joi.object().keys({
@@ -49,29 +45,19 @@ routes.get('/profile_list/:userId', celebrate({
   })
 }), profileController.show);
 
-routes.put('/profile/edit', celebrate({
+routes.put('/profile_edit/:userId', celebrate({
   [Segments.BODY]: Joi.object().keys({
-    userId: Joi.string(),
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
-  // [Segments.PARAMS]: Joi.object().keys({
-  // })
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.string(),
+  })
 }), profileController.update);
 
-/* Lembretes */
-routes.get('/reminders/:userId', celebrate({
-  [Segments.PARAMS]: Joi.object().keys({
-    userId: Joi.required(),
-  })
-}), RemindersListController.index);
-
-routes.get('/reminders-today/:userId', celebrate({
-  [Segments.PARAMS]: Joi.object().keys({
-    userId: Joi.required(),
-  })
-}), RemindersListController.today);
+//Cadastro de Lembretes
+routes.get('/reminders', RemindersListController.index);
 
 routes.get('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
@@ -82,30 +68,25 @@ routes.get('/reminder/:reminderId', celebrate({
 routes.post('/reminder', celebrate({
   [Segments.BODY]: Joi.object().keys({
     description: Joi.string().required().max(400),
-    dateActivity: Joi.date(),
+    dateActivity: Joi.date().required(),
     repeat: Joi.boolean(),
-    userId: Joi.required(),
-    dayWeek: Joi.array(),
+    dayWeek: Joi.array().required(),
+    userId: Joi.required()
   })
 }), ReminderController.store);
 
-routes.put('/reminder/edit', celebrate({
+routes.put('/reminder/:reminderId', celebrate({
   [Segments.BODY]: Joi.object().keys({
-    reminderId: Joi.string().required(),
     description: Joi.string().required(),
-    status: Joi.boolean(),
-    repeat: Joi.boolean(),
-    dateActivity: Joi.date(),
-    dayWeek: Joi.array(),
+    status: Joi.boolean().required(),
+    repeat: Joi.boolean().required(),
+    dateActivity: Joi.date().required(),
+    dayWeek: Joi.array().required(),
   }),
+  [Segments.PARAMS]: Joi.object().keys({
+    reminderId: Joi.string(),
+  })
 }), ReminderController.update);
-
-routes.put('/reminder/status', celebrate({
-  [Segments.BODY]: Joi.object().keys({
-    reminderId: Joi.string().required(),
-    status: Joi.boolean(),
-  }),
-}), ReminderController.updateStatus);
 
 routes.delete('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
@@ -123,8 +104,7 @@ routes.post('/autorizacao_vinculo', celebrate({
 
 routes.put('/autorizacao_update', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
-    email: Joi.string().required().email(),
-    emailAuth: Joi.string().required().email(),
+    
   })
 }), AuthVincController.authVinc);
 

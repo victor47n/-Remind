@@ -5,7 +5,7 @@ const Reminder = require('../models/reminder');
 const authConfig = require('../config/auth.json');
 
 function generateToken(params = {}) {
-  return jwt.sign(params, authConfig.secret,{
+  return jwt.sign(params, authConfig.secret, {
     expiresIn: 86400,
   });
 }
@@ -20,16 +20,16 @@ module.exports = {
       if (!user)
         return res.status(400).send({ error: 'User not found.' });
 
-      const token = generateToken({email, emailAuth});
+      const token = generateToken({ email, emailAuth });
 
       jwt.verify(token, authConfig.secret, (err, decoded) => {
-        if(err) return res.status(401).send({ error: 'Token invalid' });
-    
+        if (err) return res.status(401).send({ error: 'Token invalid' });
+
         console.log("Dados", decoded);
         return console.log(decoded);
       })
 
-      const link = `http://localhost:3333/${token}`;
+      const link = `http://localhost:3000/shared_acc/${token}`;
       const emailSolicitante = `${email}`;
       mailer.sendMail({
         to: emailAuth,
@@ -53,23 +53,43 @@ module.exports = {
 
   },
 
+  //  
+
   async authVinc(req, res) {
-    const { email, emailAuth } = req.params;
+    const { token } = req.body;
 
-    try {
+    const aux = await jwt.verify(token, authConfig.secret, async (err, decoded) => {
+      if (err) return res.status(401).send({ error: 'Token invalid' });
 
-      const user = await User.findOne({ email });
+      const { email, emailAuth } = decoded;
+      try {
 
-      if (!user)
-        return res.status(400).send({ error: 'User not found.' });
+        const user = await User.findOne({ email });
 
-      const update = await User.update({ _id: user._id }, { $push: { vinculos: emailAuth } })
+        if (user.vinculos.length) {
 
-      res.json(update);
+          const arrayAux = user.vinculos;
+          let pos = arrayAux.indexOf(emailAuth);
+          if (pos == -1) {
+            const updated = await User.update({ email: email }, { $push: { vinculos: emailAuth } })
+            return updated.n;
+          }
+        } else {
+          const updated = await User.update({ email: email }, { $push: { vinculos: emailAuth } })
 
-    } catch (error) {
-      res.status(400).send({ error: 'a' });
-    }
+          return updated.n;
+        }
+
+        return null;
+
+      } catch (error) {
+        return error;
+      }
+
+    })
+
+    res.json(aux);
+
   },
 
   async store(req, res) {
