@@ -20,7 +20,7 @@ export default function Login() {
             const userName = response.data.user.name;
             const userId = response.data.user._id;
             const token = response.data.token;
-            
+
             await AsyncStorage.setItem('@Reminder:token', token);
             await AsyncStorage.setItem('@Reminder:userId', userId);
             await AsyncStorage.setItem('@Reminder:userEmail', email);
@@ -37,8 +37,8 @@ export default function Login() {
         }
 
     }
-  
-    function Clear(){
+
+    function Clear() {
         setEmail("");
         setPassword("");
     }

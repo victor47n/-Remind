@@ -9,28 +9,42 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export default function Profile({ navigation }) {
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [emailTitulo, setEmailTitulo] = useState('');
+    const [nameTitulo, setNameTitulo] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConf, setPasswordConf] = useState('');
-    const [name, setName] = useState('');
+    const [user, setUser] = useState({});
 
     async function handleChangeInfo() {
         try {
             if (password === passwordConf) {
 
                 const userId = await AsyncStorage.getItem('@Reminder:userId');
+                const data = {
+                    userId,
+                    name,
+                    email,
+                    password
+                }
+                console.log(data);
 
-
-
-
-                const response = await api.put(`/profile_edit/${userId}`, { name, email, password })
-                await AsyncStorage.setItem('@Reminder:userEmail', email);
+                const response = await api.put('/profile/edit', data)
                 await AsyncStorage.setItem('@Reminder:userName', name);
-                alert("Mudança foi um sucesso");
+                await AsyncStorage.setItem('@Reminder:userEmail', email);
+                                
+                setPassword('');
+                setPasswordConf('');
+                setEmailTitulo(email);
+                setNameTitulo(name);
 
+                alert("Mudança concluida com sucesso");
             } else {
                 alert("Senhas Diferentes");
             }
+
             console.log(response)
+
         } catch (error) {
 
             console.log(error)
@@ -41,30 +55,28 @@ export default function Profile({ navigation }) {
 
     async function navigateToBack() {
         navigation.goBack();
-        setName(await AsyncStorage.getItem('@Reminder:userName'));
-        setEmail(await AsyncStorage.getItem('@Reminder:userEmail'));
-        setPassword("");
-        setPasswordConf("");
     }
-
-
 
     async function loadInfos() {
         const name = await AsyncStorage.getItem('@Reminder:userName');
         const email = await AsyncStorage.getItem('@Reminder:userEmail');
 
+        const response = await api.get(`/profile_list/${AsyncStorage.getItem('@Reminder:userId')}`);
+
         setEmail(email);
+        setEmailTitulo(email)
         setName(name);
+        setNameTitulo(name);
     }
 
     useEffect(() => {
         loadInfos()
     }, []);
 
-
     function navigateToBack() {
         navigation.navigate('Home');
     }
+
     return (
         <View style={styles.container}>
 
@@ -77,22 +89,21 @@ export default function Profile({ navigation }) {
                 </TouchableOpacity>
 
                 <View style={styles.headerProfile}>
-                    <Text style={styles.profileName}>{name}</Text>
+                    <Text style={styles.profileName}>{nameTitulo}</Text>
 
-                    <Text style={styles.profileEmail}> {email}</Text>
+                    <Text style={styles.profileEmail}> {emailTitulo}</Text>
                 </View>
 
             </LinearGradient>
 
-
-
             <View style={styles.formulary}>
-
                 <TextInput
                     style={styles.input}
                     value={name}
                     onChangeText={setName}
                     autoCapitalize="none"
+                    placeholderTextColor="#E0E0E0"
+                    placeholder="Nome"
                     autoCorrect={false}>
 
                 </TextInput>
@@ -102,6 +113,8 @@ export default function Profile({ navigation }) {
                     value={email}
                     onChangeText={setEmail}
                     autoCapitalize="none"
+                    placeholderTextColor="#E0E0E0"
+                    placeholder="E-mail"
                     autoCorrect={false}>
 
                 </TextInput>
@@ -129,11 +142,9 @@ export default function Profile({ navigation }) {
                     autoCorrect={false}>
 
                 </TextInput>
-
             </View>
 
             <View style={styles.buttonBox}>
-
                 <TouchableOpacity onPress={handleChangeInfo} >
                     <LinearGradient style={styles.botao}
                         colors={['#6C64FB', '#9B67FF']}
@@ -142,19 +153,7 @@ export default function Profile({ navigation }) {
                         <Text style={styles.botaoTexto} >SALVAR</Text>
                     </LinearGradient>
                 </TouchableOpacity>
-
             </View>
-
         </View>
-
-
-
     );
-
-
-
-
-
-
-
 }
