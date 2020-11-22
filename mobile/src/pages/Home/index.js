@@ -39,7 +39,7 @@ export default function Home({ navigation }) {
 
     useEffect(() => {
         loadReminders();
-    }, [reminders]);
+    }, []);
 
     function navigateToReminder() {
         navigation.navigate('Reminder');

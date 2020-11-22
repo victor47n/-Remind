@@ -148,8 +148,8 @@ export default function Reminder({ navigation }) {
             console.log(time.getHours(), time.getMinutes(), time.getSeconds());
 
             try {
-                // alert(dayWeek.length);
                 const response = await api.post('reminder', data);
+                console.log(response);
                 if (response.status >= 200 && response.status < 300) {
                     // Clear();
                     navigateBack();
@@ -164,6 +164,7 @@ export default function Reminder({ navigation }) {
                 userId: await AsyncStorage.getItem('@Reminder:userId'),
                 repeat: false,
             }
+            console.log(data);
             try {
                 const response = await api.post('reminder', data);
                 if (response.status >= 200 && response.status < 300) {

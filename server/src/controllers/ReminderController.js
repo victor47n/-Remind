@@ -16,6 +16,7 @@ const addMonths = require('date-fns/addMonths')
 
 module.exports = {
     async store(req, res) {
+        console.log("AQUI");
         try {
             const status = false;
             const { description, dateActivity, repeat, dayWeek, userId } = req.body;

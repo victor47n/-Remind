@@ -87,7 +87,7 @@ routes.post('/reminder', celebrate({
     description: Joi.string().required().max(400),
     dateActivity: Joi.date().required(),
     repeat: Joi.boolean(),
-    dayWeek: Joi.array().required(),
+    dayWeek: Joi.array(),
     userId: Joi.required()
   })
 }), ReminderController.store);
