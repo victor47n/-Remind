@@ -40,6 +40,11 @@ export default StyleSheet.create({
         flex: 1,
     },
 
+    containerReminder: {
+        flex: 1,
+        paddingTop: 40,
+    },
+
     sectionHeader: {
         flexDirection: 'row',
         marginTop: 16,

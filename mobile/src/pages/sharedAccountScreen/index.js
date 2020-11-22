@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import api from '../../services/api';
 
-export default function RecuperarSenha() {
-    const [email, setEmail] = useState('');
+export default function SharedAccScreen() {
+    
+    const [emailAuth, setEmailAuth] = useState('');
 
-    async function handleRecoveryToken() {
+    async function handleVincAcc() {
+        const userEmail = await AsyncStorage.getItem('@Reminder:userEmail');
         const data = {
-
-            email,
+            email: userEmail,
+            emailAuth,
         }
         try {
-            const response = await api.post('/forgot_password', data);
+            const response = await api.post('/autorizacao_vinculo', data);
             Alert.alert(
-                'Alert Title',
-                'My Alert Msg',
+                'Sucesso',
+                'Solicitação de vinculo enviada!',
                 [
                     { text: 'OK', onPress: () => navigateBack() }
                 ],
@@ -67,21 +70,21 @@ export default function RecuperarSenha() {
             <View style={styles.container}>
 
                 <View style={styles.head}>
-                    <Text style={styles.title} >Recuperar Senha</Text>
+                    <Text style={styles.title} >Vincular Contas</Text>
 
-                    <Text style={styles.description} >Insira o email de sua conta e enviaremos um token para redefinição de senha</Text>
+                    <Text style={styles.description} >Insira o email da conta a ser vinculada, que enviaremos um email de confirmação para essa conta :)</Text>
                 </View>
 
-
+                <Text style={styles.description} ></Text>
                 <TextInput style={styles.input}
-                    value={email}
-                    onChangeText={setEmail}
+                    value={emailAuth}
+                    onChangeText={setEmailAuth}
                     autoCapitalize="none"
                     placeholderTextColor="#E0E0E0"
-                    placeholder="Email"
+                    placeholder="Digite o email a ser vinculado"
                     autoCorrect={false} />
 
-                <TouchableOpacity onPress={handleRecoveryToken} >
+                <TouchableOpacity onPress={handleVincAcc} >
                     <LinearGradient style={styles.button}
                         colors={['#6C64FB', '#9B67FF']}
                         start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}

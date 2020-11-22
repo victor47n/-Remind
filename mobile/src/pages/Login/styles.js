@@ -68,7 +68,7 @@ export default StyleSheet.create({
         width: 280,
         fontSize: 16
     },
-    
+
     lostSenha: {
         alignSelf: 'flex-end',
     },

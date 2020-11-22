@@ -13,10 +13,15 @@ export function DrawerContent({ route,navigation }) {
     function navigateToLogin() {
         navigation.navigate('Login');
     }
+    function navigateToSharedAcc() {
+        navigation.navigate('SharedAcc');
+    }
     function navigateToProfile() {
         navigation.navigate('Profile');
     }
-    
+    function navigateToSharedScreen() {
+        navigation.navigate('SharedAcc');
+    }
     
     return (
         <View style={{ flex: 1 }}>
@@ -32,6 +37,12 @@ export function DrawerContent({ route,navigation }) {
                         <MaterialIcons name="perm-identity" size={24} color="#FAFAFA" />
                         <Text style={styles.optionsText}>Perfil</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.options} onPress={navigateToSharedAcc} >
+                        <MaterialIcons name="perm-identity" size={24} color="#FAFAFA" />
+                        <Text style={styles.optionsText}>Vínculo</Text>
+
+                  </TouchableOpacity>
                     <TouchableOpacity style={styles.options} onPress={navigateToLogin}>
                         <MaterialIcons name="power-settings-new" size={24} color="#FAFAFA" />
                         <Text style={styles.optionsText}>Sair</Text>

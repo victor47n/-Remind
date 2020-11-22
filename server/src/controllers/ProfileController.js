@@ -4,6 +4,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const authConfig = require('../config/auth');
 const router = express.Router();
+const vincularService = require('../utils/populaVinc');
 
 router.use(authMiddleware);
 
@@ -11,8 +12,8 @@ router.use(authMiddleware);
 module.exports = {
     async update(req, res) {
         try {
-            const { name, email, password } = req.body;
-            const { userId } = req.params;
+            const { userId, name, email, password } = req.body;
+            // const { userId } = req.params;
 
             if (email) {
                 const userFind = await User.findOne({ email })
@@ -47,11 +48,15 @@ module.exports = {
 
     async show(req, res) {
         try {
-            const user = await User.findById(req.params.userId).populate('user');
-
+            const user = await (await User.findById(req.params.userId).populate('user').lean());
+            const dados = await vincularService.geraVinculos(user.vinculos)
+            
+            user.dadosVinculos = dados;
+            console.log("ABATEUA UI",user);
             return res.send({ user });
         } catch (error) {
             return res.status(400).send({ error: 'Erro loading reminder' });
         }
     }
 };
+
