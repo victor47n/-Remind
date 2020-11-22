@@ -19,6 +19,7 @@ export default function OpenReminder({ route, navigation }) {
     const remindInfo = route.params.reminder;
     async function showReminder(){
         const response = await api.get(`reminder/${remindInfo._id}`);
+        console.log(reminder.data)
         const detail = response.data.reminder;
         await setReminder(detail);
     }
@@ -29,6 +30,7 @@ export default function OpenReminder({ route, navigation }) {
 
     useEffect(() => {
         showReminder()
+        
     }, [remindInfo])
 
     function navigateToReminder(reminder) {
@@ -132,7 +134,7 @@ export default function OpenReminder({ route, navigation }) {
 
                 <View style={styles.container}>
 
-                    <Text style={styles.reminderName}>{reminder === null ? "Apagado": reminder.description}</Text>
+                    <Text style={styles.reminderName}>{reminder !== null ? reminder.description:"Apagado"}</Text>
                     {reminder.repeat === true ?  showDayWeek() : showDate() }
                     {/* <Text style={styles.reminderHour}>{`${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}`}</Text> */}
                     {/* <Text style={styles.reminderRepeat}>Repete Repetição</Text> */}

@@ -70,6 +70,13 @@ routes.get('/reminders-today/:userId', celebrate({
     userId: Joi.required(),
   })
 }), RemindersListController.today);
+
+routes.get('/reminder/:reminderId', celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    userId: Joi.required(),
+  })
+}), RemindersListController.show);
+
 routes.get('/reminders/teste/:userId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
     userId: Joi.required(),

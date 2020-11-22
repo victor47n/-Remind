@@ -74,7 +74,7 @@ module.exports = {
 
     async show(req, res) {
         try {
-            const reminder = await Reminder.findById(req.params.reminderId).populate('user');
+            const reminder = await Reminder.findById(req.params.reminderId);
             return res.send({ reminder });
         } catch (error) {
             return res.status(400).send({ error: 'Erro loading reminder' });
