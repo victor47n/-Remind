@@ -87,7 +87,7 @@ export default function EditReminder({ route, navigation }) {
         }
     };
     function goToBack() {
-        navigation.navigate('OpenReminder');
+        navigation.navigate('OpenCalendReminder');
     }
 
     const showMode = (currentMode) => {
@@ -112,6 +112,7 @@ export default function EditReminder({ route, navigation }) {
     };
 
  
+
     function handleDayWeek(number) {
         const alreadySelected = dayWeek.findIndex(item => item === number);
 

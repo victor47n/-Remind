@@ -21,7 +21,7 @@ export default function Register() {
                 email,
                 password,
             };
-            console.log(data);
+            
             try {
                 const response = await api.post('register', data);
                 if (response.status >= 200 && response.status < 300) {

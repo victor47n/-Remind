@@ -31,6 +31,8 @@ export default function Home({ navigation }) {
 
         if (getList.data.reminders) {
             let arrayReminders = getList.data.reminders;
+            // const alreadySelected = arrayReminders.findIndex(item => item === id)
+            // setRemindCheck([...remindCheck, id]);    
             setReminders(arrayReminders);
         } else {
             console.log("Sem lembretes para hoje");
@@ -38,8 +40,11 @@ export default function Home({ navigation }) {
     };
 
     useEffect(() => {
-        loadReminders();
-    }, [reminders]);
+        const timer = setInterval(() => {
+            loadReminders()
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
 
     function navigateToReminder() {
         navigation.navigate('Reminder');
@@ -63,12 +68,12 @@ export default function Home({ navigation }) {
                         reminderId: id,
                         status: false,
                     }
-                    console.log("false");
+                    // console.log("false");
                     const response = await api.put('reminder/status', data);
                     setRemindCheck([...remindCheck, id]);    
                     
                 } catch (error) {
-                    console.log(error)
+                    alert(error);
                 }
             }    
             if(getDetails.status === false){
@@ -84,7 +89,7 @@ export default function Home({ navigation }) {
                     const response = await api.put('reminder/status', data);    
                     
                 } catch (error) {
-                    console.log(error)
+                    console.log(error)  
                 }
             }
     }
@@ -143,16 +148,16 @@ export default function Home({ navigation }) {
                             >
                                 <View style={styles.remindContent}>
                                     <CheckBox
-                                        value={remindCheck.includes(reminder._id) ? true:false}
+                                        value={reminder.status}
                                         onValueChange={() => handleStateReminder(reminder._id)}
                                         // onPress={handleStateReminder}
                                         tintColors={{ true: '#6C64FB', false: '#E0E0E0' }}
                                         style={styles.reminderCheck}
                                     />
                                     <View>
-                                        <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextDescriptionSelected : styles.reminderTextDescription}>{reminder !== null ? reminder.description : "Apagado"}</Text>
+                                        <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextDescriptionSelected : styles.reminderTextDescription}>{reminder !== null ? reminder.description:"Apagado"}</Text>
                                         <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextTimeSelected : styles.reminderTextTime}>
-                                            {reminder !== null ? `${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}` : "Apagado"}
+                                            {reminder !== null ?`${moment(new Date(reminder.dateActivity), "hmm").add(3, 'hours').format("HH:mm")}`:"Apagado"}
                                         </Text>
                                     </View>
                                 </View>
@@ -164,4 +169,3 @@ export default function Home({ navigation }) {
         </View>
     );
 }
-

@@ -27,7 +27,7 @@ export default function Login() {
             await AsyncStorage.setItem('@Reminder:userName', userName);
 
             if (response.status >= 200 && response.status < 300) {
-                // Clear();
+                Clear();
                 navigateToHome(userId);
             }
 
