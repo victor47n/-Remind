@@ -23,21 +23,18 @@ module.exports = {
         let messages = [];
         let somePushTokens = [];
 
-        const { id, title, body } = req.body;
+        // const { description, dateActivity, user } = req.body;
 
-        let response = await ExpoToken.find({ user: id }).select('token');
+        console.log(req.user);
 
-        var start = new Date();
-        start.setHours(0, 0, 0, 0);
+        let response = await ExpoToken.find({ user: req.user }).select('token');
 
-        var end = new Date();
-        end.setHours(23, 59, 59, 999);
 
-        const reminders = await Reminder.find({ user: id })
-            .or([
-                { dayWeek: { $elemMatch: { number: getDay(new Date()) } } },
-                { dateActivity: { $gte: start, $lt: end } }
-            ]);
+        // const reminders = await Reminder.find({ user: user })
+        //     .or([
+        //         { dayWeek: { $elemMatch: { number: getDay(new Date()) } } },
+        //         { dateActivity: { $gte: start, $lt: end } }
+        //     ]);
 
         response.map((element, index, object) => {
             somePushTokens.push(element.token);
@@ -51,14 +48,14 @@ module.exports = {
                 console.error(`Push token ${pushToken} is not a valid Expo push token`);
                 continue;
             }
-            console.log(reminders);
-            const date = new Date(reminders[0].dateActivity).toLocaleTimeString
+            // console.log(reminders);
+            const date = new Date(req.dateActivity).toLocaleTimeString
             // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
             messages.push({
                 to: pushToken,
                 sound: 'default',
                 title: date,
-                body: reminders[0].description,
+                body: req.description,
             })
             console.log('Enviado')
         }
@@ -151,17 +148,17 @@ module.exports = {
         try {
 
             var start = new Date();
-            start.setHours(start.getHours());
-            start.setSeconds(0);
+            start.setHours(start.getHours() - 1);
+            start.setSeconds(0, 0);
 
             var end = new Date();
             end.setHours(end.getHours());
-            end.setSeconds(59);
+            end.setSeconds(59, 999);
 
             console.log("INICIO: " + start + " ---- FIM: " + end);
 
             const reminders = await Reminder.find({
-                dateActivity: { $gte: start, $lte: end }
+                dateActivity: { $gte: start }
             },
                 { description: 1, dateActivity: 1, user: 1, _id: 0 });
 

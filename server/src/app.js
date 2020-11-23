@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const routes = require('./routes')
+const routes = require('./routes');
+const cron = require("node-cron");
 
 const { errors } = require('celebrate');
 
