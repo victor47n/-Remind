@@ -14,6 +14,7 @@ import styles from './styles';
 export default function EditReminder({ route, navigation }) {
     moment.locale('pt-BR');
     moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
+    const toggleSwitch = () => setRepeat(previousState => !previousState);
     const [dayWeek, setDayWeek] = useState([]);
     const [reminder, setReminder] = useState({});
     const [date, setDate] = useState(new Date());
