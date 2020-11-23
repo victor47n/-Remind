@@ -61,16 +61,40 @@ export default function CalendarReminder() {
         };
     }
 
-    function handleStateReminder(id) {
+    async function handleStateReminder(id) {
         const alreadySelected = remindCheck.findIndex(item => item === id);
-
-        if (alreadySelected >= 0) {
-            const filteredItems = remindCheck.filter(item => item !== id)
-
-            setRemindCheck(filteredItems);
-        } else {
-            setRemindCheck([...remindCheck, id]);
-        }
+        const getReminder = await api.get(`reminder/${id}`);
+        const  getDetails = getReminder.data.reminder;
+        if (getDetails.status === true) {
+                try {
+                    let data = {
+                        reminderId: id,
+                        status: false,
+                    }
+                    // console.log("false");
+                    const response = await api.put('reminder/status', data);
+                    setRemindCheck([...remindCheck, id]);    
+                    
+                } catch (error) {
+                    alert(error);
+                }
+            }    
+            if(getDetails.status === false){
+                const filteredItems = remindCheck.filter(item => item !== id);
+                setRemindCheck(filteredItems);
+                
+                try {
+                    let data = {
+                        reminderId: id,
+                        status: true,
+                    }
+                    console.log("true");
+                    const response = await api.put('reminder/status', data);    
+                    
+                } catch (error) {
+                    console.log(error)  
+                }
+            }
     }
 
     const data = [
@@ -281,7 +305,7 @@ export default function CalendarReminder() {
                                         </View>
                                         <View style={styles.item}>
                                             <CheckBox
-                                                value={remindCheck.includes(reminder._id) ? true : false}
+                                                value={reminder.status}
                                                 onValueChange={() => handleStateReminder(reminder._id)}
                                                 tintColors={{ true: '#6C64FB', false: '#E0E0E0' }}
                                                 style={styles.reminderCheck}

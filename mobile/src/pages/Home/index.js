@@ -148,7 +148,7 @@ export default function Home({ navigation }) {
                             >
                                 <View style={styles.remindContent}>
                                     <CheckBox
-                                        value={remindCheck.includes(reminder._id) ? true:false}
+                                        value={reminder.status}
                                         onValueChange={() => handleStateReminder(reminder._id)}
                                         // onPress={handleStateReminder}
                                         tintColors={{ true: '#6C64FB', false: '#E0E0E0' }}

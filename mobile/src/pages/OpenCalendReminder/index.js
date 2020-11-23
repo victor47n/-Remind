@@ -27,7 +27,11 @@ export default function OpenReminder({ route, navigation }) {
     }
 
     useEffect(() => {
-        showReminder()
+        const timer = setInterval(() => {
+            showReminder()
+        }, 1000);
+        
+        return () => clearInterval(timer);
     }, [remindInfo])
 
     function navigateToReminder(reminder) {

@@ -106,6 +106,14 @@ routes.put('/reminder/edit', celebrate({
   // [Segments.PARAMS]: Joi.object().keys({
   // })
 }), ReminderController.update);
+routes.put('/reminder/status', celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    reminderId: Joi.string().required(),
+    status: Joi.boolean(),
+  }),
+  // [Segments.PARAMS]: Joi.object().keys({
+  // })
+}), ReminderController.updateStatus);
 
 routes.delete('/reminder/:reminderId', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
