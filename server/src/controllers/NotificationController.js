@@ -27,6 +27,18 @@ module.exports = {
 
         let response = await ExpoToken.find({ user: id }).select('token');
 
+        var start = new Date();
+        start.setHours(0, 0, 0, 0);
+
+        var end = new Date();
+        end.setHours(23, 59, 59, 999);
+
+        const reminders = await Reminder.find({ user: id })
+            .or([
+                { dayWeek: { $elemMatch: { number: getDay(new Date()) } } },
+                { dateActivity: { $gte: start, $lt: end } }
+            ]);
+
         response.map((element, index, object) => {
             somePushTokens.push(element.token);
         });
@@ -39,14 +51,16 @@ module.exports = {
                 console.error(`Push token ${pushToken} is not a valid Expo push token`);
                 continue;
             }
-
+            console.log(reminders);
+            const date = new Date(reminders[0].dateActivity).toLocaleTimeString
             // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
             messages.push({
                 to: pushToken,
                 sound: 'default',
-                title: title,
-                body: body,
+                title: date,
+                body: reminders[0].description,
             })
+            console.log('Enviado')
         }
 
         // The Expo push notification service accepts batches of notifications so
