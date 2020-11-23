@@ -87,7 +87,7 @@ export default function EditReminder({ route, navigation }) {
         }
     };
     function goToBack() {
-        navigation.navigate('OpenReminder');
+        navigation.navigate('OpenVincReminder');
     }
 
     const showMode = (currentMode) => {
@@ -111,7 +111,10 @@ export default function EditReminder({ route, navigation }) {
         return `${("0" + time.getHours()).slice(-2)}:${("0" + time.getMinutes()).slice(-2)}`;
     };
 
- 
+    function navigateToHome() {
+        navigation.goBack();
+    }
+
     function handleDayWeek(number) {
         const alreadySelected = dayWeek.findIndex(item => item === number);
 

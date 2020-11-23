@@ -35,7 +35,7 @@ export default function OpenVincReminder({ route, navigation }) {
     }, [remindInfo])
 
     function navigateToReminder(reminder) {
-        navigation.navigate('EditReminder', { reminder });
+        navigation.navigate('EditVincReminder', { reminder });
     }
 
     function finishReminder() {

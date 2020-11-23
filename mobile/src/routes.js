@@ -15,6 +15,8 @@ import Reminder from './pages/Reminder';
 import ReminderVinc from './pages/ReminderVinc';
 import ReminderCalend from './pages/ReminderCalend';
 import EditReminder from './pages/EditReminder';
+import EditVincReminder from './pages/EditVincReminder';
+import EditCalendReminder from './pages/EditCalendReminder';
 import Profile from './pages/Profile';
 import OpenReminder from './pages/OpenReminder';
 import OpenVincReminder from './pages/OpenVincReminder';
@@ -57,7 +59,8 @@ export default function Routes() {
                 <Drawer.Screen name="OpenVincReminder" component={OpenVincReminder} />
                 <Drawer.Screen name="OpenCalendReminder" component={OpenCalendReminder} />
                 <AppStack.Screen name="EditReminder" component={EditReminder} />
-                <AppStack.Screen name="EditVincReminder" component={EditReminder} />
+                <AppStack.Screen name="EditVincReminder" component={EditVincReminder} />
+                <AppStack.Screen name="EditCalendReminder" component={EditCalendReminder} />
             </AppStack.Navigator>
         </NavigationContainer>
     );

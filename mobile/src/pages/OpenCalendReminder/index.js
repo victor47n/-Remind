@@ -35,7 +35,7 @@ export default function OpenReminder({ route, navigation }) {
     }, [remindInfo])
 
     function navigateToReminder(reminder) {
-        navigation.navigate('EditReminder', { reminder });
+        navigation.navigate('EditCalendReminder', { reminder });
     }
 
     function finishReminder() {
