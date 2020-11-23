@@ -8,57 +8,32 @@ import 'moment/locale/pt-br';
 import moment from "moment";
 
 import styles from './styles';
-import { DrawerContentScrollView } from '@react-navigation/drawer';
 
-export default function OpenReminder({ route, navigation }) {
+export default function OpenVincReminder({ route, navigation }) {
     moment.locale('pt-BR');
     moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
-    // const toggleSwitch = () => setRepeat(previousState => !previousState);
+    
     const [reminder, setReminder] = useState([]);
-    const [days, setDays] = useState([]);
-    // const [dayWeek, setDayWeek] = useState([]);
-    const [repeat, setRepeat] = useState(false);
+    
     const remindInfo = route.params.reminder;
     async function showReminder(){
         const response = await api.get(`reminder/${remindInfo._id}`);
         const detail = response.data.reminder;
         await setReminder(detail);
-        await setRepeat(detail.repeat);
-        // await setDayWeek([...reminder.dayWeek, number]);
+    }
+    
+    function goToBack() {
+        navigation.navigate('SharedAccList');
     }
 
-    useEffect( () => {
+    useEffect(() => {
         const timer = setInterval(() => {
             showReminder()
         }, 1000);
         
         return () => clearInterval(timer);
-    }, [remindInfo]);
+    }, [remindInfo])
 
-    const data = [
-        {
-            number: '0',
-        },
-        {
-            number: '1',
-        },
-        {
-            number: '2',
-        },
-        {
-            number: '3',
-        },
-        {
-            number: '4',
-        },
-        {
-            number: '5',
-        },
-        {
-            number: '6',
-        },
-    ];
-    
     function navigateToReminder(reminder) {
         navigation.navigate('EditReminder', { reminder });
     }
@@ -90,13 +65,11 @@ export default function OpenReminder({ route, navigation }) {
         }
         
     }
-    function goToBack() {
-        navigation.navigate('Home');
-    }
+
     async function excluir() {
         try {
             const response = await api.delete(`reminder/${reminder._id}`);
-            goToBack();
+            goToBack()
         } catch (error) {
             alert(error);
         }
@@ -106,34 +79,21 @@ export default function OpenReminder({ route, navigation }) {
     //     console.log(_day) 
     // })
     let showDayWeek = () =>{
-        // const valores = reminder.dayWeek.map(day => {
-        //     // console.log(day.number)
-        //     return day.number;
-        //   })
-
-        if(reminder ){
-        return(
-            <View>
-                <Text style={styles.reminderRepeat}>{reminder !== null ? moment(reminder.dateActivity).format('LL'):"Apagado"}</Text> 
-                <Text style={styles.reminderRepeat}>Repetir: {reminder !== null ? moment(new Date(reminder.dateActivity), "d").format('dddd'):"Apagado"}</Text> 
-                <Text style={styles.reminderRepeat}>Horario: {reminder !== null ? moment(new Date(reminder.dateActivity), "hmm").add(3, 'hours').format("HH:mm"):"Apagado"}</Text> 
-                {/* <Text style={styles.reminderRepeat}>{}</Text>  */}
-                {/* {
-                reminder.dayWeek.map(day => {
-                    <>  
-                        <Text  key={day.number} >{reminder !== null ? moment(new Date(day.number), "d").format('dddd'):"Apagado"}</Text>
-                    </>
-                 })
-                } */}
-            </View>
-        )}
+        if(reminder){
+            return(
+                <View>
+                    <Text style={styles.reminderRepeat}>{reminder !== null ? moment(reminder.dateActivity).format('LL'):"Apagado"}</Text> 
+                    <Text style={styles.reminderRepeat}>Repetir: {reminder !== null ? moment(new Date(reminder.dateActivity), "d").format('dddd'):"Apagado"}</Text> 
+                    <Text style={styles.reminderRepeat}>Horario: {reminder !== null ? moment(new Date(reminder.dateActivity), "hmm").add(3, 'hours').format("HH:mm"):"Apagado"}</Text> 
+                </View>
+            )}
     }
     let showDate = () => {
         if(reminder){
         return(
             <View>
                 <Text style={styles.reminderRepeat}>{reminder !== null ? moment(reminder.dateActivity).format('LL'):"Apagado"}</Text> 
-                <Text style={styles.reminderRepeat}>{reminder !== null ? moment(reminder.dateActivity).add(3, 'hours').calendar():"Apagado"}</Text> 
+                <Text style={styles.reminderRepeat}>{reminder !== null ? moment(reminder.dateActivity).add(3, 'days').calendar():"Apagado"}</Text> 
             </View>
         )}
     }
@@ -172,25 +132,6 @@ export default function OpenReminder({ route, navigation }) {
 
                     <Text style={styles.reminderName}>{reminder === null ? "Apagado": reminder.description}</Text>
                     {reminder.repeat === true ?  showDayWeek() : showDate() }
-                    
-                {/* <View style={styles.repeatBox}>
-                    <Text style={styles.repeatTitle}>Repetir às/aos</Text>
-                    <FlatList
-                        style={styles.week}
-                        data={reminder.dayWeek}
-                        numColumns={7}
-                        contentContainerStyle={{ paddingBottom: 24, paddingTop: 16, paddingHorizontal: 40, }}
-                        keyExtractor={_week => String(_week.number)}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item: _week }) => (
-                            
-                                <Text style={dayWeek.includes(_week.number) ? styles.weekDayTextSelected : styles.weekDayText}>{moment(new Date(_week.number), "d").format('dddd')`\n`}</Text>
-                            
-                        )}
-                    >
-                    </FlatList>
-                </View> */}
-
                     {/* <Text style={styles.reminderHour}>{`${moment(new Date(reminder.dateActivity), "hmm").format("HH:mm")}`}</Text> */}
                     {/* <Text style={styles.reminderRepeat}>Repete Repetição</Text> */}
                 </View>

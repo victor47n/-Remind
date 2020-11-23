@@ -67,9 +67,7 @@ export default function Reminder({ navigation }) {
     ];
 
     // useEffect(()=>{
-    //     const date = new Date();
-    //     const teste = moment().weekday(7);
-    //     console.log(teste);
+    //     Clear();
     // },[])
     const onChange = (event, selectedDate) => {
         if (mode == 'date') {
@@ -97,7 +95,13 @@ export default function Reminder({ navigation }) {
     };
 
     const formatDate = (date) => {
-        return `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
+        // let day = new Date();
+        // if(date.getDate() != undefined){
+            return `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
+        // }else{
+        //     return `${("0" + day.getDate()).slice(-2)}/${("0" + (day.getMonth() + 1)).slice(-2)}/${day.getFullYear()}`;
+
+        // }
     };
 
     const formatHours = (time) => {
@@ -139,13 +143,12 @@ export default function Reminder({ navigation }) {
                 ,
                 userId: await AsyncStorage.getItem('@Reminder:userId'),
             }
-            console.log(time.getHours(), time.getMinutes(), time.getSeconds());
+            
 
             try {
-                // alert(dayWeek.length);
                 const response = await api.post('reminder', data);
                 if (response.status >= 200 && response.status < 300) {
-                    // Clear();
+                    Clear();
                     navigateBack();
                 }
             } catch (error) {
@@ -161,7 +164,7 @@ export default function Reminder({ navigation }) {
             try {
                 const response = await api.post('reminder', data);
                 if (response.status >= 200 && response.status < 300) {
-                    // Clear();
+                    Clear();
                     navigateBack();
                 }
             } catch (error) {
@@ -171,8 +174,8 @@ export default function Reminder({ navigation }) {
     }
     function Clear() {
         setDescription("");
-        setRepeat("");
-        setDaysWeek("");
+        setRepeat(false);
+        setDaysWeek([]);
     }
 
     function navigateBack() {

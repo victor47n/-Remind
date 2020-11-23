@@ -21,7 +21,7 @@ export default function ResetarSenha() {
             token,
             password,
         };
-        console.log(data);
+        
         try {
             const response = await api.post('/reset_password', data);
             alert('Senha Alterada com Sucesso');

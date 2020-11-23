@@ -12,11 +12,18 @@ import RecoverPassword from './pages/RecoverPassword';
 import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import Reminder from './pages/Reminder';
+import ReminderVinc from './pages/ReminderVinc';
+import ReminderCalend from './pages/ReminderCalend';
 import EditReminder from './pages/EditReminder';
 import Profile from './pages/Profile';
 import OpenReminder from './pages/OpenReminder';
+import OpenVincReminder from './pages/OpenVincReminder';
+import OpenCalendReminder from './pages/OpenCalendReminder';
 import CalendarReminder from './pages/CalendarReminder';
-import { DrawerContent } from './pages/Navigation/DrawerContent'
+import SharedAcc from './pages/sharedAccounts';
+import SharedAccList from './pages/sharedAccountsList';
+import SharedAccScreen from './pages/sharedAccountScreen';
+import { DrawerContent } from './pages/Navigation/DrawerContent';
 
 // RN >= 0.52
 import {YellowBox} from 'react-native';
@@ -26,7 +33,6 @@ function DrawerScreen() {
         <Drawer.Navigator initialRouteName="Home" drawerContent={props => <DrawerContent {...props} />}>
             <Drawer.Screen name="Reminder" component={Reminder} />
             <Drawer.Screen name="Home" component={Home} />
-            <Drawer.Screen name="OpenReminder" component={OpenReminder} />
             <Drawer.Screen name="Profile" component={Profile} />
             <Drawer.Screen name="CalendarReminder" component={CalendarReminder} />
         </Drawer.Navigator>
@@ -38,11 +44,20 @@ export default function Routes() {
         <NavigationContainer>
             <AppStack.Navigator screenOptions={{ headerShown: false }}>
                 <AppStack.Screen name="Login" component={Login} />
+                <AppStack.Screen name="SharedAcc" component={SharedAcc} />
+                <AppStack.Screen name="SharedAccScreen" component={SharedAccScreen} />
+                <AppStack.Screen name="SharedAccList" component={SharedAccList} />
                 <AppStack.Screen name="Register" component={Register} />
                 <AppStack.Screen name="RecoverPassword" component={RecoverPassword} />
                 <AppStack.Screen name="Home" component={DrawerScreen} />
                 <AppStack.Screen name="Reminder" component={Reminder} />
+                <AppStack.Screen name="ReminderVinculo" component={ReminderVinc} />
+                <AppStack.Screen name="ReminderCalendar" component={ReminderCalend} />
+                <Drawer.Screen name="OpenReminder" component={OpenReminder} />
+                <Drawer.Screen name="OpenVincReminder" component={OpenVincReminder} />
+                <Drawer.Screen name="OpenCalendReminder" component={OpenCalendReminder} />
                 <AppStack.Screen name="EditReminder" component={EditReminder} />
+                <AppStack.Screen name="EditVincReminder" component={EditReminder} />
             </AppStack.Navigator>
         </NavigationContainer>
     );

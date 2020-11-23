@@ -19,7 +19,6 @@ module.exports ={
   
     if(!user)
       return res.status(400).send({ error: 'User not found.' });
-    
   
     if(!await bcrypt.compare(password, user.password))
       return res.status(400).send({ error: 'Invalid password' });

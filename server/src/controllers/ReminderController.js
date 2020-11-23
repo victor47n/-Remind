@@ -17,9 +17,10 @@ const addMonths = require('date-fns/addMonths')
 module.exports = {
     async store(req, res) {
         try {
+            
             const status = false;
             const { description, dateActivity, repeat, dayWeek, userId } = req.body;
-            // dateActivity.setHours(dateActivity.getHours() - 3);
+            dateActivity.setHours(dateActivity.getHours() - 3);
             const reminders = [];
             let stop = false; 
             let j = 0;
@@ -54,7 +55,6 @@ module.exports = {
                 // ,`${getHours(dateActivity)}`,`${getMinutes(dateActivity)}`,`${getSeconds(dateActivity)}`);
                 
                 if(getDay(dateRepeat) == valor){
-
                   const reminder = await Reminder.create({
                     status,
                     description,
@@ -96,7 +96,7 @@ module.exports = {
         try {
             const { reminderId, description, status, repeat, dateActivity, dayWeek } = req.body;
 
-            // dateActivity.setHours(dateActivity.getHours() - 3);
+            dateActivity.setHours(dateActivity.getHours() - 3);
 
             const reminder = await Reminder.findByIdAndUpdate(reminderId, {
                 description,
@@ -108,7 +108,6 @@ module.exports = {
             await reminder.save();
             return res.send({ reminder });
         } catch (err) {
-            console.log(err)
             return res.status(400).send({ error: 'Error updating reminder' });
         }
     },
