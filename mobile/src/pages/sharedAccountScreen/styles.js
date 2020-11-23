@@ -30,7 +30,7 @@ export default StyleSheet.create({
 
     head: {
         marginTop: 8,
-        marginBottom: 56,
+        marginBottom: 25,
     },
 
     title: {

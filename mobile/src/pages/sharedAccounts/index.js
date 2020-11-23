@@ -17,14 +17,13 @@ export default function SharedAcc() {
     const navigation = useNavigation();
 
     async function loadEmailVinc() {
-
         const userId = await AsyncStorage.getItem('@Reminder:userId');
         const response = await api.get(`/profile_list/${userId}`);
-        setVinculos(response.data.user.dadosVinculos);
+        if(response){
+            setVinculos(response.data.user.dadosVinculos);
+        }
         // const vinculos = await AsyncStorage.getItem('@Reminder:vinculos');
-        
         //const getList = await api.get(`reminders-today/${userEmailAuth}`);
-
     };
 
     async function recordVincAndNavigation(vinculo) {
@@ -47,9 +46,11 @@ export default function SharedAcc() {
     }
 
     useEffect(() => {
-        loadEmailVinc()
-        setAcc(false);
-
+        const timer = setInterval(() => {
+            loadEmailVinc()
+        }, 3000);
+        
+        return () => clearInterval(timer);
     }, []);
 
     let createScreen = () => {

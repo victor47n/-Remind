@@ -37,11 +37,11 @@ export default function CalendarReminder() {
     }
 
     function navigateToReminder() {
-        navigation.navigate('Reminder');
+        navigation.navigate('ReminderCalendar');
     }
 
     function navigateToDetail(reminder) {
-        navigation.navigate('OpenReminder', { reminder });
+        navigation.navigate('OpenCalendReminder', { reminder });
     }
 
     LocaleConfig.locales['pt-br'] = {
@@ -107,11 +107,9 @@ export default function CalendarReminder() {
 
     const getAbleDates = () => {
         const ableDates = {};
-
         reminder.forEach(element => {
             ableDates[moment(new Date(element.dateActivity)).utc(-3).format('YYYY-MM-DD')] = { marked: true };
         });
-
         // console.log(ableDates);
         return ableDates;
     };
@@ -127,7 +125,10 @@ export default function CalendarReminder() {
     };
 
     useEffect(() => {
-        loadReminders();
+        const timer = setInterval(() => {
+            loadReminders();
+        }, 1000);
+        return () => clearInterval(timer);
     }, [])
 
     const reloadAgenda = () => {

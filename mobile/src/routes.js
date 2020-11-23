@@ -13,9 +13,12 @@ import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import Reminder from './pages/Reminder';
 import ReminderVinc from './pages/ReminderVinc';
+import ReminderCalend from './pages/ReminderCalend';
 import EditReminder from './pages/EditReminder';
 import Profile from './pages/Profile';
 import OpenReminder from './pages/OpenReminder';
+import OpenVincReminder from './pages/OpenVincReminder';
+import OpenCalendReminder from './pages/OpenCalendReminder';
 import CalendarReminder from './pages/CalendarReminder';
 import SharedAcc from './pages/sharedAccounts';
 import SharedAccList from './pages/sharedAccountsList';
@@ -49,8 +52,10 @@ export default function Routes() {
                 <AppStack.Screen name="Home" component={DrawerScreen} />
                 <AppStack.Screen name="Reminder" component={Reminder} />
                 <AppStack.Screen name="ReminderVinculo" component={ReminderVinc} />
+                <AppStack.Screen name="ReminderCalendar" component={ReminderCalend} />
                 <Drawer.Screen name="OpenReminder" component={OpenReminder} />
-                <Drawer.Screen name="OpenVincReminder" component={OpenReminder} />
+                <Drawer.Screen name="OpenVincReminder" component={OpenVincReminder} />
+                <Drawer.Screen name="OpenCalendReminder" component={OpenCalendReminder} />
                 <AppStack.Screen name="EditReminder" component={EditReminder} />
                 <AppStack.Screen name="EditVincReminder" component={EditReminder} />
             </AppStack.Navigator>

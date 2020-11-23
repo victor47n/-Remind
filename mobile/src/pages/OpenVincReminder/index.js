@@ -8,9 +8,8 @@ import 'moment/locale/pt-br';
 import moment from "moment";
 
 import styles from './styles';
-import { DrawerContentScrollView } from '@react-navigation/drawer';
 
-export default function OpenReminder({ route, navigation }) {
+export default function OpenVincReminder({ route, navigation }) {
     moment.locale('pt-BR');
     moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
     
@@ -66,7 +65,7 @@ export default function OpenReminder({ route, navigation }) {
     async function excluir() {
         try {
             const response = await api.delete(`reminder/${reminder._id}`);
-            navigation.goBack();
+            goToBack()
         } catch (error) {
             alert(error);
         }
@@ -77,16 +76,13 @@ export default function OpenReminder({ route, navigation }) {
     // })
     let showDayWeek = () =>{
         if(reminder){
-        return(
-            <View>
-                {/* <Text style={styles.reminderRepeat}>{}</Text>  */}
-                {
-                reminder.dayWeek.map(day => {
-                        <Text key={day.number} >{reminder !== null ? moment(day.number, "d").format('dddd'):"Apagado"}</Text>
-                 })
-                }
-            </View>
-        )}
+            return(
+                <View>
+                    <Text style={styles.reminderRepeat}>{reminder !== null ? moment(reminder.dateActivity).format('LL'):"Apagado"}</Text> 
+                    <Text style={styles.reminderRepeat}>Repetir: {reminder !== null ? moment(new Date(reminder.dateActivity), "d").format('dddd'):"Apagado"}</Text> 
+                    <Text style={styles.reminderRepeat}>Horario: {reminder !== null ? moment(new Date(reminder.dateActivity), "hmm").add(3, 'hours').format("HH:mm"):"Apagado"}</Text> 
+                </View>
+            )}
     }
     let showDate = () => {
         if(reminder){

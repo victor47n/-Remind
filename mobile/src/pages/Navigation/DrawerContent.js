@@ -19,9 +19,7 @@ export function DrawerContent({ route,navigation }) {
     function navigateToProfile() {
         navigation.navigate('Profile');
     }
-    function navigateToSharedScreen() {
-        navigation.navigate('SharedAcc');
-    }
+
     
     return (
         <View style={{ flex: 1 }}>

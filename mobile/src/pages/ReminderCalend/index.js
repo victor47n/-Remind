@@ -7,87 +7,79 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
+// import MethodContext from '../../components/MethodContext'
+// import 'moment-timezone';
 
-import api from '../../services/api';
+// moment.tz.setDefault('UTC');
+
+
 import styles from './styles';
+import api from '../../services/api';
 
-export default function EditReminder({ route, navigation }) {
+export default function Reminder({ navigation }) {
     moment.locale('pt-BR');
-    moment.updateLocale('pt-br', { weekdaysMin: 'D_S_T_Q_Q_S_S'.split('_') });
-    const [dayWeek, setDayWeek] = useState([]);
-    const [reminder, setReminder] = useState({});
+    const toggleSwitch = () => setRepeat(previousState => !previousState);
+    const [daysWeek, setDaysWeek] = useState([]);
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
-    const [status, setStatus] = useState(false);
 
     const [description, setDescription] = useState('');
     const [repeat, setRepeat] = useState(false);
 
-    let reminderInfo = route.params.reminder;
-    
-    
-    async function showReminder(){
-        const response = await api.get(`reminder/${reminderInfo._id}`);
-        const detail = response.data.reminder;
-        setReminder(detail);
-        console.log(detail._id);
-    }
-
     const data = [
         {
-            number: '0',
+            id: '0',
+            title: 'Domingo',
+            first_letter: 'D'
         },
         {
-            number: '1',
+            id: '1',
+            title: 'Segunda',
+            first_letter: 'S'
         },
         {
-            number: '2',
+            id: '2',
+            title: 'Terça',
+            first_letter: 'T'
         },
         {
-            number: '3',
+            id: '3',
+            title: 'Quarta',
+            first_letter: 'Q'
         },
         {
-            number: '4',
+            id: '4',
+            title: 'Quinta',
+            first_letter: 'Q'
         },
         {
-            number: '5',
+            id: '5',
+            title: 'Sexta',
+            first_letter: 'S'
         },
         {
-            number: '6',
+            id: '6',
+            title: 'Sabado',
+            first_letter: 'S'
         },
     ];
 
-    function compareDayWeek() {
-        setDescription(reminderInfo.description);
-        setRepeat(reminderInfo.repeat);
-        setDate(new Date(reminderInfo.dateActivity));
-        setTime(new Date(reminderInfo.dateActivity));
-        setStatus(reminderInfo.status);
-        reminderInfo.dayWeek.forEach(item => setDayWeek(prevState => [...prevState, `${item.number}`]));
-        
-    }
-
-    useEffect(() => {
-        showReminder();
-        compareDayWeek();
-    }, []);
-
+    // useEffect(()=>{
+    //     Clear();
+    // },[])
     const onChange = (event, selectedDate) => {
         if (mode == 'date') {
-            const currentDate = selectedDate || date;
+            const currentDate = selectedDate || data;
             setShow(Platform.OS === 'ios');
             setDate(currentDate);
         } else {
-            const currentDate = selectedDate || time;
+            const currentDate = selectedDate || data;
             setShow(Platform.OS === 'ios');
             setTime(currentDate);
         }
     };
-    function goToBack() {
-        navigation.navigate('Home');
-    }
 
     const showMode = (currentMode) => {
         setShow(true);
@@ -103,7 +95,13 @@ export default function EditReminder({ route, navigation }) {
     };
 
     const formatDate = (date) => {
-        return `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
+        // let day = new Date();
+        // if(date.getDate() != undefined){
+            return `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
+        // }else{
+        //     return `${("0" + day.getDate()).slice(-2)}/${("0" + (day.getMonth() + 1)).slice(-2)}/${day.getFullYear()}`;
+
+        // }
     };
 
     const formatHours = (time) => {
@@ -111,67 +109,79 @@ export default function EditReminder({ route, navigation }) {
     };
 
     function navigateToHome() {
-        navigation.goBack();
+        navigation.navigate('CalendarReminder');
     }
 
-    function handleDayWeek(number) {
-        const alreadySelected = dayWeek.findIndex(item => item === number);
-
-        console.log("Entrou aqui: ", alreadySelected);
+    function handleDayWeek(id) {
+        const alreadySelected = daysWeek.findIndex(item => item === id);
 
         if (alreadySelected >= 0) {
-            const filteredItems = dayWeek.filter(item => item !== number)
+            const filteredItems = daysWeek.filter(item => item !== id)
 
-            setDayWeek(filteredItems);
+            setDaysWeek(filteredItems);
         } else {
-            setDayWeek([...dayWeek, number]);
+            setDaysWeek([...daysWeek, id]);
         }
     }
 
     async function handleRegisterReminder() {
-        const reminderId = reminder._id;
+        
+        // let year = moment().year();
+        // let month = moment().month(); 
+        // let date = moment().date();
+        let dateNow = new Date();
 
         if (repeat === true) {
-            
             const data = {
                 description,
-                dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
-                status,
+                dateActivity: new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), time.getHours(), time.getMinutes()),
                 repeat,
                 dayWeek:
-                    dayWeek.map(_day => {
+                    daysWeek.map(_day => {
                         return { number: _day }
-                    }),
-                reminderId,
+                    })
+                ,
+                userId: await AsyncStorage.getItem('@Reminder:userId'),
             }
+            
+
             try {
-                const token = await AsyncStorage.getItem('@Reminder:token')
-                const response = await api.put('reminder/edit', data);
-                goToBack();
+                const response = await api.post('reminder', data);
+                if (response.status >= 200 && response.status < 300) {
+                    Clear();
+                    navigateBack();
+                }
             } catch (error) {
                 alert(error);
             }
         } else {
-            setDayWeek([]);
             const data = {
                 description,
-                dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
-                status,
-                repeat,
-                dayWeek,
-                reminderId,
+                dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds()),
+                userId: await AsyncStorage.getItem('@Reminder:userId'),
+                repeat: false,
             }
 
             try {
-                const token = await AsyncStorage.getItem('@Reminder:token')
-                const response = await api.put('reminder/edit', data);
-                goToBack();
+                const response = await api.post('reminder', data);
+                if (response.status >= 200 && response.status < 300) {
+                    Clear();
+                    navigateBack();
+                }
             } catch (error) {
                 alert(error);
             }
         }
     }
+    function Clear() {
+        setDescription("");
+        setRepeat(false);
+        setDaysWeek([]);
+    }
 
+    function navigateBack() {
+        navigation.navigate("Home");
+    };
     return (
         <View style={styles.container}>
             <StatusBar translucent={true} backgroundColor={'transparent'} style="light" />
@@ -182,7 +192,7 @@ export default function EditReminder({ route, navigation }) {
                 <TouchableOpacity style={styles.buttonBack} onPress={navigateToHome}>
                     <MaterialIcons name="arrow-back" size={24} color="#FAFAFA" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Editar Lembrete</Text>
+                <Text style={styles.headerTitle}>Lembrete</Text>
             </LinearGradient>
 
             <View style={styles.content}>
@@ -192,8 +202,11 @@ export default function EditReminder({ route, navigation }) {
                     onChangeText={setDescription}
                     placeholder="Lembre-me de..."
                     placeholderTextColor="#E0E0E0"
+                    // keyboardType="text"
                     autoCapitalize="sentences"
                     autoCorrect={false}
+                // selectionColor="#6C64FB"
+                // underlineColorAndroid="#6C64FB"
                 />
 
                 <View style={styles.toggleSwitch}>
@@ -241,11 +254,11 @@ export default function EditReminder({ route, navigation }) {
                         data={data}
                         numColumns={7}
                         contentContainerStyle={{ paddingBottom: 24, paddingTop: 16, paddingHorizontal: 40, }}
-                        keyExtractor={_week => String(_week.number)}
+                        keyExtractor={_week => String(_week.id)}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item: _week }) => (
-                            <TouchableOpacity style={dayWeek.includes(_week.number) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(_week.number)}>
-                                <Text style={dayWeek.includes(_week.number) ? styles.weekDayTextSelected : styles.weekDayText}>{moment(new Date(_week.number), "d").format('dd')}</Text>
+                            <TouchableOpacity style={daysWeek.includes(_week.id) ? styles.weekDaySelected : styles.weekDay} onPress={() => handleDayWeek(_week.id)}>
+                                <Text style={daysWeek.includes(_week.id) ? styles.weekDayTextSelected : styles.weekDayText}>{_week.first_letter}</Text>
                             </TouchableOpacity>
                         )}
                     >
