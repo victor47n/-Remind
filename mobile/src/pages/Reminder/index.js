@@ -67,9 +67,7 @@ export default function Reminder({ navigation }) {
     ];
 
     // useEffect(()=>{
-    //     const date = new Date();
-    //     const teste = moment().weekday(7);
-    //     console.log(teste);
+    //     Clear();
     // },[])
     const onChange = (event, selectedDate) => {
         if (mode == 'date') {
@@ -145,13 +143,12 @@ export default function Reminder({ navigation }) {
                 ,
                 userId: await AsyncStorage.getItem('@Reminder:userId'),
             }
-            console.log(time.getHours(), time.getMinutes(), time.getSeconds());
+            
 
             try {
                 const response = await api.post('reminder', data);
-                console.log(response);
                 if (response.status >= 200 && response.status < 300) {
-                    // Clear();
+                    Clear();
                     navigateBack();
                 }
             } catch (error) {
@@ -164,11 +161,11 @@ export default function Reminder({ navigation }) {
                 userId: await AsyncStorage.getItem('@Reminder:userId'),
                 repeat: false,
             }
-            console.log(data);
+
             try {
                 const response = await api.post('reminder', data);
                 if (response.status >= 200 && response.status < 300) {
-                    // Clear();
+                    Clear();
                     navigateBack();
                 }
             } catch (error) {
@@ -178,8 +175,8 @@ export default function Reminder({ navigation }) {
     }
     function Clear() {
         setDescription("");
-        setRepeat("");
-        setDaysWeek("");
+        setRepeat(false);
+        setDaysWeek([]);
     }
 
     function navigateBack() {

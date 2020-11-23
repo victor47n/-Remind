@@ -126,14 +126,14 @@ export default function Reminder({ navigation }) {
                         return { number: _day }
                     })
                 ,
-                userId: await AsyncStorage.getItem('@Reminder:userId'),
+                userId: await AsyncStorage.getItem('@Reminder:vinculoId'),
             }
 
             try {
                 // alert(dayWeek.length);
                 const response = await api.post('reminder', data);
                 if (response.status >= 200 && response.status < 300) {
-                    // Clear();
+                    Clear();
                     navigateBack();
                 }
             } catch (error) {
@@ -143,14 +143,14 @@ export default function Reminder({ navigation }) {
             const data = {
                 description,
                 dateActivity: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
-                userId: await AsyncStorage.getItem('@Reminder:userId'),
+                userId: await AsyncStorage.getItem('@Reminder:vinculoId'),
                 repeat: false,
             }
 
             try {
                 const response = await api.post('reminder', data);
                 if (response.status >= 200 && response.status < 300) {
-                    // Clear();
+                    Clear();
                     navigateBack();
                 }
             } catch (error) {
@@ -160,12 +160,12 @@ export default function Reminder({ navigation }) {
     }
     function Clear() {
         setDescription("");
-        setRepeat("");
-        setDaysWeek("");
+        setRepeat(false);
+        setDaysWeek([]);
     }
 
     function navigateBack() {
-        navigation.navigate("Home");
+        navigation.navigate("SharedAccList");
     };
     return (
         <View style={styles.container}>

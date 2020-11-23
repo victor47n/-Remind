@@ -24,15 +24,11 @@ export default function OpenReminder({ route, navigation }) {
     }
     
     function goToBack() {
-        navigation.goBack();
+        navigation.navigate('SharedAccList');
     }
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            showReminder()
-        }, 1000);
-
-        return () => clearInterval(timer);
+        showReminder()
     }, [remindInfo])
 
     function navigateToReminder(reminder) {

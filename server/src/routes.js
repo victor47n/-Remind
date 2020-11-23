@@ -9,6 +9,7 @@ const RemindersListController = require('./controllers/RemindersListController')
 const HistoricController = require('./controllers/HistoricController');
 const profileController = require('./controllers/ProfileController');
 const AuthVincController = require('./controllers/AuthVincController');
+const ProfileController = require('./controllers/ProfileController');
 
 
 const routes = express.Router();
@@ -92,17 +93,18 @@ routes.post('/reminder', celebrate({
   })
 }), ReminderController.store);
 
-routes.put('/reminder/:reminderId', celebrate({
+
+routes.put('/reminder/edit', celebrate({
   [Segments.BODY]: Joi.object().keys({
+    reminderId: Joi.string().required(),
     description: Joi.string().required(),
-    status: Joi.boolean().required(),
-    repeat: Joi.boolean().required(),
-    dateActivity: Joi.date().required(),
-    dayWeek: Joi.array().required(),
+    status: Joi.boolean(),
+    repeat: Joi.boolean(),
+    dateActivity: Joi.date(),
+    dayWeek: Joi.array(),
   }),
-  [Segments.PARAMS]: Joi.object().keys({
-    reminderId: Joi.string(),
-  })
+  // [Segments.PARAMS]: Joi.object().keys({
+  // })
 }), ReminderController.update);
 
 routes.delete('/reminder/:reminderId', celebrate({
@@ -157,7 +159,10 @@ routes.delete('/autorizacao_delete/:reminderId', celebrate({
 ////////////////////////////////////////////////////////////////////
 
 routes.post('/reminders/loop', HistoricController.Loop);
+
 routes.post('/reminders/testecadastro', HistoricController.TestesCadastros);
+
+routes.put('/vinc/delete', ProfileController.deleteVinc);
 
 
 module.exports = routes;

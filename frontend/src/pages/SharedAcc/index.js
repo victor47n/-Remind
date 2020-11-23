@@ -20,7 +20,7 @@ export default function SharedAcc({ match }) {
         try {
 
             const response = await api.put('/autorizacao_update', data)
-            console.log(response);
+            // console.log(response);
             if (response.data) {
                 setIsConfirmed(true);
 

@@ -29,7 +29,6 @@ module.exports = {
                     { dateActivity: { $gte: start, $lt: end } }
                 ])
                 .populate('user');
-                console.log("AAAA", reminders);
 
             return res.send({ reminders });
         } catch (error) {

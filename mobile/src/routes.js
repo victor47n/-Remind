@@ -30,7 +30,6 @@ function DrawerScreen() {
         <Drawer.Navigator initialRouteName="Home" drawerContent={props => <DrawerContent {...props} />}>
             <Drawer.Screen name="Reminder" component={Reminder} />
             <Drawer.Screen name="Home" component={Home} />
-            <Drawer.Screen name="OpenReminder" component={OpenReminder} />
             <Drawer.Screen name="Profile" component={Profile} />
             <Drawer.Screen name="CalendarReminder" component={CalendarReminder} />
         </Drawer.Navigator>
@@ -50,7 +49,10 @@ export default function Routes() {
                 <AppStack.Screen name="Home" component={DrawerScreen} />
                 <AppStack.Screen name="Reminder" component={Reminder} />
                 <AppStack.Screen name="ReminderVinculo" component={ReminderVinc} />
+                <Drawer.Screen name="OpenReminder" component={OpenReminder} />
+                <Drawer.Screen name="OpenVincReminder" component={OpenReminder} />
                 <AppStack.Screen name="EditReminder" component={EditReminder} />
+                <AppStack.Screen name="EditVincReminder" component={EditReminder} />
             </AppStack.Navigator>
         </NavigationContainer>
     );

@@ -21,10 +21,8 @@ export default function SharedAcc() {
         const userId = await AsyncStorage.getItem('@Reminder:userId');
         const response = await api.get(`/profile_list/${userId}`);
         setVinculos(response.data.user.dadosVinculos);
-
         // const vinculos = await AsyncStorage.getItem('@Reminder:vinculos');
-        // console.log(vinculos);
-        console.log(response.data.user.vinculos);
+        
         //const getList = await api.get(`reminders-today/${userEmailAuth}`);
 
     };

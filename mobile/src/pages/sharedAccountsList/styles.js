@@ -124,6 +124,59 @@ export default StyleSheet.create({
         height: 320,
         borderRadius: 20,
         elevation: 0.8,
-        
-    }
+        padding: 10,
+    },
+    
+    sectionHeader: {
+        flexDirection: 'row',
+        marginTop: 16,
+        marginBottom: 24,
+    },
+    sectionTitle: {
+        fontFamily: 'Roboto',
+        fontSize: 14,
+        color: '#FAFAFA',
+        letterSpacing: 0.25,
+    },
+
+    sectionDate: {
+        fontFamily: 'Roboto',
+        fontSize: 12,
+        color: '#FAFAFA',
+        letterSpacing: 0.4,
+        marginLeft: 24,
+    },
+
+    item: {
+        flexDirection: 'row',
+        marginBottom: 16,
+        alignItems: 'center',
+    },
+    reminderCheck: {
+        marginRight: 8,
+    },
+
+    itemHours: {
+        fontFamily: 'Roboto',
+        fontSize: 14,
+        color: '#FAFAFA',
+        letterSpacing: 0.4,
+        marginRight: 8,
+    },
+
+    containerItemDescription: {
+        backgroundColor: '#FE9DA4',
+        alignItems:"center",
+        height: 60,
+        borderRadius: 20,
+        padding: 16,
+        flex: 1,
+    },
+    itemDescription: {
+        fontFamily: 'Roboto',
+        fontSize: 14,
+        color: '#FAFAFA',
+        letterSpacing: 0.4,
+    },
+
 });

@@ -16,17 +16,17 @@ const addMonths = require('date-fns/addMonths')
 
 module.exports = {
     async store(req, res) {
-        console.log("AQUI");
         try {
+            
             const status = false;
             const { description, dateActivity, repeat, dayWeek, userId } = req.body;
-            // dateActivity.setHours(dateActivity.getHours() - 3);
+            dateActivity.setHours(dateActivity.getHours() - 3);
             const reminders = [];
             let stop = false; 
             let j = 0;
              // let date =  new Date(2020, 11, 28);
-            let date =  new Date(2020, 10, 27);
-            // let date =  new Date();
+            // let date =  new Date(2020, 10, 27);
+            let date =  new Date();
             const maxDaysOfMonth = getDaysInMonth(date)
             //checando se o lenbrete é repetitivo
             if(repeat == true){
@@ -55,7 +55,6 @@ module.exports = {
                 // ,`${getHours(dateActivity)}`,`${getMinutes(dateActivity)}`,`${getSeconds(dateActivity)}`);
                 
                 if(getDay(dateRepeat) == valor){
-
                   const reminder = await Reminder.create({
                     status,
                     description,
@@ -97,7 +96,7 @@ module.exports = {
         try {
             const { reminderId, description, status, repeat, dateActivity, dayWeek } = req.body;
 
-            // dateActivity.setHours(dateActivity.getHours() - 3);
+            dateActivity.setHours(dateActivity.getHours() - 3);
 
             const reminder = await Reminder.findByIdAndUpdate(reminderId, {
                 description,
@@ -109,7 +108,6 @@ module.exports = {
             await reminder.save();
             return res.send({ reminder });
         } catch (err) {
-            console.log(err)
             return res.status(400).send({ error: 'Error updating reminder' });
         }
     },

@@ -26,12 +26,14 @@ export default function EditReminder({ route, navigation }) {
     const [description, setDescription] = useState('');
     const [repeat, setRepeat] = useState(false);
 
-    const reminderInfo = route.params.reminder;
+    let reminderInfo = route.params.reminder;
+    
     
     async function showReminder(){
         const response = await api.get(`reminder/${reminderInfo._id}`);
         const detail = response.data.reminder;
         setReminder(detail);
+        console.log(detail._id);
     }
 
     const data = [
@@ -65,6 +67,7 @@ export default function EditReminder({ route, navigation }) {
         setTime(new Date(reminderInfo.dateActivity));
         setStatus(reminderInfo.status);
         reminderInfo.dayWeek.forEach(item => setDayWeek(prevState => [...prevState, `${item.number}`]));
+        
     }
 
     useEffect(() => {
@@ -83,6 +86,9 @@ export default function EditReminder({ route, navigation }) {
             setTime(currentDate);
         }
     };
+    function goToBack() {
+        navigation.goBack();
+    }
 
     const showMode = (currentMode) => {
         setShow(true);
@@ -106,7 +112,7 @@ export default function EditReminder({ route, navigation }) {
     };
 
     function navigateToHome() {
-        navigation.navigate('Home');
+        navigation.goBack();
     }
 
     function handleDayWeek(number) {
@@ -142,7 +148,7 @@ export default function EditReminder({ route, navigation }) {
             try {
                 const token = await AsyncStorage.getItem('@Reminder:token')
                 const response = await api.put('reminder/edit', data);
-                navigation.navigate("OpenReminder");
+                goToBack();
             } catch (error) {
                 alert(error);
             }
@@ -160,7 +166,7 @@ export default function EditReminder({ route, navigation }) {
             try {
                 const token = await AsyncStorage.getItem('@Reminder:token')
                 const response = await api.put('reminder/edit', data);
-                navigation.navigate("OpenReminder");
+                goToBack();
             } catch (error) {
                 alert(error);
             }

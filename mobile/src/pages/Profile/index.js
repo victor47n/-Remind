@@ -27,7 +27,7 @@ export default function Profile({ navigation }) {
                     email,
                     password
                 }
-                console.log(data);
+                
 
                 const response = await api.put('/profile/edit', data)
                 await AsyncStorage.setItem('@Reminder:userName', name);
@@ -43,7 +43,7 @@ export default function Profile({ navigation }) {
                 alert("Senhas Diferentes");
             }
 
-            console.log(response)
+
 
         } catch (error) {
 

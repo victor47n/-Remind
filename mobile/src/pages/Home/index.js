@@ -38,7 +38,10 @@ export default function Home({ navigation }) {
     };
 
     useEffect(() => {
-        loadReminders();
+    const timer = setInterval(() => {
+        loadReminders()
+     }, 1000);
+     return () => clearInterval(timer);
     }, []);
 
     function navigateToReminder() {
@@ -63,12 +66,12 @@ export default function Home({ navigation }) {
                         reminderId: id,
                         status: false,
                     }
-                    console.log("false");
+                    // console.log("false");
                     const response = await api.put('reminder/status', data);
                     setRemindCheck([...remindCheck, id]);    
                     
                 } catch (error) {
-                    console.log(error)  
+                    alert(error);
                 }
             }    
             if(getDetails.status === false){

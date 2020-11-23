@@ -112,7 +112,7 @@ export default function CalendarReminder() {
             ableDates[moment(new Date(element.dateActivity)).utc(-3).format('YYYY-MM-DD')] = { marked: true };
         });
 
-        console.log(ableDates);
+        // console.log(ableDates);
         return ableDates;
     };
 
