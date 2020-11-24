@@ -14,7 +14,7 @@ const AuthVincController = require('./controllers/AuthVincController');
 const ProfileController = require('./controllers/ProfileController');
 
 
-route.use(authMiddleware);
+// route.use(authMiddleware);
 const routes = express.Router();
 
 //Cadastro e Login

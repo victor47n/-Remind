@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList,Text, View, TouchableOpacity, TouchableHighlight, TextInput, Alert } from 'react-native';
+import { StyleSheet, FlatList, Text, View, TouchableOpacity, TouchableHighlight, TextInput, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
@@ -25,7 +25,7 @@ export default function SharedAccList({ route }) {
     const vinculo = route.params.vinculo;
 
     async function loadEmailVinc() {
-        
+
         const getListLembretes = await api.get(`reminders-today/${vinculo._id}`);
         await AsyncStorage.setItem('@Reminder:vinculoId', vinculo._id);
         const mainId = await AsyncStorage.getItem('@Reminder:userId');
@@ -43,7 +43,10 @@ export default function SharedAccList({ route }) {
 
     function navigateBack() {
         navigation.goBack();
+    }
 
+    function navigateHome() {
+        navigation.navigate('Home');
     }
 
     function navigateToVincCad() {
@@ -58,23 +61,23 @@ export default function SharedAccList({ route }) {
     useEffect(() => {
         const timer = setInterval(() => {
             loadEmailVinc()
-         }, 1000);
-         
-         return () => clearInterval(timer);
+        }, 1000);
+
+        return () => clearInterval(timer);
 
     }, []);
 
-    async function DeleteVinc(){
+    async function DeleteVinc() {
         try {
-            const deleteAccountVinc = await api.put(`vinc/delete`, {email, userId});
-            navigateBack();
+            const deleteAccountVinc = await api.put(`vinc/delete`, { email, userId });
+            navigateHome();
         } catch (error) {
             console.log(error);
             alert(error);
         }
 
     }
-    
+
     function navigateToDetail(reminder) {
         navigation.navigate('OpenVincReminder', { reminder });
     }
@@ -116,18 +119,18 @@ export default function SharedAccList({ route }) {
                     end={{ x: 1, y: 1 }}
                 >
                     <View>
-                    <FlatList
-                        // style={styles.containerReminder}
-                        data={reminders}
-                        keyExtractor={reminder => String(reminder._id)}
-                        onEndReached={loadEmailVinc}
-                        onEndReachedThreshold={0.2}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item: reminder }) => {
-                            
+                        <FlatList
+                            // style={styles.containerReminder}
+                            data={reminders}
+                            keyExtractor={reminder => String(reminder._id)}
+                            onEndReached={loadEmailVinc}
+                            onEndReachedThreshold={0.2}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({ item: reminder }) => {
+
                                 return (
                                     <View>
-                                   
+
                                         <View style={styles.item}>
                                             <Text style={styles.itemHours}>{moment(new Date(reminder.dateActivity)).add(3, 'hours').format('kk:mm A')}</Text>
                                             <TouchableOpacity style={styles.containerItemDescription} onPress={() => navigateToDetail(reminder)}>
@@ -137,9 +140,9 @@ export default function SharedAccList({ route }) {
                                     </View>
 
                                 )
-                            
-                        }}
-                    />
+
+                            }}
+                        />
                     </View>
                 </LinearGradient>
 

@@ -24,7 +24,6 @@ import OpenReminder from './pages/OpenReminder';
 import OpenVincReminder from './pages/OpenVincReminder';
 import OpenCalendReminder from './pages/OpenCalendReminder';
 import CalendarReminder from './pages/CalendarReminder';
-import { DrawerContent } from './pages/Navigation/DrawerContent'
 // import hasNotificationPermission from './services/notification/NotificationPermission';
 // import getPushToken from './services/notification/PushToken';
 // import updatePushToken from './services/notification/UpdatePushToken';

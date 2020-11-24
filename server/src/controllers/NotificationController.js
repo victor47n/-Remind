@@ -158,7 +158,7 @@ module.exports = {
             console.log("INICIO: " + start + " ---- FIM: " + end);
 
             const reminders = await Reminder.find({
-                dateActivity: { $gte: start }
+                dateActivity: { $gte: start, }
             },
                 { description: 1, dateActivity: 1, user: 1, _id: 0 });
 

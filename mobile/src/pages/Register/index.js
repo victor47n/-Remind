@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
@@ -21,12 +21,13 @@ export default function Register() {
                 email,
                 password,
             };
-            
+
             try {
                 const response = await api.post('register', data);
                 if (response.status >= 200 && response.status < 300) {
                     Clear();
                     navigateBack();
+                    alert('Cadastrado com sucesso!')
                 }
             } catch (error) {
                 alert(error);

@@ -61,37 +61,38 @@ export default function Home({ navigation }) {
     async function handleStateReminder(id) {
         const alreadySelected = remindCheck.findIndex(item => item === id);
         const getReminder = await api.get(`reminder/${id}`);
-        const  getDetails = getReminder.data.reminder;
+        const getDetails = getReminder.data.reminder;
+
         if (getDetails.status === true) {
-                try {
-                    let data = {
-                        reminderId: id,
-                        status: false,
-                    }
-                    // console.log("false");
-                    const response = await api.put('reminder/status', data);
-                    setRemindCheck([...remindCheck, id]);    
-                    
-                } catch (error) {
-                    alert(error);
+            try {
+                let data = {
+                    reminderId: id,
+                    status: false,
                 }
-            }    
-            if(getDetails.status === false){
-                const filteredItems = remindCheck.filter(item => item !== id);
-                setRemindCheck(filteredItems);
-                
-                try {
-                    let data = {
-                        reminderId: id,
-                        status: true,
-                    }
-                    console.log("true");
-                    const response = await api.put('reminder/status', data);    
-                    
-                } catch (error) {
-                    console.log(error)  
-                }
+                // console.log("false");
+                const response = await api.put('reminder/status', data);
+                setRemindCheck([...remindCheck, id]);
+
+            } catch (error) {
+                alert(error);
             }
+        }
+        if (getDetails.status === false) {
+            const filteredItems = remindCheck.filter(item => item !== id);
+            setRemindCheck(filteredItems);
+
+            try {
+                let data = {
+                    reminderId: id,
+                    status: true,
+                }
+                console.log("true");
+                const response = await api.put('reminder/status', data);
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }
 
     return (
@@ -155,9 +156,9 @@ export default function Home({ navigation }) {
                                         style={styles.reminderCheck}
                                     />
                                     <View>
-                                        <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextDescriptionSelected : styles.reminderTextDescription}>{reminder !== null ? reminder.description:"Apagado"}</Text>
+                                        <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextDescriptionSelected : styles.reminderTextDescription}>{reminder !== null ? reminder.description : "Apagado"}</Text>
                                         <Text style={remindCheck.includes(reminder._id) ? styles.reminderTextTimeSelected : styles.reminderTextTime}>
-                                            {reminder !== null ?`${moment(new Date(reminder.dateActivity), "hmm").add(3, 'hours').format("HH:mm")}`:"Apagado"}
+                                            {reminder !== null ? `${moment(new Date(reminder.dateActivity), "hmm").add(3, 'hours').format("HH:mm")}` : "Apagado"}
                                         </Text>
                                     </View>
                                 </View>
