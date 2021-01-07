@@ -48,7 +48,7 @@ export default function SharedAcc() {
     useEffect(() => {
         const timer = setInterval(() => {
             loadEmailVinc()
-        }, 3000);
+        }, 1000);
         
         return () => clearInterval(timer);
     }, []);

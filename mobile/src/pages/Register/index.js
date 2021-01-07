@@ -25,6 +25,7 @@ export default function Register() {
             try {
                 const response = await api.post('register', data);
                 if (response.status >= 200 && response.status < 300) {
+                    alert("Usuario cadastrado com sucesso!");
                     Clear();
                     navigateBack();
                 }

@@ -134,7 +134,7 @@ export default function Reminder({ navigation }) {
         if (repeat === true) {
             const data = {
                 description,
-                dateActivity: new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), time.getHours(), time.getMinutes()),
+                dateActivity: new Date(0, 0, 0, time.getHours(), time.getMinutes()),
                 repeat,
                 dayWeek:
                     daysWeek.map(_day => {

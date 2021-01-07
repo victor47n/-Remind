@@ -34,7 +34,6 @@ export default function SharedAccList({ route }) {
             setReminders(arrayReminders);
             setEmail(vinculo.email);
             setUserId(mainId);
-
         } else {
             alert("Error");
         }
@@ -48,6 +47,10 @@ export default function SharedAccList({ route }) {
 
     function navigateToVincCad() {
         navigation.navigate('ReminderVinculo');
+    }
+
+    function navigateToHome() {
+        navigation.navigate('Home');
     }
 
     // function navigateAdd() {
@@ -67,7 +70,7 @@ export default function SharedAccList({ route }) {
     async function DeleteVinc(){
         try {
             const deleteAccountVinc = await api.put(`vinc/delete`, {email, userId});
-            navigateBack();
+            navigateToHome();
         } catch (error) {
             console.log(error);
             alert(error);
